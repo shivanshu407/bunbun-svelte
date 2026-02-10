@@ -199,7 +199,7 @@
                         </div>
                     </div>
                 </a>
-            {:empty}
+            {:else}
                 <p class="col-span-full text-center text-stone-400 py-12">No products available yet</p>
             {/each}
         </div>
