@@ -167,7 +167,8 @@
                             </div>
                         {/if}
                         {#if product.discount}
-                            <span class="absolute top-3 left-3 px-2 py-1 bg-rose-500 text-white text-xs font-bold rounded-md"
+                            <span
+                                class="absolute top-3 left-3 px-2 py-1 bg-rose-500 text-white text-xs font-bold rounded-md"
                                 >-{product.discount}%</span
                             >
                         {/if}
@@ -184,23 +185,39 @@
                         {#if product.rating > 0}
                             <div class="flex items-center gap-1 mt-1">
                                 {#each Array(5) as _, i}
-                                    <span class="text-xs {i < Math.round(product.rating) ? 'text-amber-400' : 'text-stone-200'}">★</span>
+                                    <span
+                                        class="text-xs {i <
+                                        Math.round(product.rating)
+                                            ? 'text-amber-400'
+                                            : 'text-stone-200'}">★</span
+                                    >
                                 {/each}
-                                <span class="text-xs text-stone-400 ml-1">({product.reviewCount})</span>
+                                <span class="text-xs text-stone-400 ml-1"
+                                    >({product.reviewCount})</span
+                                >
                             </div>
                         {/if}
                         <div class="flex items-center gap-2 mt-2">
                             {#if product.salePrice}
-                                <span class="text-base font-bold text-rose-600">{formatPrice(product.salePrice)}</span>
-                                <span class="text-sm text-stone-400 line-through">{formatPrice(product.basePrice)}</span>
+                                <span class="text-base font-bold text-rose-600"
+                                    >{formatPrice(product.salePrice)}</span
+                                >
+                                <span
+                                    class="text-sm text-stone-400 line-through"
+                                    >{formatPrice(product.basePrice)}</span
+                                >
                             {:else}
-                                <span class="text-base font-bold text-stone-900">{formatPrice(product.basePrice)}</span>
+                                <span class="text-base font-bold text-stone-900"
+                                    >{formatPrice(product.basePrice)}</span
+                                >
                             {/if}
                         </div>
                     </div>
                 </a>
             {:else}
-                <p class="col-span-full text-center text-stone-400 py-12">No products available yet</p>
+                <p class="col-span-full text-center text-stone-400 py-12">
+                    No products available yet
+                </p>
             {/each}
         </div>
     </div>
@@ -289,7 +306,8 @@
                             </div>
                         {/if}
                         {#if product.discount}
-                            <span class="absolute top-3 left-3 px-2 py-1 bg-amber-500 text-white text-xs font-bold rounded-md"
+                            <span
+                                class="absolute top-3 left-3 px-2 py-1 bg-amber-500 text-white text-xs font-bold rounded-md"
                                 >-{product.discount}%</span
                             >
                         {/if}
@@ -306,23 +324,39 @@
                         {#if product.rating > 0}
                             <div class="flex items-center gap-1 mt-1">
                                 {#each Array(5) as _, i}
-                                    <span class="text-xs {i < Math.round(product.rating) ? 'text-amber-400' : 'text-stone-200'}">★</span>
+                                    <span
+                                        class="text-xs {i <
+                                        Math.round(product.rating)
+                                            ? 'text-amber-400'
+                                            : 'text-stone-200'}">★</span
+                                    >
                                 {/each}
-                                <span class="text-xs text-stone-400 ml-1">({product.reviewCount})</span>
+                                <span class="text-xs text-stone-400 ml-1"
+                                    >({product.reviewCount})</span
+                                >
                             </div>
                         {/if}
                         <div class="flex items-center gap-2 mt-2">
                             {#if product.salePrice}
-                                <span class="text-base font-bold text-rose-600">{formatPrice(product.salePrice)}</span>
-                                <span class="text-sm text-stone-400 line-through">{formatPrice(product.basePrice)}</span>
+                                <span class="text-base font-bold text-rose-600"
+                                    >{formatPrice(product.salePrice)}</span
+                                >
+                                <span
+                                    class="text-sm text-stone-400 line-through"
+                                    >{formatPrice(product.basePrice)}</span
+                                >
                             {:else}
-                                <span class="text-base font-bold text-stone-900">{formatPrice(product.basePrice)}</span>
+                                <span class="text-base font-bold text-stone-900"
+                                    >{formatPrice(product.basePrice)}</span
+                                >
                             {/if}
                         </div>
                     </div>
                 </a>
-            {:empty}
-                <p class="col-span-full text-center text-stone-400 py-12">No products available yet</p>
+            {:else}
+                <p class="col-span-full text-center text-stone-400 py-12">
+                    No products available yet
+                </p>
             {/each}
         </div>
     </div>
