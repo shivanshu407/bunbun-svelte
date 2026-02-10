@@ -321,9 +321,9 @@ model Banner {
   id           String    @id @default(cuid())
   title        String
   subtitle     String?
-  imageDesktop String
+  imageUrl     String
   imageMobile  String?
-  linkUrl      String
+  linkUrl      String?
   linkText     String?
   order        Int       @default(0)
   isActive     Boolean   @default(true)

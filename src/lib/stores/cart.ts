@@ -1,6 +1,6 @@
-import { writable, derived } from 'svelte/store';
+import { writable, derived, get } from 'svelte/store';
 
-export interface CartItemStore {
+export interface CartItem {
     id: string;
     productId: string;
     variantId: string;
@@ -14,53 +14,42 @@ export interface CartItemStore {
 }
 
 function createCartStore() {
-    const { subscribe, set, update } = writable<CartItemStore[]>([]);
+    const { subscribe, set, update } = writable<CartItem[]>([]);
 
     return {
         subscribe,
-        addItem: (item: CartItemStore) => {
+        set,
+        addItem: (item: CartItem) => {
             update(items => {
-                const existing = items.find(
-                    i => i.productId === item.productId && i.variantId === item.variantId
-                );
+                const existing = items.find(i => i.id === item.id);
                 if (existing) {
-                    return items.map(i =>
-                        i.productId === item.productId && i.variantId === item.variantId
-                            ? { ...i, quantity: i.quantity + item.quantity }
-                            : i
-                    );
+                    return items.map(i => i.id === item.id ? { ...i, quantity: i.quantity + item.quantity } : i);
                 }
                 return [...items, item];
             });
         },
-        removeItem: (productId: string, variantId: string) => {
-            update(items => items.filter(i => !(i.productId === productId && i.variantId === variantId)));
+        removeItem: (id: string) => {
+            update(items => items.filter(i => i.id !== id));
         },
-        updateQuantity: (productId: string, variantId: string, quantity: number) => {
-            update(items =>
-                items.map(i =>
-                    i.productId === productId && i.variantId === variantId
-                        ? { ...i, quantity: Math.max(1, quantity) }
-                        : i
-                )
-            );
+        updateQuantity: (id: string, quantity: number) => {
+            if (quantity <= 0) {
+                update(items => items.filter(i => i.id !== id));
+            } else {
+                update(items => items.map(i => i.id === id ? { ...i, quantity } : i));
+            }
         },
         clear: () => set([]),
-        set
+        getItems: () => get({ subscribe })
     };
 }
 
 export const cartItems = createCartStore();
-
-export const cartTotal = derived(cartItems, ($items) => {
-    return $items.reduce((sum, item) => {
-        const price = item.salePrice ?? item.price;
-        return sum + price * item.quantity;
-    }, 0);
-});
-
-export const cartItemCount = derived(cartItems, ($items) => {
-    return $items.reduce((sum, item) => sum + item.quantity, 0);
-});
-
 export const cartDrawerOpen = writable(false);
+
+export const cartTotal = derived(cartItems, ($items) =>
+    $items.reduce((sum, item) => sum + (item.salePrice ?? item.price) * item.quantity, 0)
+);
+
+export const cartCount = derived(cartItems, ($items) =>
+    $items.reduce((sum, item) => sum + item.quantity, 0)
+);

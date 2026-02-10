@@ -3,7 +3,7 @@
     import {
         cartItems,
         cartTotal,
-        cartItemCount,
+        cartCount,
         cartDrawerOpen,
     } from "$lib/stores/cart";
     import { formatPrice } from "$lib/utils";
@@ -36,7 +36,7 @@
                     class="text-lg font-semibold font-[family-name:var(--font-heading)] flex items-center gap-2"
                 >
                     <ShoppingBag size={20} />
-                    Your Cart ({$cartItemCount})
+                    Your Cart ({$cartCount})
                 </h2>
                 <button
                     onclick={close}
@@ -49,7 +49,7 @@
 
             <!-- Items -->
             <div class="flex-1 overflow-y-auto px-5 py-4">
-                {#if $cartItemCount === 0}
+                {#if $cartCount === 0}
                     <div
                         class="flex flex-col items-center justify-center h-full text-center"
                     >
@@ -72,11 +72,19 @@
                     <div class="space-y-4">
                         {#each $cartItems as item (item.id)}
                             <div class="flex gap-3 p-3 bg-stone-50 rounded-lg">
-                                <img
-                                    src={item.image}
-                                    alt={item.name}
-                                    class="w-20 h-20 object-cover rounded-md"
-                                />
+                                {#if item.image}
+                                    <img
+                                        src={item.image}
+                                        alt={item.name}
+                                        class="w-20 h-20 object-cover rounded-md"
+                                    />
+                                {:else}
+                                    <div
+                                        class="w-20 h-20 bg-stone-200 rounded-md flex items-center justify-center text-2xl"
+                                    >
+                                        👗
+                                    </div>
+                                {/if}
                                 <div class="flex-1 min-w-0">
                                     <h4
                                         class="text-sm font-medium text-stone-800 truncate"
@@ -99,8 +107,7 @@
                                             <button
                                                 onclick={() =>
                                                     cartItems.updateQuantity(
-                                                        item.productId,
-                                                        item.variantId,
+                                                        item.id,
                                                         item.quantity - 1,
                                                     )}
                                                 class="p-1 text-stone-500 hover:text-stone-700 transition-colors"
@@ -115,8 +122,7 @@
                                             <button
                                                 onclick={() =>
                                                     cartItems.updateQuantity(
-                                                        item.productId,
-                                                        item.variantId,
+                                                        item.id,
                                                         item.quantity + 1,
                                                     )}
                                                 class="p-1 text-stone-500 hover:text-stone-700 transition-colors"
@@ -138,8 +144,7 @@
                                             <button
                                                 onclick={() =>
                                                     cartItems.removeItem(
-                                                        item.productId,
-                                                        item.variantId,
+                                                        item.id,
                                                     )}
                                                 class="p-1 text-stone-400 hover:text-red-500 transition-colors"
                                                 aria-label="Remove item"
@@ -156,7 +161,7 @@
             </div>
 
             <!-- Footer -->
-            {#if $cartItemCount > 0}
+            {#if $cartCount > 0}
                 <div class="border-t border-stone-200 px-5 py-4 space-y-3">
                     <div class="flex items-center justify-between">
                         <span class="text-sm text-stone-600">Subtotal</span>
