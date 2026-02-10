@@ -1,5 +1,6 @@
 <script lang="ts">
 	import "../app.css";
+	import { page } from "$app/stores";
 	import Header from "$lib/components/layout/Header.svelte";
 	import NavBar from "$lib/components/layout/NavBar.svelte";
 	import MobileNav from "$lib/components/layout/MobileNav.svelte";
@@ -11,6 +12,7 @@
 	let { data, children } = $props();
 
 	let mobileNavOpen = $state(false);
+	let isAdmin = $derived($page.url.pathname.startsWith("/admin"));
 
 	// Sync server user data to client store
 	$effect(() => {
@@ -18,23 +20,27 @@
 	});
 </script>
 
-<div class="min-h-screen flex flex-col">
-	<AnnouncementBar />
-	<Header
-		user={data.user}
-		onMenuToggle={() => (mobileNavOpen = !mobileNavOpen)}
-	/>
-	<NavBar />
-	<MobileNav
-		open={mobileNavOpen}
-		user={data.user}
-		onClose={() => (mobileNavOpen = false)}
-	/>
-	<CartDrawer />
+{#if isAdmin}
+	{@render children()}
+{:else}
+	<div class="min-h-screen flex flex-col">
+		<AnnouncementBar />
+		<Header
+			user={data.user}
+			onMenuToggle={() => (mobileNavOpen = !mobileNavOpen)}
+		/>
+		<NavBar />
+		<MobileNav
+			open={mobileNavOpen}
+			user={data.user}
+			onClose={() => (mobileNavOpen = false)}
+		/>
+		<CartDrawer />
 
-	<main class="flex-1">
-		{@render children()}
-	</main>
+		<main class="flex-1">
+			{@render children()}
+		</main>
 
-	<Footer />
-</div>
+		<Footer />
+	</div>
+{/if}

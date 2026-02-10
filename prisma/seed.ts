@@ -1,513 +1,468 @@
 import { PrismaClient } from '@prisma/client';
-import bcrypt from 'bcryptjs';
 
 const prisma = new PrismaClient();
 
 async function main() {
     console.log('🌱 Seeding database...');
 
-    // Create admin user
-    const adminHash = await bcrypt.hash('admin123', 10);
-    const admin = await prisma.user.upsert({
-        where: { email: 'admin@bunbunclothing.com' },
-        update: {},
-        create: {
-            email: 'admin@bunbunclothing.com',
-            name: 'Admin',
-            passwordHash: adminHash,
-            role: 'admin'
-        }
-    });
-    console.log('✅ Admin user created:', admin.email, '(password: admin123)');
-
-    // Create test customer
-    const customerHash = await bcrypt.hash('test1234', 10);
-    const customer = await prisma.user.upsert({
-        where: { email: 'test@customer.com' },
-        update: {},
-        create: {
-            email: 'test@customer.com',
-            name: 'Priya Sharma',
-            phone: '+919876543210',
-            passwordHash: customerHash,
-            role: 'customer'
-        }
-    });
-    console.log('✅ Test customer created:', customer.email, '(password: test1234)');
-
-    // Create categories
+    // --- Categories ---
     const categories = await Promise.all([
         prisma.category.upsert({
-            where: { slug: 'sarees' }, update: {},
-            create: { name: 'Sarees', slug: 'sarees', description: 'Elegant sarees for every occasion', image: 'https://images.unsplash.com/photo-1610030469983-98e550d6193c?w=400' }
+            where: { slug: 'sarees' },
+            update: {},
+            create: { name: 'Sarees', slug: 'sarees', description: 'Elegant sarees for every occasion', order: 1 }
         }),
         prisma.category.upsert({
-            where: { slug: 'blouses' }, update: {},
-            create: { name: 'Blouses', slug: 'blouses', description: 'Designer blouse pieces', image: 'https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=400' }
+            where: { slug: 'silk-sarees' },
+            update: {},
+            create: { name: 'Silk Sarees', slug: 'silk-sarees', description: 'Premium silk sarees', order: 2, parentId: undefined }
         }),
         prisma.category.upsert({
-            where: { slug: 'shapewear' }, update: {},
-            create: { name: 'Shapewear', slug: 'shapewear', description: 'Comfortable shapewear for a perfect silhouette' }
+            where: { slug: 'cotton-sarees' },
+            update: {},
+            create: { name: 'Cotton Sarees', slug: 'cotton-sarees', description: 'Comfortable cotton sarees', order: 3 }
         }),
         prisma.category.upsert({
-            where: { slug: 'towels' }, update: {},
-            create: { name: 'Towels', slug: 'towels', description: 'Premium soft towels for daily use' }
+            where: { slug: 'blouses' },
+            update: {},
+            create: { name: 'Blouses', slug: 'blouses', description: 'Ready-made and designer blouses', order: 4 }
         }),
         prisma.category.upsert({
-            where: { slug: 'essentials' }, update: {},
-            create: { name: 'Essentials', slug: 'essentials', description: 'Daily wear essentials and basics' }
-        })
+            where: { slug: 'shapewear' },
+            update: {},
+            create: { name: 'Shapewear', slug: 'shapewear', description: 'Body shaping essentials', order: 5 }
+        }),
+        prisma.category.upsert({
+            where: { slug: 'towels' },
+            update: {},
+            create: { name: 'Towels', slug: 'towels', description: 'Premium quality towels', order: 6 }
+        }),
+        prisma.category.upsert({
+            where: { slug: 'essentials' },
+            update: {},
+            create: { name: 'Essentials', slug: 'essentials', description: 'Daily essentials for women', order: 7 }
+        }),
     ]);
-    console.log('✅ Categories created:', categories.map(c => c.name).join(', '));
 
-    const [sarees, blouses, shapewear, towels, essentials] = categories;
+    const [sarees, silkSarees, cottonSarees, blouses, shapewear, towels, essentials] = categories;
 
-    // Create sub-categories for sarees
-    await Promise.all([
-        prisma.category.upsert({
-            where: { slug: 'silk-sarees' }, update: {},
-            create: { name: 'Silk Sarees', slug: 'silk-sarees', parentId: sarees.id }
-        }),
-        prisma.category.upsert({
-            where: { slug: 'cotton-sarees' }, update: {},
-            create: { name: 'Cotton Sarees', slug: 'cotton-sarees', parentId: sarees.id }
-        }),
-        prisma.category.upsert({
-            where: { slug: 'georgette-sarees' }, update: {},
-            create: { name: 'Georgette Sarees', slug: 'georgette-sarees', parentId: sarees.id }
-        })
-    ]);
-    console.log('✅ Sub-categories created');
+    // Update silk/cotton sarees to be children of sarees
+    await prisma.category.update({ where: { slug: 'silk-sarees' }, data: { parentId: sarees.id } });
+    await prisma.category.update({ where: { slug: 'cotton-sarees' }, data: { parentId: sarees.id } });
 
-    // ==================== PRODUCTS ====================
+    // --- Products ---
     const products = [
-        // ===== SAREES (6) =====
+        // SAREES (main category)
         {
-            name: 'Royal Banarasi Silk Saree',
-            slug: 'royal-banarasi-silk-saree',
-            description: 'Exquisite Banarasi silk saree with traditional zari work. Perfect for weddings and festive occasions. The intricate gold thread weaving adds a royal touch to this timeless piece.',
-            shortDescription: 'Handwoven Banarasi silk with gold zari work',
-            basePrice: 4999, salePrice: 2999,
-            fabric: 'Pure Silk', careInstructions: 'Dry clean only',
+            name: 'Banarasi Silk Saree',
+            slug: 'banarasi-silk-saree',
+            description: 'Exquisite Banarasi silk saree with intricate golden zari work. Perfect for weddings and festive occasions. This handwoven masterpiece features traditional motifs and a rich pallu.',
+            shortDescription: 'Handwoven Banarasi silk with golden zari work',
             categoryId: sarees.id,
-            isTrending: true, isFeatured: true, isNewArrival: false,
-            images: [
-                'https://images.unsplash.com/photo-1610030469983-98e550d6193c?w=800',
-                'https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=800'
-            ],
+            basePrice: 8999,
+            salePrice: 6999,
+            discount: 22,
+            fabric: 'Pure Silk',
+            isFeatured: true,
+            isBestseller: true,
+            tags: JSON.stringify(['wedding', 'festive', 'silk', 'zari']),
+            images: [{ url: 'https://images.unsplash.com/photo-1610030469983-98e550d6193c?w=600', alt: 'Banarasi Silk Saree' }],
             variants: [
-                { sku: 'RBS-RED-OS', color: 'Red', colorHex: '#DC2626', price: 4999, salePrice: 2999, stock: 15 },
-                { sku: 'RBS-GOLD-OS', color: 'Gold', colorHex: '#D97706', price: 4999, salePrice: 2999, stock: 10 },
-                { sku: 'RBS-NAVY-OS', color: 'Navy Blue', colorHex: '#1E3A5F', price: 4999, salePrice: 2999, stock: 8 }
+                { size: 'Free Size', color: 'Red', colorHex: '#DC2626', sku: 'BNR-RED-001', price: 8999, salePrice: 6999, stock: 25 },
+                { size: 'Free Size', color: 'Maroon', colorHex: '#7F1D1D', sku: 'BNR-MRN-001', price: 8999, salePrice: 6999, stock: 18 },
+                { size: 'Free Size', color: 'Royal Blue', colorHex: '#1D4ED8', sku: 'BNR-BLU-001', price: 8999, salePrice: 6999, stock: 12 },
             ]
         },
         {
-            name: 'Chanderi Cotton Silk Saree',
-            slug: 'chanderi-cotton-silk-saree',
-            description: 'Lightweight Chanderi cotton silk saree with delicate printed motifs. Ideal for daily wear and office styling.',
-            shortDescription: 'Lightweight Chanderi with printed motifs',
-            basePrice: 1999, salePrice: 1499,
-            fabric: 'Cotton Silk', careInstructions: 'Hand wash with mild detergent',
+            name: 'Chanderi Silk Saree',
+            slug: 'chanderi-silk-saree',
+            description: 'Lightweight Chanderi silk saree with delicate butis and a sheer texture. Ideal for office wear and casual gatherings.',
+            shortDescription: 'Lightweight Chanderi silk with delicate butis',
             categoryId: sarees.id,
-            isTrending: false, isFeatured: true, isNewArrival: true,
-            images: ['https://images.unsplash.com/photo-1594387303756-e10b6a483dba?w=800'],
+            basePrice: 4499,
+            salePrice: 3599,
+            discount: 20,
+            fabric: 'Chanderi Silk',
+            isFeatured: true,
+            isNewArrival: true,
+            tags: JSON.stringify(['office', 'casual', 'lightweight']),
+            images: [{ url: 'https://images.unsplash.com/photo-1583391733956-6c78276477e2?w=600', alt: 'Chanderi Silk Saree' }],
             variants: [
-                { sku: 'CCS-PNK-OS', color: 'Pink', colorHex: '#EC4899', price: 1999, salePrice: 1499, stock: 20 },
-                { sku: 'CCS-MNT-OS', color: 'Mint Green', colorHex: '#34D399', price: 1999, salePrice: 1499, stock: 12 },
-                { sku: 'CCS-LVN-OS', color: 'Lavender', colorHex: '#A78BFA', price: 1999, salePrice: 1499, stock: 18 }
+                { size: 'Free Size', color: 'Peach', colorHex: '#FBBF24', sku: 'CHN-PCH-001', price: 4499, salePrice: 3599, stock: 30 },
+                { size: 'Free Size', color: 'Mint Green', colorHex: '#34D399', sku: 'CHN-MNT-001', price: 4499, salePrice: 3599, stock: 22 },
             ]
         },
         {
             name: 'Organza Floral Print Saree',
             slug: 'organza-floral-print-saree',
-            description: 'Stunning organza saree with digital floral prints. Lightweight and trendy, perfect for summer parties.',
-            shortDescription: 'Digital floral print on organza',
-            basePrice: 2499, salePrice: null,
-            fabric: 'Organza', careInstructions: 'Dry clean recommended',
+            description: 'Beautiful organza saree with vibrant floral prints. Features a contrasting border and lightweight drape perfect for summer occasions.',
+            shortDescription: 'Vibrant floral print on pure organza',
             categoryId: sarees.id,
-            isTrending: true, isFeatured: false, isNewArrival: true,
-            images: ['https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?w=800'],
+            basePrice: 3499,
+            salePrice: 2499,
+            discount: 29,
+            fabric: 'Organza',
+            isTrending: true,
+            tags: JSON.stringify(['floral', 'summer', 'party']),
+            images: [{ url: 'https://images.unsplash.com/photo-1594736797933-d0501ba2fe65?w=600', alt: 'Organza Floral Saree' }],
             variants: [
-                { sku: 'OFP-WHT-OS', color: 'White', colorHex: '#FFFFFF', price: 2499, salePrice: null, stock: 25 },
-                { sku: 'OFP-PEA-OS', color: 'Peach', colorHex: '#FBBF24', price: 2499, salePrice: null, stock: 15 }
+                { size: 'Free Size', color: 'White', colorHex: '#FFFFFF', sku: 'ORG-WHT-001', price: 3499, salePrice: 2499, stock: 35 },
+                { size: 'Free Size', color: 'Pink', colorHex: '#EC4899', sku: 'ORG-PNK-001', price: 3499, salePrice: 2499, stock: 28 },
+                { size: 'Free Size', color: 'Yellow', colorHex: '#EAB308', sku: 'ORG-YLW-001', price: 3499, salePrice: 2499, stock: 20 },
             ]
         },
+        // SILK SAREES (sub-category)
         {
             name: 'Kanjivaram Pure Silk Saree',
             slug: 'kanjivaram-pure-silk-saree',
-            description: 'Traditional Kanjivaram saree crafted with pure mulberry silk. Features an elaborate pallu and contrasting border.',
-            shortDescription: 'Traditional Kanjivaram with elaborate pallu',
-            basePrice: 8999, salePrice: 5999,
-            fabric: 'Pure Mulberry Silk', careInstructions: 'Dry clean only',
-            categoryId: sarees.id,
-            isTrending: true, isFeatured: true, isNewArrival: false,
-            images: ['https://images.unsplash.com/photo-1610030469983-98e550d6193c?w=800'],
+            description: 'Authentic Kanjivaram silk saree handwoven by master artisans of Tamil Nadu. Features traditional temple border and rich contrast pallu.',
+            shortDescription: 'Authentic handwoven Kanjivaram from Tamil Nadu',
+            categoryId: silkSarees.id,
+            basePrice: 15999,
+            salePrice: 12999,
+            discount: 19,
+            fabric: 'Pure Kanjivaram Silk',
+            isFeatured: true,
+            isBestseller: true,
+            tags: JSON.stringify(['kanjivaram', 'wedding', 'bridal', 'premium']),
+            images: [{ url: 'https://images.unsplash.com/photo-1610030469983-98e550d6193c?w=600', alt: 'Kanjivaram Silk Saree' }],
             variants: [
-                { sku: 'KPS-MAR-OS', color: 'Maroon', colorHex: '#991B1B', price: 8999, salePrice: 5999, stock: 5 },
-                { sku: 'KPS-TLE-OS', color: 'Teal', colorHex: '#0D9488', price: 8999, salePrice: 5999, stock: 3 }
+                { size: 'Free Size', color: 'Maroon', colorHex: '#7F1D1D', sku: 'KNJ-MRN-001', price: 15999, salePrice: 12999, stock: 10 },
+                { size: 'Free Size', color: 'Green', colorHex: '#15803D', sku: 'KNJ-GRN-001', price: 15999, salePrice: 12999, stock: 8 },
+                { size: 'Free Size', color: 'Purple', colorHex: '#7C3AED', sku: 'KNJ-PRP-001', price: 15999, salePrice: 12999, stock: 6 },
             ]
         },
         {
-            name: 'Tussar Silk Handloom Saree',
-            slug: 'tussar-silk-handloom-saree',
-            description: 'Authentic Tussar silk handloom saree with natural sheen. Handwoven by artisans for a unique texture and drape.',
-            shortDescription: 'Handloom Tussar silk with natural sheen',
-            basePrice: 3499, salePrice: 2799,
-            fabric: 'Tussar Silk', careInstructions: 'Dry clean only',
-            categoryId: sarees.id,
-            isTrending: false, isFeatured: true, isNewArrival: true,
-            images: ['https://images.unsplash.com/photo-1594387303756-e10b6a483dba?w=800'],
+            name: 'Mysore Silk Saree',
+            slug: 'mysore-silk-saree',
+            description: 'Elegant Mysore silk saree with pure gold zari border. Known for its lustre and durability, this saree is a wardrobe essential.',
+            shortDescription: 'GI-tagged Mysore silk with gold zari',
+            categoryId: silkSarees.id,
+            basePrice: 7999,
+            fabric: 'Mysore Silk',
+            isTrending: true,
+            tags: JSON.stringify(['mysore', 'festive', 'traditional']),
+            images: [{ url: 'https://images.unsplash.com/photo-1583391733956-6c78276477e2?w=600', alt: 'Mysore Silk Saree' }],
             variants: [
-                { sku: 'TSH-BGE-OS', color: 'Beige', colorHex: '#D4A574', price: 3499, salePrice: 2799, stock: 10 },
-                { sku: 'TSH-OLV-OS', color: 'Olive', colorHex: '#65A30D', price: 3499, salePrice: 2799, stock: 8 }
+                { size: 'Free Size', color: 'Gold', colorHex: '#D97706', sku: 'MYS-GLD-001', price: 7999, stock: 15 },
+                { size: 'Free Size', color: 'Navy', colorHex: '#1E3A5F', sku: 'MYS-NVY-001', price: 7999, stock: 12 },
+            ]
+        },
+        // COTTON SAREES
+        {
+            name: 'Handloom Cotton Saree',
+            slug: 'handloom-cotton-saree',
+            description: 'Soft handloom cotton saree with traditional weave pattern. Perfect for daily wear and office styling. Breathable and comfortable.',
+            shortDescription: 'Soft handloom cotton for everyday elegance',
+            categoryId: cottonSarees.id,
+            basePrice: 1999,
+            salePrice: 1499,
+            discount: 25,
+            fabric: 'Pure Cotton',
+            isBestseller: true,
+            tags: JSON.stringify(['cotton', 'daily', 'office', 'handloom']),
+            images: [{ url: 'https://images.unsplash.com/photo-1594736797933-d0501ba2fe65?w=600', alt: 'Handloom Cotton Saree' }],
+            variants: [
+                { size: 'Free Size', color: 'Indigo', colorHex: '#3730A3', sku: 'HLC-IND-001', price: 1999, salePrice: 1499, stock: 50 },
+                { size: 'Free Size', color: 'Mustard', colorHex: '#CA8A04', sku: 'HLC-MST-001', price: 1999, salePrice: 1499, stock: 40 },
+                { size: 'Free Size', color: 'Teal', colorHex: '#0D9488', sku: 'HLC-TEL-001', price: 1999, salePrice: 1499, stock: 35 },
             ]
         },
         {
-            name: 'Georgette Sequin Party Saree',
-            slug: 'georgette-sequin-party-saree',
-            description: 'Glamorous georgette saree adorned with sequins and shimmer. Perfect for cocktail parties and evening events.',
-            shortDescription: 'Sequin embellished georgette for parties',
-            basePrice: 3999, salePrice: 2999,
-            fabric: 'Georgette', careInstructions: 'Dry clean only',
-            categoryId: sarees.id,
-            isTrending: true, isFeatured: false, isNewArrival: false,
-            images: ['https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?w=800'],
+            name: 'Tant Cotton Saree',
+            slug: 'tant-cotton-saree',
+            description: 'Traditional Bengali Tant cotton saree with contrasting border. Lightweight, breathable, and perfect for the Indian summer.',
+            shortDescription: 'Bengali Tant weave — light and airy',
+            categoryId: cottonSarees.id,
+            basePrice: 2499,
+            fabric: 'Tant Cotton',
+            isNewArrival: true,
+            tags: JSON.stringify(['tant', 'bengali', 'summer']),
+            images: [{ url: 'https://images.unsplash.com/photo-1610030469983-98e550d6193c?w=600', alt: 'Tant Cotton Saree' }],
             variants: [
-                { sku: 'GSP-BLK-OS', color: 'Black', colorHex: '#000000', price: 3999, salePrice: 2999, stock: 12 },
-                { sku: 'GSP-WIN-OS', color: 'Wine', colorHex: '#7F1D1D', price: 3999, salePrice: 2999, stock: 8 },
-                { sku: 'GSP-GLD-OS', color: 'Gold', colorHex: '#CA8A04', price: 3999, salePrice: 2999, stock: 6 }
+                { size: 'Free Size', color: 'White & Red', colorHex: '#EF4444', sku: 'TNT-WR-001', price: 2499, stock: 25 },
+                { size: 'Free Size', color: 'Yellow & Green', colorHex: '#84CC16', sku: 'TNT-YG-001', price: 2499, stock: 20 },
             ]
         },
-
-        // ===== BLOUSES (3) =====
+        // BLOUSES
         {
             name: 'Designer Embroidered Blouse',
             slug: 'designer-embroidered-blouse',
-            description: 'Ready-to-wear designer blouse with hand embroidery and mirror work. Available in multiple sizes.',
-            shortDescription: 'Hand-embroidered with mirror work',
-            basePrice: 1299, salePrice: 999,
-            fabric: 'Art Silk', careInstructions: 'Gentle hand wash',
+            description: 'Heavy embroidered designer blouse with sequin and thread work. Ready-to-wear with padded cups and back hook closure.',
+            shortDescription: 'Heavy embroidery with sequin work',
             categoryId: blouses.id,
-            isTrending: false, isFeatured: true, isNewArrival: true,
-            images: ['https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=800'],
+            basePrice: 2999,
+            salePrice: 2299,
+            discount: 23,
+            fabric: 'Art Silk',
+            isFeatured: true,
+            isTrending: true,
+            tags: JSON.stringify(['designer', 'embroidered', 'party', 'ready-made']),
+            images: [{ url: 'https://images.unsplash.com/photo-1583391733956-6c78276477e2?w=600', alt: 'Embroidered Blouse' }],
             variants: [
-                { sku: 'DEB-RED-S', size: 'S', color: 'Red', colorHex: '#EF4444', price: 1299, salePrice: 999, stock: 20 },
-                { sku: 'DEB-RED-M', size: 'M', color: 'Red', colorHex: '#EF4444', price: 1299, salePrice: 999, stock: 15 },
-                { sku: 'DEB-RED-L', size: 'L', color: 'Red', colorHex: '#EF4444', price: 1299, salePrice: 999, stock: 10 },
-                { sku: 'DEB-BLK-S', size: 'S', color: 'Black', colorHex: '#000000', price: 1299, salePrice: 999, stock: 18 },
-                { sku: 'DEB-BLK-M', size: 'M', color: 'Black', colorHex: '#000000', price: 1299, salePrice: 999, stock: 12 },
-                { sku: 'DEB-BLK-L', size: 'L', color: 'Black', colorHex: '#000000', price: 1299, salePrice: 999, stock: 8 }
+                { size: 'S', color: 'Gold', colorHex: '#D97706', sku: 'BLS-GLD-S', price: 2999, salePrice: 2299, stock: 15 },
+                { size: 'M', color: 'Gold', colorHex: '#D97706', sku: 'BLS-GLD-M', price: 2999, salePrice: 2299, stock: 20 },
+                { size: 'L', color: 'Gold', colorHex: '#D97706', sku: 'BLS-GLD-L', price: 2999, salePrice: 2299, stock: 18 },
+                { size: 'XL', color: 'Gold', colorHex: '#D97706', sku: 'BLS-GLD-XL', price: 2999, salePrice: 2299, stock: 10 },
             ]
         },
         {
-            name: 'Cotton Printed Readymade Blouse',
-            slug: 'cotton-printed-readymade-blouse',
-            description: 'Comfortable cotton blouse with traditional Kalamkari prints. Pairs beautifully with plain sarees and skirts.',
-            shortDescription: 'Kalamkari printed cotton blouse',
-            basePrice: 799, salePrice: 599,
-            fabric: 'Cotton', careInstructions: 'Machine wash cold',
+            name: 'Cotton Readymade Blouse',
+            slug: 'cotton-readymade-blouse',
+            description: 'Comfortable cotton readymade blouse with boat neck design. Available in multiple colors to match your saree collection.',
+            shortDescription: 'Boat neck cotton blouse — everyday comfort',
             categoryId: blouses.id,
-            isTrending: true, isFeatured: true, isNewArrival: true,
-            images: ['https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=800'],
+            basePrice: 799,
+            salePrice: 599,
+            discount: 25,
+            fabric: 'Cotton',
+            isBestseller: true,
+            tags: JSON.stringify(['cotton', 'readymade', 'daily']),
+            images: [{ url: 'https://images.unsplash.com/photo-1594736797933-d0501ba2fe65?w=600', alt: 'Cotton Blouse' }],
             variants: [
-                { sku: 'CPR-BLU-S', size: 'S', color: 'Blue', colorHex: '#3B82F6', price: 799, salePrice: 599, stock: 25 },
-                { sku: 'CPR-BLU-M', size: 'M', color: 'Blue', colorHex: '#3B82F6', price: 799, salePrice: 599, stock: 20 },
-                { sku: 'CPR-BLU-L', size: 'L', color: 'Blue', colorHex: '#3B82F6', price: 799, salePrice: 599, stock: 15 },
-                { sku: 'CPR-YLW-M', size: 'M', color: 'Yellow', colorHex: '#EAB308', price: 799, salePrice: 599, stock: 18 }
+                { size: 'S', color: 'Black', colorHex: '#000000', sku: 'CBL-BLK-S', price: 799, salePrice: 599, stock: 40 },
+                { size: 'M', color: 'Black', colorHex: '#000000', sku: 'CBL-BLK-M', price: 799, salePrice: 599, stock: 45 },
+                { size: 'L', color: 'Black', colorHex: '#000000', sku: 'CBL-BLK-L', price: 799, salePrice: 599, stock: 35 },
+                { size: 'S', color: 'Maroon', colorHex: '#7F1D1D', sku: 'CBL-MRN-S', price: 799, salePrice: 599, stock: 30 },
+                { size: 'M', color: 'Maroon', colorHex: '#7F1D1D', sku: 'CBL-MRN-M', price: 799, salePrice: 599, stock: 38 },
+                { size: 'L', color: 'Maroon', colorHex: '#7F1D1D', sku: 'CBL-MRN-L', price: 799, salePrice: 599, stock: 28 },
             ]
         },
         {
-            name: 'Velvet Padded Party Blouse',
-            slug: 'velvet-padded-party-blouse',
-            description: 'Luxurious velvet blouse with padded cups and princess cut. Ideal for weddings and festive occasions.',
-            shortDescription: 'Velvet princess cut padded blouse',
-            basePrice: 1599, salePrice: null,
-            fabric: 'Velvet', careInstructions: 'Dry clean only',
+            name: 'Silk Padded Blouse',
+            slug: 'silk-padded-blouse',
+            description: 'Premium silk padded blouse with princess cut for a flattering fit. Features elbow-length sleeves and round neck.',
+            shortDescription: 'Princess cut silk with padding',
             categoryId: blouses.id,
-            isTrending: false, isFeatured: true, isNewArrival: false,
-            images: ['https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=800'],
+            basePrice: 1499,
+            fabric: 'Raw Silk',
+            isNewArrival: true,
+            tags: JSON.stringify(['silk', 'padded', 'premium']),
+            images: [{ url: 'https://images.unsplash.com/photo-1610030469983-98e550d6193c?w=600', alt: 'Silk Padded Blouse' }],
             variants: [
-                { sku: 'VPP-MRN-S', size: 'S', color: 'Maroon', colorHex: '#991B1B', price: 1599, salePrice: null, stock: 10 },
-                { sku: 'VPP-MRN-M', size: 'M', color: 'Maroon', colorHex: '#991B1B', price: 1599, salePrice: null, stock: 12 },
-                { sku: 'VPP-MRN-L', size: 'L', color: 'Maroon', colorHex: '#991B1B', price: 1599, salePrice: null, stock: 8 },
-                { sku: 'VPP-GRN-M', size: 'M', color: 'Emerald', colorHex: '#059669', price: 1599, salePrice: null, stock: 10 }
+                { size: 'S', color: 'Red', colorHex: '#DC2626', sku: 'SPB-RED-S', price: 1499, stock: 20 },
+                { size: 'M', color: 'Red', colorHex: '#DC2626', sku: 'SPB-RED-M', price: 1499, stock: 25 },
+                { size: 'L', color: 'Red', colorHex: '#DC2626', sku: 'SPB-RED-L', price: 1499, stock: 15 },
             ]
         },
-
-        // ===== SHAPEWEAR (3) =====
+        // SHAPEWEAR
         {
-            name: 'Seamless Saree Shapewear',
-            slug: 'seamless-saree-shapewear',
-            description: 'High-quality seamless shapewear designed specifically for saree draping. Provides a smooth silhouette and comfortable all-day wear.',
-            shortDescription: 'Seamless design for perfect saree draping',
-            basePrice: 799, salePrice: 599,
-            fabric: 'Nylon Spandex', careInstructions: 'Machine wash cold',
+            name: 'Saree Shapewear Petticoat',
+            slug: 'saree-shapewear-petticoat',
+            description: 'High-waist saree shapewear petticoat that smooths your silhouette and provides excellent tummy control. Seamless design prevents show-through.',
+            shortDescription: 'Tummy control shapewear petticoat',
             categoryId: shapewear.id,
-            isTrending: false, isFeatured: true, isNewArrival: false,
-            images: [],
+            basePrice: 1299,
+            salePrice: 999,
+            discount: 23,
+            fabric: 'Nylon Spandex',
+            isFeatured: true,
+            isBestseller: true,
+            tags: JSON.stringify(['shapewear', 'petticoat', 'tummy-control']),
+            images: [{ url: 'https://images.unsplash.com/photo-1594736797933-d0501ba2fe65?w=600', alt: 'Shapewear Petticoat' }],
             variants: [
-                { sku: 'SSS-NDE-S', size: 'S', color: 'Nude', colorHex: '#D4A574', price: 799, salePrice: 599, stock: 30 },
-                { sku: 'SSS-NDE-M', size: 'M', color: 'Nude', colorHex: '#D4A574', price: 799, salePrice: 599, stock: 25 },
-                { sku: 'SSS-NDE-L', size: 'L', color: 'Nude', colorHex: '#D4A574', price: 799, salePrice: 599, stock: 20 },
-                { sku: 'SSS-BLK-M', size: 'M', color: 'Black', colorHex: '#000000', price: 799, salePrice: 599, stock: 25 },
-                { sku: 'SSS-BLK-L', size: 'L', color: 'Black', colorHex: '#000000', price: 799, salePrice: 599, stock: 20 }
+                { size: 'S', color: 'Nude', colorHex: '#D2B48C', sku: 'SHP-NDE-S', price: 1299, salePrice: 999, stock: 30 },
+                { size: 'M', color: 'Nude', colorHex: '#D2B48C', sku: 'SHP-NDE-M', price: 1299, salePrice: 999, stock: 40 },
+                { size: 'L', color: 'Nude', colorHex: '#D2B48C', sku: 'SHP-NDE-L', price: 1299, salePrice: 999, stock: 35 },
+                { size: 'XL', color: 'Nude', colorHex: '#D2B48C', sku: 'SHP-NDE-XL', price: 1299, salePrice: 999, stock: 25 },
+                { size: 'M', color: 'Black', colorHex: '#000000', sku: 'SHP-BLK-M', price: 1299, salePrice: 999, stock: 30 },
+                { size: 'L', color: 'Black', colorHex: '#000000', sku: 'SHP-BLK-L', price: 1299, salePrice: 999, stock: 25 },
             ]
         },
         {
-            name: 'Tummy Tucker Shapewear',
-            slug: 'tummy-tucker-shapewear',
-            description: 'High-waist tummy tucker with firm compression. Smoothens the waistline under sarees, lehengas, and western wear.',
-            shortDescription: 'High-waist firm control tummy tucker',
-            basePrice: 999, salePrice: 749,
-            fabric: 'Nylon Lycra', careInstructions: 'Hand wash cold',
+            name: 'Full Body Shaper',
+            slug: 'full-body-shaper',
+            description: 'Full body shapewear with adjustable straps. Provides all-around compression for a smooth look under any outfit.',
+            shortDescription: 'Full body compression shaper',
             categoryId: shapewear.id,
-            isTrending: true, isFeatured: true, isNewArrival: true,
-            images: [],
+            basePrice: 1799,
+            salePrice: 1399,
+            discount: 22,
+            fabric: 'Nylon Elastane',
+            isTrending: true,
+            tags: JSON.stringify(['shapewear', 'full-body', 'slimming']),
+            images: [{ url: 'https://images.unsplash.com/photo-1583391733956-6c78276477e2?w=600', alt: 'Full Body Shaper' }],
             variants: [
-                { sku: 'TTS-NDE-M', size: 'M', color: 'Nude', colorHex: '#D4A574', price: 999, salePrice: 749, stock: 20 },
-                { sku: 'TTS-NDE-L', size: 'L', color: 'Nude', colorHex: '#D4A574', price: 999, salePrice: 749, stock: 18 },
-                { sku: 'TTS-NDE-XL', size: 'XL', color: 'Nude', colorHex: '#D4A574', price: 999, salePrice: 749, stock: 15 },
-                { sku: 'TTS-BLK-M', size: 'M', color: 'Black', colorHex: '#000000', price: 999, salePrice: 749, stock: 20 }
+                { size: 'S', color: 'Black', colorHex: '#000000', sku: 'FBS-BLK-S', price: 1799, salePrice: 1399, stock: 20 },
+                { size: 'M', color: 'Black', colorHex: '#000000', sku: 'FBS-BLK-M', price: 1799, salePrice: 1399, stock: 30 },
+                { size: 'L', color: 'Black', colorHex: '#000000', sku: 'FBS-BLK-L', price: 1799, salePrice: 1399, stock: 25 },
+                { size: 'XL', color: 'Black', colorHex: '#000000', sku: 'FBS-BLK-XL', price: 1799, salePrice: 1399, stock: 15 },
             ]
         },
         {
-            name: 'Full Body Shaper Bodysuit',
-            slug: 'full-body-shaper-bodysuit',
-            description: 'All-in-one body shaping bodysuit with adjustable straps. Provides seamless support under all types of ethnic and western outfits.',
-            shortDescription: 'Full body shaping with adjustable straps',
-            basePrice: 1499, salePrice: 1199,
-            fabric: 'Nylon Spandex', careInstructions: 'Hand wash, do not bleach',
+            name: 'Waist Cincher Belt',
+            slug: 'waist-cincher-belt',
+            description: 'Adjustable waist cincher belt for instant waist reduction. Features steel bone support and breathable mesh panels.',
+            shortDescription: 'Steel-boned waist cincher',
             categoryId: shapewear.id,
-            isTrending: false, isFeatured: false, isNewArrival: true,
-            images: [],
+            basePrice: 899,
+            fabric: 'Latex + Cotton',
+            isNewArrival: true,
+            tags: JSON.stringify(['waist', 'cincher', 'belt']),
+            images: [{ url: 'https://images.unsplash.com/photo-1610030469983-98e550d6193c?w=600', alt: 'Waist Cincher' }],
             variants: [
-                { sku: 'FBS-NDE-S', size: 'S', color: 'Nude', colorHex: '#D4A574', price: 1499, salePrice: 1199, stock: 12 },
-                { sku: 'FBS-NDE-M', size: 'M', color: 'Nude', colorHex: '#D4A574', price: 1499, salePrice: 1199, stock: 15 },
-                { sku: 'FBS-NDE-L', size: 'L', color: 'Nude', colorHex: '#D4A574', price: 1499, salePrice: 1199, stock: 10 },
-                { sku: 'FBS-BLK-M', size: 'M', color: 'Black', colorHex: '#000000', price: 1499, salePrice: 1199, stock: 12 }
+                { size: 'S', color: 'Beige', colorHex: '#D2B48C', sku: 'WCB-BGE-S', price: 899, stock: 25 },
+                { size: 'M', color: 'Beige', colorHex: '#D2B48C', sku: 'WCB-BGE-M', price: 899, stock: 35 },
+                { size: 'L', color: 'Beige', colorHex: '#D2B48C', sku: 'WCB-BGE-L', price: 899, stock: 30 },
             ]
         },
-
-        // ===== TOWELS (3) =====
+        // TOWELS
         {
-            name: 'Premium Cotton Bath Towel',
-            slug: 'premium-cotton-bath-towel',
-            description: 'Ultra-soft 100% combed cotton bath towel with 600 GSM thickness. Highly absorbent and quick-drying.',
-            shortDescription: '600 GSM combed cotton bath towel',
-            basePrice: 699, salePrice: 499,
-            fabric: '100% Combed Cotton', careInstructions: 'Machine wash warm, tumble dry low',
+            name: 'Premium Bath Towel Set',
+            slug: 'premium-bath-towel-set',
+            description: 'Set of 2 ultra-soft premium bath towels made from 100% combed cotton. Highly absorbent with a plush feel. GSM 550.',
+            shortDescription: 'Set of 2 — 550 GSM combed cotton',
             categoryId: towels.id,
-            isTrending: true, isFeatured: true, isNewArrival: false,
-            images: [],
+            basePrice: 1499,
+            salePrice: 1199,
+            discount: 20,
+            fabric: '100% Combed Cotton',
+            isFeatured: true,
+            isBestseller: true,
+            tags: JSON.stringify(['bath', 'premium', 'cotton', 'set']),
+            images: [{ url: 'https://images.unsplash.com/photo-1616627561950-9f746e330187?w=600', alt: 'Premium Bath Towel' }],
             variants: [
-                { sku: 'PCT-WHT-OS', color: 'White', colorHex: '#FFFFFF', price: 699, salePrice: 499, stock: 40 },
-                { sku: 'PCT-GRY-OS', color: 'Grey', colorHex: '#6B7280', price: 699, salePrice: 499, stock: 35 },
-                { sku: 'PCT-NVY-OS', color: 'Navy', colorHex: '#1E3A5F', price: 699, salePrice: 499, stock: 30 },
-                { sku: 'PCT-RSE-OS', color: 'Rose', colorHex: '#F43F5E', price: 699, salePrice: 499, stock: 25 }
+                { size: 'Bath (30x60)', color: 'White', colorHex: '#FFFFFF', sku: 'BTW-WHT-001', price: 1499, salePrice: 1199, stock: 50 },
+                { size: 'Bath (30x60)', color: 'Grey', colorHex: '#6B7280', sku: 'BTW-GRY-001', price: 1499, salePrice: 1199, stock: 40 },
+                { size: 'Bath (30x60)', color: 'Navy', colorHex: '#1E3A5F', sku: 'BTW-NVY-001', price: 1499, salePrice: 1199, stock: 35 },
             ]
         },
         {
-            name: 'Bamboo Fiber Hand Towel Set',
-            slug: 'bamboo-fiber-hand-towel-set',
-            description: 'Set of 4 eco-friendly bamboo fiber hand towels. Naturally antibacterial, ultra-soft, and perfect for sensitive skin.',
-            shortDescription: 'Set of 4 antibacterial bamboo hand towels',
-            basePrice: 599, salePrice: null,
-            fabric: 'Bamboo Fiber', careInstructions: 'Machine wash cold, hang dry',
+            name: 'Quick Dry Hand Towel',
+            slug: 'quick-dry-hand-towel',
+            description: 'Quick dry microfiber hand towel with antibacterial properties. Compact and lightweight — perfect for travel.',
+            shortDescription: 'Microfiber quick-dry hand towel',
             categoryId: towels.id,
-            isTrending: false, isFeatured: true, isNewArrival: true,
-            images: [],
+            basePrice: 399,
+            salePrice: 299,
+            discount: 25,
+            fabric: 'Microfiber',
+            tags: JSON.stringify(['hand', 'quick-dry', 'travel']),
+            images: [{ url: 'https://images.unsplash.com/photo-1616627561950-9f746e330187?w=600', alt: 'Hand Towel' }],
             variants: [
-                { sku: 'BFH-PST-OS', color: 'Pastel Mix', colorHex: '#FECDD3', price: 599, salePrice: null, stock: 50 },
-                { sku: 'BFH-ERT-OS', color: 'Earthy Mix', colorHex: '#A8A29E', price: 599, salePrice: null, stock: 40 }
+                { size: 'Hand (16x28)', color: 'Coral', colorHex: '#F97316', sku: 'HT-CRL-001', price: 399, salePrice: 299, stock: 60 },
+                { size: 'Hand (16x28)', color: 'Teal', colorHex: '#0D9488', sku: 'HT-TEL-001', price: 399, salePrice: 299, stock: 55 },
+                { size: 'Hand (16x28)', color: 'Lavender', colorHex: '#A78BFA', sku: 'HT-LVD-001', price: 399, salePrice: 299, stock: 45 },
             ]
         },
         {
-            name: 'Microfiber Quick-Dry Hair Towel',
-            slug: 'microfiber-quick-dry-hair-towel',
-            description: 'Specially designed microfiber hair towel with button closure. Reduces frizz and drying time by 50%.',
-            shortDescription: 'Anti-frizz quick-dry microfiber hair wrap',
-            basePrice: 399, salePrice: 299,
-            fabric: 'Microfiber', careInstructions: 'Machine wash cold, no fabric softener',
+            name: 'Turkish Cotton Face Towel Set',
+            slug: 'turkish-cotton-face-towel-set',
+            description: 'Set of 4 Turkish cotton face towels. Super soft, highly absorbent, and long-lasting. Perfect for daily skincare routines.',
+            shortDescription: 'Set of 4 Turkish cotton face towels',
             categoryId: towels.id,
-            isTrending: true, isFeatured: false, isNewArrival: true,
-            images: [],
+            basePrice: 699,
+            fabric: 'Turkish Cotton',
+            isNewArrival: true,
+            tags: JSON.stringify(['face', 'turkish', 'set']),
+            images: [{ url: 'https://images.unsplash.com/photo-1616627561950-9f746e330187?w=600', alt: 'Face Towel Set' }],
             variants: [
-                { sku: 'MQD-PNK-OS', color: 'Pink', colorHex: '#EC4899', price: 399, salePrice: 299, stock: 60 },
-                { sku: 'MQD-PRP-OS', color: 'Purple', colorHex: '#A855F7', price: 399, salePrice: 299, stock: 45 },
-                { sku: 'MQD-BLU-OS', color: 'Sky Blue', colorHex: '#38BDF8', price: 399, salePrice: 299, stock: 50 }
+                { size: 'Face (12x12)', color: 'Pastel Mix', colorHex: '#FBCFE8', sku: 'FT-PST-001', price: 699, stock: 40 },
+                { size: 'Face (12x12)', color: 'Neutral Mix', colorHex: '#D6D3D1', sku: 'FT-NTR-001', price: 699, stock: 35 },
             ]
         },
-
-        // ===== ESSENTIALS (3) =====
+        // ESSENTIALS
         {
-            name: 'Cotton Saree Petticoat',
-            slug: 'cotton-saree-petticoat',
-            description: 'Premium cotton saree petticoat with drawstring waist. Essential for perfect saree draping with comfortable all-day wear.',
-            shortDescription: 'Drawstring cotton petticoat',
-            basePrice: 399, salePrice: 299,
-            fabric: 'Cotton', careInstructions: 'Machine wash cold',
+            name: 'Saree Fall (Stitched)',
+            slug: 'saree-fall-stitched',
+            description: 'Pre-stitched saree fall for easy application. Provides weight to the saree for better draping and prevents wear on the border.',
+            shortDescription: 'Pre-stitched saree fall — easy to apply',
             categoryId: essentials.id,
-            isTrending: false, isFeatured: true, isNewArrival: false,
-            images: [],
+            basePrice: 199,
+            salePrice: 149,
+            discount: 25,
+            fabric: 'Cotton Blend',
+            isBestseller: true,
+            tags: JSON.stringify(['saree-fall', 'stitched', 'essential']),
+            images: [{ url: 'https://images.unsplash.com/photo-1594736797933-d0501ba2fe65?w=600', alt: 'Saree Fall' }],
             variants: [
-                { sku: 'CSP-WHT-F', size: 'Free Size', color: 'White', colorHex: '#FFFFFF', price: 399, salePrice: 299, stock: 50 },
-                { sku: 'CSP-BLK-F', size: 'Free Size', color: 'Black', colorHex: '#000000', price: 399, salePrice: 299, stock: 45 },
-                { sku: 'CSP-MRN-F', size: 'Free Size', color: 'Maroon', colorHex: '#991B1B', price: 399, salePrice: 299, stock: 35 },
-                { sku: 'CSP-NVY-F', size: 'Free Size', color: 'Navy', colorHex: '#1E3A5F', price: 399, salePrice: 299, stock: 30 }
-            ]
-        },
-        {
-            name: 'Saree Pins and Pleating Kit',
-            slug: 'saree-pins-pleating-kit',
-            description: 'Complete saree draping kit with 12 U-pins, 6 safety pins, and a pleating clip. Must-have for perfect saree styling.',
-            shortDescription: 'Complete saree draping accessories kit',
-            basePrice: 249, salePrice: null,
-            fabric: 'Stainless Steel', careInstructions: 'Keep dry to prevent rust',
-            categoryId: essentials.id,
-            isTrending: true, isFeatured: false, isNewArrival: true,
-            images: [],
-            variants: [
-                { sku: 'SPK-GLD-OS', color: 'Gold', colorHex: '#CA8A04', price: 249, salePrice: null, stock: 80 },
-                { sku: 'SPK-SLV-OS', color: 'Silver', colorHex: '#9CA3AF', price: 249, salePrice: null, stock: 70 }
+                { size: 'Standard', color: 'White', colorHex: '#FFFFFF', sku: 'SF-WHT-001', price: 199, salePrice: 149, stock: 100 },
+                { size: 'Standard', color: 'Beige', colorHex: '#D2B48C', sku: 'SF-BGE-001', price: 199, salePrice: 149, stock: 80 },
             ]
         },
         {
-            name: 'Inskirt Saree Slip',
-            slug: 'inskirt-saree-slip',
-            description: 'Satin finish underskirt with adjustable elastic waist. Smooth and anti-static for effortless saree draping.',
-            shortDescription: 'Satin finish anti-static saree underskirt',
-            basePrice: 499, salePrice: 399,
-            fabric: 'Satin', careInstructions: 'Hand wash, hang dry',
+            name: 'Saree Pins (Pack of 12)',
+            slug: 'saree-pins-pack-12',
+            description: 'Decorative saree pins with stone work. Pack of 12 pins in assorted designs. Secure hold without damaging fabric.',
+            shortDescription: 'Pack of 12 decorative saree pins',
             categoryId: essentials.id,
-            isTrending: false, isFeatured: true, isNewArrival: true,
-            images: [],
+            basePrice: 299,
+            salePrice: 199,
+            discount: 33,
+            tags: JSON.stringify(['pins', 'accessories', 'saree']),
+            images: [{ url: 'https://images.unsplash.com/photo-1610030469983-98e550d6193c?w=600', alt: 'Saree Pins' }],
             variants: [
-                { sku: 'ISS-BLK-F', size: 'Free Size', color: 'Black', colorHex: '#000000', price: 499, salePrice: 399, stock: 35 },
-                { sku: 'ISS-NDE-F', size: 'Free Size', color: 'Nude', colorHex: '#D4A574', price: 499, salePrice: 399, stock: 30 },
-                { sku: 'ISS-WHT-F', size: 'Free Size', color: 'White', colorHex: '#FFFFFF', price: 499, salePrice: 399, stock: 28 }
+                { size: 'Pack of 12', color: 'Gold', colorHex: '#D97706', sku: 'SP-GLD-001', price: 299, salePrice: 199, stock: 75 },
+                { size: 'Pack of 12', color: 'Silver', colorHex: '#9CA3AF', sku: 'SP-SLV-001', price: 299, salePrice: 199, stock: 60 },
             ]
-        }
+        },
+        {
+            name: 'Cotton Petticoat',
+            slug: 'cotton-petticoat',
+            description: 'Pure cotton petticoat with drawstring waist. Essential undergarment for saree draping. Available in all popular colors.',
+            shortDescription: 'Pure cotton drawstring petticoat',
+            categoryId: essentials.id,
+            basePrice: 499,
+            salePrice: 399,
+            discount: 20,
+            fabric: 'Pure Cotton',
+            isBestseller: true,
+            isFeatured: true,
+            tags: JSON.stringify(['petticoat', 'cotton', 'essential']),
+            images: [{ url: 'https://images.unsplash.com/photo-1583391733956-6c78276477e2?w=600', alt: 'Cotton Petticoat' }],
+            variants: [
+                { size: 'Free Size', color: 'White', colorHex: '#FFFFFF', sku: 'CP-WHT-001', price: 499, salePrice: 399, stock: 60 },
+                { size: 'Free Size', color: 'Red', colorHex: '#DC2626', sku: 'CP-RED-001', price: 499, salePrice: 399, stock: 50 },
+                { size: 'Free Size', color: 'Black', colorHex: '#000000', sku: 'CP-BLK-001', price: 499, salePrice: 399, stock: 55 },
+                { size: 'Free Size', color: 'Maroon', colorHex: '#7F1D1D', sku: 'CP-MRN-001', price: 499, salePrice: 399, stock: 45 },
+            ]
+        },
+        {
+            name: 'Blouse Hooks (Pack of 20)',
+            slug: 'blouse-hooks-pack-20',
+            description: 'High-quality blouse hooks with eye closure. Rust-resistant and long-lasting. Essential for blouse stitching.',
+            shortDescription: 'Pack of 20 rust-resistant hooks',
+            categoryId: essentials.id,
+            basePrice: 99,
+            tags: JSON.stringify(['hooks', 'blouse', 'stitching']),
+            images: [{ url: 'https://images.unsplash.com/photo-1594736797933-d0501ba2fe65?w=600', alt: 'Blouse Hooks' }],
+            variants: [
+                { size: 'Pack of 20', color: 'Silver', colorHex: '#9CA3AF', sku: 'BH-SLV-001', price: 99, stock: 100 },
+                { size: 'Pack of 20', color: 'Gold', colorHex: '#D97706', sku: 'BH-GLD-001', price: 99, stock: 80 },
+            ]
+        },
     ];
 
-    for (const p of products) {
-        const existing = await prisma.product.findUnique({ where: { slug: p.slug } });
+    for (const prod of products) {
+        const existing = await prisma.product.findUnique({ where: { slug: prod.slug } });
         if (existing) {
-            console.log(`  ⏭ Skipping "${p.name}" - already exists`);
+            console.log(`  ⏭️  Skipping "${prod.name}" (already exists)`);
             continue;
         }
 
-        const product = await prisma.product.create({
-            data: {
-                name: p.name,
-                slug: p.slug,
-                description: p.description,
-                shortDescription: p.shortDescription,
-                basePrice: p.basePrice,
-                salePrice: p.salePrice,
-                fabric: p.fabric,
-                careInstructions: p.careInstructions,
-                categoryId: p.categoryId,
-                isTrending: p.isTrending,
-                isFeatured: p.isFeatured,
-                isNewArrival: p.isNewArrival,
-                images: {
-                    create: p.images.map((url, i) => ({
-                        url,
-                        alt: p.name,
-                        order: i
-                    }))
-                },
-                variants: {
-                    create: p.variants.map((v: any) => ({
-                        sku: v.sku,
-                        size: v.size ?? null,
-                        color: v.color,
-                        colorHex: v.colorHex,
-                        price: v.price,
-                        salePrice: v.salePrice,
-                        stock: v.stock
-                    }))
+        try {
+            const { images, variants, ...productData } = prod;
+            const created = await prisma.product.create({
+                data: {
+                    ...productData,
+                    images: { create: images.map((img, i) => ({ ...img, order: i })) },
+                    variants: { create: variants },
                 }
-            }
-        });
-        console.log(`  ✅ Created product: ${product.name}`);
+            });
+            console.log(`  ✅ Created "${created.name}"`);
+        } catch (e: any) {
+            console.log(`  ⚠️  Error creating "${prod.name}": ${e.message?.slice(0, 80)}`);
+        }
     }
 
-    // ==================== COUPONS ====================
-    const now = new Date();
-    const oneMonthLater = new Date(now);
-    oneMonthLater.setMonth(oneMonthLater.getMonth() + 1);
-
-    await Promise.all([
-        prisma.coupon.upsert({
-            where: { code: 'BUNBUN50' },
-            update: {},
-            create: {
-                code: 'BUNBUN50',
-                description: 'Flat 50% off on your first order',
-                type: 'percentage',
-                value: 50,
-                maxDiscount: 500,
-                minOrderAmount: 999,
-                validFrom: now,
-                validTo: oneMonthLater,
-                usageLimit: 100
-            }
-        }),
-        prisma.coupon.upsert({
-            where: { code: 'FLAT200' },
-            update: {},
-            create: {
-                code: 'FLAT200',
-                description: '₹200 off on orders above ₹1500',
-                type: 'fixed',
-                value: 200,
-                minOrderAmount: 1500,
-                validFrom: now,
-                validTo: oneMonthLater,
-                usageLimit: 200
-            }
-        }),
-        prisma.coupon.upsert({
-            where: { code: 'SILK20' },
-            update: {},
-            create: {
-                code: 'SILK20',
-                description: '20% off on Silk Sarees',
-                type: 'percentage',
-                value: 20,
-                maxDiscount: 1000,
-                validFrom: now,
-                validTo: oneMonthLater
-            }
-        })
-    ]);
-    console.log('✅ Coupons created: BUNBUN50, FLAT200, SILK20');
-
-    // ==================== BANNERS ====================
-    await prisma.banner.upsert({
-        where: { id: 'banner-main' },
-        update: {},
-        create: {
-            id: 'banner-main',
-            title: 'Flat 50% OFF on All Sarees',
-            subtitle: 'Use code BUNBUN50 at checkout',
-            imageUrl: 'https://images.unsplash.com/photo-1610030469983-98e550d6193c?w=1200',
-            linkUrl: '/collections/sarees',
-            order: 0
-        }
-    });
-    console.log('✅ Banner created');
-
-    console.log('\n🎉 Seed complete!');
-    console.log('\n📋 Login credentials:');
-    console.log('  Admin : admin@bunbunclothing.com / admin123');
-    console.log('  Customer: test@customer.com / test1234');
+    console.log('\n🎉 Seeding complete!');
 }
 
 main()
     .catch((e) => {
-        console.error('❌ Seed error:', e);
+        console.error(e);
         process.exit(1);
     })
-    .finally(() => prisma.$disconnect());
+    .finally(async () => {
+        await prisma.$disconnect();
+    });
