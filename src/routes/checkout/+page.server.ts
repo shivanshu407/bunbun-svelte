@@ -26,9 +26,9 @@ export const load: PageServerLoad = async ({ locals }) => {
             where: {
                 isActive: true,
                 validFrom: { lte: new Date() },
-                OR: [{ validTo: null }, { validTo: { gte: new Date() } }]
+                validTo: { gte: new Date() }
             },
-            orderBy: { discount: 'desc' }
+            orderBy: { value: 'desc' }
         })
     ]);
 
@@ -79,11 +79,11 @@ export const actions: Actions = {
         }
 
         const now = new Date();
-        if (coupon.validFrom > now || (coupon.validTo && coupon.validTo < now)) {
+        if (coupon.validFrom > now || coupon.validTo < now) {
             return fail(400, { couponError: 'This coupon has expired' });
         }
 
-        if (coupon.usedCount >= coupon.maxUses) {
+        if (coupon.usageLimit && coupon.usedCount >= coupon.usageLimit) {
             return fail(400, { couponError: 'This coupon has reached its usage limit' });
         }
 
@@ -102,10 +102,10 @@ export const actions: Actions = {
 
         let discount = 0;
         if (coupon.type === 'percentage') {
-            discount = Math.round(subtotal * coupon.discount / 100);
+            discount = Math.round(subtotal * coupon.value / 100);
             if (coupon.maxDiscount) discount = Math.min(discount, coupon.maxDiscount);
         } else {
-            discount = coupon.discount;
+            discount = coupon.value;
         }
 
         return {
@@ -113,7 +113,7 @@ export const actions: Actions = {
             couponCode: coupon.code,
             couponDiscount: discount,
             couponType: coupon.type,
-            couponValue: coupon.discount
+            couponValue: coupon.value
         };
     },
 

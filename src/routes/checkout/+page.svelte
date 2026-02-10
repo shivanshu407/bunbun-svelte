@@ -362,8 +362,8 @@
                                                 class="text-xs text-stone-500 mt-0.5"
                                             >
                                                 {coupon.type === "percentage"
-                                                    ? `${coupon.discount}% off`
-                                                    : `₹${coupon.discount} off`}
+                                                    ? `${coupon.value}% off`
+                                                    : `₹${coupon.value} off`}
                                                 {#if coupon.maxDiscount}(up to ₹{coupon.maxDiscount}){/if}
                                                 {#if coupon.minOrderAmount}• Min
                                                     ₹{coupon.minOrderAmount}{/if}
