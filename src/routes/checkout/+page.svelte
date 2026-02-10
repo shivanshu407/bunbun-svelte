@@ -16,6 +16,8 @@
         Trash2,
     } from "lucide-svelte";
     import { formatPrice } from "$lib/utils";
+    import { appliedCouponStore } from "$lib/stores/coupon";
+    import { get } from "svelte/store";
 
     let { data, form } = $props();
     let showAddressForm = $state(false);
@@ -27,6 +29,30 @@
     let couponError = $state("");
     let copiedCode = $state("");
 
+    // On mount, check if a coupon was applied on the cart page
+    $effect(() => {
+        const stored = get(appliedCouponStore);
+        if (stored && !appliedCoupon) {
+            // Auto-apply the coupon from cart page
+            const coupon = data.coupons?.find(
+                (c: any) => c.code.toLowerCase() === stored.code.toLowerCase(),
+            );
+            if (coupon) {
+                let discount = 0;
+                if (coupon.type === "percentage") {
+                    discount = Math.min(
+                        (data.subtotal * coupon.value) / 100,
+                        coupon.maxDiscount ?? Infinity,
+                    );
+                } else {
+                    discount = coupon.value;
+                }
+                appliedCoupon = { code: coupon.code, discount };
+                couponCode = coupon.code;
+            }
+        }
+    });
+
     // Update from form action response
     $effect(() => {
         if (form?.couponApplied) {
@@ -36,6 +62,11 @@
             };
             couponCode = form.couponCode;
             couponError = "";
+            appliedCouponStore.set({
+                code: form.couponCode,
+                value: form.couponDiscount,
+                type: "flat",
+            });
         }
         if (form?.couponError) {
             couponError = form.couponError;
@@ -54,6 +85,7 @@
         appliedCoupon = null;
         couponCode = "";
         couponError = "";
+        appliedCouponStore.set(null);
     }
 
     let updating = $state(false);

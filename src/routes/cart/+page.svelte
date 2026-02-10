@@ -10,6 +10,7 @@
         Check,
     } from "lucide-svelte";
     import { cartItems, cartTotal, cartCount } from "$lib/stores/cart";
+    import { appliedCouponStore } from "$lib/stores/coupon";
     import { formatPrice } from "$lib/utils";
     import { onMount } from "svelte";
     import { invalidateAll } from "$app/navigation";
@@ -95,11 +96,13 @@
         }
 
         appliedCoupon = coupon;
+        appliedCouponStore.set(coupon);
         couponCode = "";
     }
 
     function removeCoupon() {
         appliedCoupon = null;
+        appliedCouponStore.set(null);
         couponError = "";
     }
 
