@@ -105,7 +105,7 @@
 
     let discount = $derived(
         appliedCoupon
-            ? appliedCoupon.type === "PERCENTAGE"
+            ? appliedCoupon.type === "percentage"
                 ? Math.min(
                       (displayTotal * appliedCoupon.value) / 100,
                       appliedCoupon.maxDiscount ?? Infinity,
@@ -309,7 +309,7 @@
                                     >{appliedCoupon.code}</span
                                 >
                                 <span class="text-xs text-emerald-600 ml-1">
-                                    (-{appliedCoupon.type === "PERCENTAGE"
+                                    (-{appliedCoupon.type === "percentage"
                                         ? `${appliedCoupon.value}%`
                                         : formatPrice(appliedCoupon.value)})
                                 </span>
@@ -364,9 +364,10 @@
                                             <p
                                                 class="text-xs text-stone-500 mt-0.5"
                                             >
-                                                {coupon.type === "PERCENTAGE"
+                                                {coupon.type === "percentage"
                                                     ? `${coupon.value}% off`
                                                     : `${formatPrice(coupon.value)} off`}
+                                                {#if coupon.maxDiscount}(up to ₹{coupon.maxDiscount}){/if}
                                                 {#if coupon.minOrderAmount}
                                                     · Min {formatPrice(
                                                         coupon.minOrderAmount,
