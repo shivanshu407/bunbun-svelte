@@ -53,10 +53,6 @@
         couponError = "";
     }
 
-    $derived.by(() => {
-        // recalculate when appliedCoupon changes
-    });
-
     const shipping = $derived(data.subtotal >= 999 ? 0 : 79);
     const discount = $derived(appliedCoupon?.discount ?? 0);
     const total = $derived(data.subtotal + shipping - discount);
