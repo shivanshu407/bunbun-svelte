@@ -8,18 +8,18 @@
 
 <svelte:head><title>Addresses | BunBunClothing</title></svelte:head>
 
-<div class="max-w-4xl mx-auto px-4 py-8 md:py-12">
-    <div class="flex items-center justify-between mb-6">
-        <h1
-            class="text-2xl md:text-3xl font-semibold font-[family-name:var(--font-heading)] text-stone-900"
+<div>
+    <div class="flex items-center justify-between mb-4">
+        <h2
+            class="text-xl font-semibold font-[family-name:var(--font-heading)] text-stone-900"
         >
             My Addresses
-        </h1>
+        </h2>
         <button
             onclick={() => (showForm = !showForm)}
             class="flex items-center gap-1.5 px-4 py-2 bg-rose-500 hover:bg-rose-600 text-white text-sm font-medium rounded-lg"
         >
-            <Plus size={16} /> Add Address
+            <Plus size={16} /> Add
         </button>
     </div>
 
@@ -43,7 +43,7 @@
             }}
             class="bg-white rounded-xl border border-stone-200 p-6 mb-6"
         >
-            <h2 class="text-lg font-medium text-stone-800 mb-4">New Address</h2>
+            <h3 class="text-lg font-medium text-stone-800 mb-4">New Address</h3>
             <div class="grid md:grid-cols-2 gap-3">
                 <input
                     name="name"
@@ -128,9 +128,9 @@
             class="text-center py-16 bg-white rounded-xl border border-stone-200"
         >
             <MapPin size={48} class="mx-auto text-stone-300 mb-4" />
-            <h2 class="text-lg font-medium text-stone-700">
+            <h3 class="text-lg font-medium text-stone-700">
                 No saved addresses
-            </h2>
+            </h3>
             <p class="text-sm text-stone-400 mt-1">
                 Add an address for faster checkout
             </p>
@@ -139,8 +139,9 @@
         <div class="grid md:grid-cols-2 gap-4">
             {#each data.addresses as addr}
                 <div
-                    class="bg-white rounded-xl border border-stone-200 p-5 relative
-					{addr.isDefault ? 'ring-2 ring-rose-200' : ''}"
+                    class="bg-white rounded-xl border border-stone-200 p-5 relative {addr.isDefault
+                        ? 'ring-2 ring-rose-200'
+                        : ''}"
                 >
                     {#if addr.isDefault}
                         <span

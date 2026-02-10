@@ -24,19 +24,19 @@
 
 <svelte:head><title>My Orders | BunBunClothing</title></svelte:head>
 
-<div class="max-w-4xl mx-auto px-4 py-8 md:py-12">
-    <h1
-        class="text-2xl md:text-3xl font-semibold font-[family-name:var(--font-heading)] text-stone-900 mb-6"
+<div>
+    <h2
+        class="text-xl font-semibold font-[family-name:var(--font-heading)] text-stone-900 mb-4"
     >
         My Orders
-    </h1>
+    </h2>
 
     {#if data.orders.length === 0}
         <div
             class="text-center py-16 bg-white rounded-xl border border-stone-200"
         >
             <Package size={48} class="mx-auto text-stone-300 mb-4" />
-            <h2 class="text-lg font-medium text-stone-700">No orders yet</h2>
+            <h3 class="text-lg font-medium text-stone-700">No orders yet</h3>
             <p class="text-sm text-stone-400 mt-1">
                 Start shopping to see your orders here
             </p>

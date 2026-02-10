@@ -13,12 +13,12 @@
 
 <svelte:head><title>My Wishlist | BunBunClothing</title></svelte:head>
 
-<div class="max-w-7xl mx-auto px-4 py-8 md:py-12">
-    <h1
-        class="text-2xl md:text-3xl font-semibold font-[family-name:var(--font-heading)] text-stone-900 mb-6"
+<div>
+    <h2
+        class="text-xl font-semibold font-[family-name:var(--font-heading)] text-stone-900 mb-4"
     >
         My Wishlist ❤️
-    </h1>
+    </h2>
 
     {#if data.items.length === 0}
         <div

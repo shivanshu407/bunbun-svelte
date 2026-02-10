@@ -7,15 +7,9 @@
 
 <svelte:head><title>My Profile | BunBunClothing</title></svelte:head>
 
-<div class="max-w-2xl mx-auto px-4 py-8 md:py-12">
-    <h1
-        class="text-2xl md:text-3xl font-semibold font-[family-name:var(--font-heading)] text-stone-900 mb-6"
-    >
-        My Profile
-    </h1>
-
+<div class="space-y-6">
     <!-- Update Profile -->
-    <div class="bg-white rounded-xl border border-stone-200 p-6 mb-6">
+    <div class="bg-white rounded-xl border border-stone-200 p-6">
         <h2
             class="text-lg font-medium text-stone-800 mb-4 flex items-center gap-2"
         >
