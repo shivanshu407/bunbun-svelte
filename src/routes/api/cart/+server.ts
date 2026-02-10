@@ -67,6 +67,25 @@ export const GET: RequestHandler = async ({ locals }) => {
     return json({ items: cart?.items ?? [] });
 };
 
+// Update cart item quantity
+export const PATCH: RequestHandler = async ({ request, locals }) => {
+    if (!locals.user) return json({ error: 'Login required' }, { status: 401 });
+
+    const { itemId, quantity } = await request.json();
+    if (!itemId) return json({ error: 'Item ID required' }, { status: 400 });
+
+    if (quantity <= 0) {
+        await prisma.cartItem.delete({ where: { id: itemId } });
+    } else {
+        await prisma.cartItem.update({
+            where: { id: itemId },
+            data: { quantity }
+        });
+    }
+
+    return json({ success: true });
+};
+
 // Clear cart
 export const DELETE: RequestHandler = async ({ locals }) => {
     if (!locals.user) return json({ success: true });

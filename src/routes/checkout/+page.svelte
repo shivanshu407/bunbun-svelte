@@ -1,8 +1,10 @@
 <script lang="ts">
     import { enhance } from "$app/forms";
+    import { invalidateAll } from "$app/navigation";
     import {
         MapPin,
         Plus,
+        Minus,
         CreditCard,
         Truck,
         ShieldCheck,
@@ -11,6 +13,7 @@
         Copy,
         Check,
         X,
+        Trash2,
     } from "lucide-svelte";
     import { formatPrice } from "$lib/utils";
 
@@ -51,6 +54,32 @@
         appliedCoupon = null;
         couponCode = "";
         couponError = "";
+    }
+
+    let updating = $state(false);
+
+    async function updateQuantity(itemId: string, newQty: number) {
+        updating = true;
+        removeCoupon(); // auto-remove coupon on cart change
+        await fetch("/api/cart", {
+            method: "PATCH",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ itemId, quantity: newQty }),
+        });
+        await invalidateAll();
+        updating = false;
+    }
+
+    async function removeItem(itemId: string) {
+        updating = true;
+        removeCoupon();
+        await fetch("/api/cart", {
+            method: "PATCH",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ itemId, quantity: 0 }),
+        });
+        await invalidateAll();
+        updating = false;
     }
 
     const shipping = $derived(data.subtotal >= 999 ? 0 : 79);
@@ -400,9 +429,9 @@
                     Order Summary
                 </h2>
 
-                <div class="space-y-3 mb-4 max-h-64 overflow-y-auto">
+                <div class="space-y-3 mb-4 max-h-72 overflow-y-auto">
                     {#each data.cart.items as item}
-                        <div class="flex gap-3">
+                        <div class="flex gap-3 group">
                             <div
                                 class="w-14 h-16 bg-stone-100 rounded-lg overflow-hidden flex-shrink-0"
                             >
@@ -421,24 +450,68 @@
                                 {/if}
                             </div>
                             <div class="flex-1 min-w-0">
-                                <p
-                                    class="text-sm font-medium text-stone-800 truncate"
-                                >
-                                    {item.product.name}
-                                </p>
+                                <div class="flex items-start justify-between">
+                                    <p
+                                        class="text-sm font-medium text-stone-800 truncate pr-2"
+                                    >
+                                        {item.product.name}
+                                    </p>
+                                    <button
+                                        onclick={() => removeItem(item.id)}
+                                        class="p-0.5 text-stone-300 hover:text-red-500 transition-colors flex-shrink-0"
+                                        disabled={updating}
+                                        aria-label="Remove item"
+                                    >
+                                        <X size={14} />
+                                    </button>
+                                </div>
                                 <p class="text-xs text-stone-400">
                                     {[item.variant.size, item.variant.color]
                                         .filter(Boolean)
-                                        .join(" / ")} × {item.quantity}
+                                        .join(" / ")}
                                 </p>
-                                <p
-                                    class="text-sm font-semibold text-stone-900 mt-0.5"
+                                <div
+                                    class="flex items-center justify-between mt-1"
                                 >
-                                    {formatPrice(
-                                        (item.variant.salePrice ??
-                                            item.variant.price) * item.quantity,
-                                    )}
-                                </p>
+                                    <div class="flex items-center gap-1">
+                                        <button
+                                            onclick={() =>
+                                                updateQuantity(
+                                                    item.id,
+                                                    item.quantity - 1,
+                                                )}
+                                            class="w-6 h-6 flex items-center justify-center rounded border border-stone-200 text-stone-500 hover:border-rose-300 hover:text-rose-500 transition-colors"
+                                            disabled={updating ||
+                                                item.quantity <= 1}
+                                        >
+                                            <Minus size={12} />
+                                        </button>
+                                        <span
+                                            class="text-xs font-medium text-stone-700 w-6 text-center"
+                                            >{item.quantity}</span
+                                        >
+                                        <button
+                                            onclick={() =>
+                                                updateQuantity(
+                                                    item.id,
+                                                    item.quantity + 1,
+                                                )}
+                                            class="w-6 h-6 flex items-center justify-center rounded border border-stone-200 text-stone-500 hover:border-rose-300 hover:text-rose-500 transition-colors"
+                                            disabled={updating}
+                                        >
+                                            <Plus size={12} />
+                                        </button>
+                                    </div>
+                                    <p
+                                        class="text-sm font-semibold text-stone-900"
+                                    >
+                                        {formatPrice(
+                                            (item.variant.salePrice ??
+                                                item.variant.price) *
+                                                item.quantity,
+                                        )}
+                                    </p>
+                                </div>
                             </div>
                         </div>
                     {/each}
