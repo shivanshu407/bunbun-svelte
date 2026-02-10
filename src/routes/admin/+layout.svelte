@@ -7,7 +7,6 @@
         Users,
         Tag,
         Image,
-        FolderTree,
         LogOut,
         Menu,
         X,
@@ -20,7 +19,6 @@
     const navItems = [
         { icon: LayoutDashboard, label: "Dashboard", href: "/admin" },
         { icon: Package, label: "Products", href: "/admin/products" },
-        { icon: FolderTree, label: "Categories", href: "/admin/categories" },
         { icon: ShoppingBag, label: "Orders", href: "/admin/orders" },
         { icon: Tag, label: "Coupons", href: "/admin/coupons" },
         { icon: Image, label: "Banners", href: "/admin/banners" },
