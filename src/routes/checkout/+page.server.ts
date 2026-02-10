@@ -6,7 +6,7 @@ import { generateOrderNumber } from '$lib/utils';
 export const load: PageServerLoad = async ({ locals }) => {
     if (!locals.user) throw redirect(302, '/login?redirect=/checkout');
 
-    const [addresses, cart] = await Promise.all([
+    const [addresses, cart, coupons] = await Promise.all([
         prisma.address.findMany({
             where: { userId: locals.user.id },
             orderBy: { isDefault: 'desc' }
@@ -21,6 +21,14 @@ export const load: PageServerLoad = async ({ locals }) => {
                     }
                 }
             }
+        }),
+        prisma.coupon.findMany({
+            where: {
+                isActive: true,
+                validFrom: { lte: new Date() },
+                OR: [{ validTo: null }, { validTo: { gte: new Date() } }]
+            },
+            orderBy: { discount: 'desc' }
         })
     ]);
 
@@ -31,7 +39,7 @@ export const load: PageServerLoad = async ({ locals }) => {
         return sum + price * item.quantity;
     }, 0);
 
-    return { addresses, cart, subtotal };
+    return { addresses, cart, subtotal, coupons };
 };
 
 export const actions: Actions = {
@@ -57,11 +65,65 @@ export const actions: Actions = {
         return { addressSaved: true };
     },
 
+    applyCoupon: async ({ request, locals }) => {
+        if (!locals.user) return fail(401, { error: 'Login required' });
+        const fd = await request.formData();
+        const code = (fd.get('couponCode') as string).trim().toUpperCase();
+
+        if (!code) return fail(400, { couponError: 'Please enter a coupon code' });
+
+        const coupon = await prisma.coupon.findUnique({ where: { code } });
+
+        if (!coupon || !coupon.isActive) {
+            return fail(400, { couponError: 'Invalid or expired coupon code' });
+        }
+
+        const now = new Date();
+        if (coupon.validFrom > now || (coupon.validTo && coupon.validTo < now)) {
+            return fail(400, { couponError: 'This coupon has expired' });
+        }
+
+        if (coupon.usedCount >= coupon.maxUses) {
+            return fail(400, { couponError: 'This coupon has reached its usage limit' });
+        }
+
+        // Get cart subtotal
+        const cart = await prisma.cart.findUnique({
+            where: { userId: locals.user.id },
+            include: { items: { include: { variant: true } } }
+        });
+        const subtotal = cart?.items.reduce((sum, item) => {
+            return sum + (item.variant.salePrice ?? item.variant.price) * item.quantity;
+        }, 0) ?? 0;
+
+        if (coupon.minOrderAmount && subtotal < coupon.minOrderAmount) {
+            return fail(400, { couponError: `Minimum order of ₹${coupon.minOrderAmount} required for this coupon` });
+        }
+
+        let discount = 0;
+        if (coupon.type === 'percentage') {
+            discount = Math.round(subtotal * coupon.discount / 100);
+            if (coupon.maxDiscount) discount = Math.min(discount, coupon.maxDiscount);
+        } else {
+            discount = coupon.discount;
+        }
+
+        return {
+            couponApplied: true,
+            couponCode: coupon.code,
+            couponDiscount: discount,
+            couponType: coupon.type,
+            couponValue: coupon.discount
+        };
+    },
+
     placeOrder: async ({ request, locals }) => {
         if (!locals.user) return fail(401, { error: 'Login required' });
         const fd = await request.formData();
         const addressId = fd.get('addressId') as string;
         const paymentMethod = (fd.get('paymentMethod') as string) || 'cod';
+        const couponCode = (fd.get('couponCode') as string) || null;
+        const couponDiscount = parseFloat(fd.get('couponDiscount') as string) || 0;
 
         if (!addressId) return fail(400, { error: 'Please select a delivery address' });
 
@@ -88,9 +150,8 @@ export const actions: Actions = {
         }, 0);
 
         const shipping = subtotal >= 999 ? 0 : 79;
-        const total = subtotal + shipping;
+        const total = subtotal + shipping - couponDiscount;
 
-        // Create order in a transaction
         const order = await prisma.$transaction(async (tx) => {
             const newOrder = await tx.order.create({
                 data: {
@@ -98,7 +159,9 @@ export const actions: Actions = {
                     userId: locals.user!.id,
                     subtotal,
                     shipping,
-                    total,
+                    discount: couponDiscount,
+                    couponCode,
+                    total: Math.max(total, 0),
                     status: paymentMethod === 'cod' ? 'confirmed' : 'pending',
                     paymentStatus: paymentMethod === 'cod' ? 'pending' : 'pending',
                     paymentMethod,
@@ -126,11 +189,19 @@ export const actions: Actions = {
                     statusHistory: {
                         create: {
                             status: paymentMethod === 'cod' ? 'confirmed' : 'pending',
-                            notes: 'Order placed'
+                            notes: couponCode ? `Order placed with coupon ${couponCode}` : 'Order placed'
                         }
                     }
                 }
             });
+
+            // Increment coupon usage
+            if (couponCode) {
+                await tx.coupon.update({
+                    where: { code: couponCode },
+                    data: { usedCount: { increment: 1 } }
+                });
+            }
 
             // Decrease stock
             for (const item of cart.items) {

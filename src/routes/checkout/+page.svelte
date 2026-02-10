@@ -7,6 +7,10 @@
         Truck,
         ShieldCheck,
         Package,
+        Tag,
+        Copy,
+        Check,
+        X,
     } from "lucide-svelte";
     import { formatPrice } from "$lib/utils";
 
@@ -15,6 +19,47 @@
     let selectedAddressId = $state(data.addresses[0]?.id ?? "");
     let paymentMethod = $state("cod");
     let placing = $state(false);
+    let couponCode = $state("");
+    let appliedCoupon = $state<{ code: string; discount: number } | null>(null);
+    let couponError = $state("");
+    let copiedCode = $state("");
+
+    // Update from form action response
+    $effect(() => {
+        if (form?.couponApplied) {
+            appliedCoupon = {
+                code: form.couponCode,
+                discount: form.couponDiscount,
+            };
+            couponCode = form.couponCode;
+            couponError = "";
+        }
+        if (form?.couponError) {
+            couponError = form.couponError;
+            appliedCoupon = null;
+        }
+    });
+
+    function copyCode(code: string) {
+        navigator.clipboard.writeText(code);
+        copiedCode = code;
+        couponCode = code;
+        setTimeout(() => (copiedCode = ""), 2000);
+    }
+
+    function removeCoupon() {
+        appliedCoupon = null;
+        couponCode = "";
+        couponError = "";
+    }
+
+    $derived.by(() => {
+        // recalculate when appliedCoupon changes
+    });
+
+    const shipping = $derived(data.subtotal >= 999 ? 0 : 79);
+    const discount = $derived(appliedCoupon?.discount ?? 0);
+    const total = $derived(data.subtotal + shipping - discount);
 </script>
 
 <svelte:head><title>Checkout | BunBunClothing</title></svelte:head>
@@ -243,6 +288,109 @@
                     </label>
                 </div>
             </div>
+
+            <!-- Coupon Section -->
+            <div class="bg-white rounded-xl border border-stone-200 p-6">
+                <h2
+                    class="text-lg font-semibold flex items-center gap-2 text-stone-900 mb-4"
+                >
+                    <Tag size={20} class="text-rose-500" /> Apply Coupon
+                </h2>
+
+                {#if appliedCoupon}
+                    <div
+                        class="flex items-center justify-between p-3 bg-emerald-50 border border-emerald-200 rounded-lg"
+                    >
+                        <div class="flex items-center gap-2">
+                            <Tag size={16} class="text-emerald-600" />
+                            <span class="text-sm font-bold text-emerald-700"
+                                >{appliedCoupon.code}</span
+                            >
+                            <span class="text-sm text-emerald-600"
+                                >— You save {formatPrice(
+                                    appliedCoupon.discount,
+                                )}!</span
+                            >
+                        </div>
+                        <button
+                            onclick={removeCoupon}
+                            class="p-1 text-stone-400 hover:text-red-500"
+                        >
+                            <X size={16} />
+                        </button>
+                    </div>
+                {:else}
+                    <form
+                        method="POST"
+                        action="?/applyCoupon"
+                        use:enhance
+                        class="flex gap-2 mb-4"
+                    >
+                        <input
+                            name="couponCode"
+                            bind:value={couponCode}
+                            placeholder="Enter coupon code"
+                            class="flex-1 px-3 py-2.5 border border-stone-300 rounded-lg text-sm uppercase tracking-wider font-mono focus:outline-none focus:ring-2 focus:ring-rose-500"
+                        />
+                        <button
+                            type="submit"
+                            class="px-5 py-2.5 bg-stone-800 hover:bg-stone-900 text-white text-sm font-medium rounded-lg transition-colors"
+                        >
+                            Apply
+                        </button>
+                    </form>
+
+                    {#if couponError}
+                        <p class="text-sm text-red-600 mb-3">{couponError}</p>
+                    {/if}
+
+                    <!-- Available Coupons -->
+                    {#if data.coupons.length > 0}
+                        <div class="border-t border-stone-100 pt-3">
+                            <p
+                                class="text-xs text-stone-400 uppercase tracking-wider mb-2"
+                            >
+                                Available Coupons
+                            </p>
+                            <div class="space-y-2">
+                                {#each data.coupons as coupon}
+                                    <div
+                                        class="flex items-center justify-between p-3 bg-stone-50 rounded-lg border border-dashed border-stone-200"
+                                    >
+                                        <div>
+                                            <span
+                                                class="text-sm font-bold font-mono text-stone-800 tracking-wider"
+                                                >{coupon.code}</span
+                                            >
+                                            <p
+                                                class="text-xs text-stone-500 mt-0.5"
+                                            >
+                                                {coupon.type === "percentage"
+                                                    ? `${coupon.discount}% off`
+                                                    : `₹${coupon.discount} off`}
+                                                {#if coupon.maxDiscount}(up to ₹{coupon.maxDiscount}){/if}
+                                                {#if coupon.minOrderAmount}• Min
+                                                    ₹{coupon.minOrderAmount}{/if}
+                                            </p>
+                                        </div>
+                                        <button
+                                            onclick={() =>
+                                                copyCode(coupon.code)}
+                                            class="flex items-center gap-1 px-3 py-1.5 bg-white border border-rose-200 text-rose-500 hover:bg-rose-50 text-xs font-medium rounded-lg transition-colors"
+                                        >
+                                            {#if copiedCode === coupon.code}
+                                                <Check size={12} /> Copied!
+                                            {:else}
+                                                <Copy size={12} /> Copy
+                                            {/if}
+                                        </button>
+                                    </div>
+                                {/each}
+                            </div>
+                        </div>
+                    {/if}
+                {/if}
+            </div>
         </div>
 
         <!-- Right: Order Summary -->
@@ -307,12 +455,8 @@
                     </div>
                     <div class="flex justify-between text-stone-600">
                         <span>Shipping</span>
-                        <span
-                            class={data.subtotal >= 999
-                                ? "text-emerald-600"
-                                : ""}
-                        >
-                            {data.subtotal >= 999 ? "FREE" : formatPrice(79)}
+                        <span class={shipping === 0 ? "text-emerald-600" : ""}>
+                            {shipping === 0 ? "FREE" : formatPrice(79)}
                         </span>
                     </div>
                     {#if data.subtotal < 999}
@@ -321,15 +465,17 @@
                             shipping!
                         </p>
                     {/if}
+                    {#if discount > 0}
+                        <div class="flex justify-between text-emerald-600">
+                            <span>Coupon Discount</span>
+                            <span>-{formatPrice(discount)}</span>
+                        </div>
+                    {/if}
                     <div
                         class="border-t border-stone-200 pt-2 flex justify-between text-base font-bold text-stone-900"
                     >
                         <span>Total</span>
-                        <span
-                            >{formatPrice(
-                                data.subtotal + (data.subtotal >= 999 ? 0 : 79),
-                            )}</span
-                        >
+                        <span>{formatPrice(total)}</span>
                     </div>
                 </div>
 
@@ -354,6 +500,16 @@
                         name="paymentMethod"
                         value={paymentMethod}
                     />
+                    <input
+                        type="hidden"
+                        name="couponCode"
+                        value={appliedCoupon?.code ?? ""}
+                    />
+                    <input
+                        type="hidden"
+                        name="couponDiscount"
+                        value={discount}
+                    />
                     <button
                         type="submit"
                         disabled={placing || !selectedAddressId}
@@ -362,12 +518,13 @@
                         {#if placing}
                             <span class="animate-spin">⏳</span> Placing Order...
                         {:else}
-                            <Package size={18} /> Place Order
+                            <Package size={18} /> Place Order • {formatPrice(
+                                total,
+                            )}
                         {/if}
                     </button>
                 </form>
 
-                <!-- Trust -->
                 <div
                     class="mt-4 flex items-center gap-2 text-xs text-stone-400"
                 >
