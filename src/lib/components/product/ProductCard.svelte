@@ -1,6 +1,7 @@
 <script lang="ts">
     import { Heart } from "lucide-svelte";
     import { formatPrice, calculateDiscount } from "$lib/utils";
+    import { wishlistIds } from "$lib/stores/wishlist";
 
     interface Props {
         product: {
@@ -19,15 +20,17 @@
 
     let { product }: Props = $props();
 
-    let wishlisted = $state(false);
+    let wishlistSet = $state<Set<string>>(new Set());
+    wishlistIds.subscribe((v) => (wishlistSet = v));
+
+    let wishlisted = $derived(wishlistSet.has(product.id));
 
     function toggleWishlist(e: Event) {
         e.preventDefault();
         e.stopPropagation();
-        wishlisted = !wishlisted;
-        // API call handled separately
+        const added = wishlistIds.toggle(product.id);
         fetch(`/api/wishlist/${product.id}`, {
-            method: wishlisted ? "POST" : "DELETE",
+            method: added ? "POST" : "DELETE",
         });
     }
 </script>

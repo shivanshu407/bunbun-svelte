@@ -8,15 +8,19 @@
 	import AnnouncementBar from "$lib/components/layout/AnnouncementBar.svelte";
 	import CartDrawer from "$lib/components/cart/CartDrawer.svelte";
 	import { currentUser } from "$lib/stores/user";
+	import { wishlistIds } from "$lib/stores/wishlist";
 
 	let { data, children } = $props();
 
 	let mobileNavOpen = $state(false);
 	let isAdmin = $derived($page.url.pathname.startsWith("/admin"));
 
-	// Sync server user data to client store
+	// Sync server user data and wishlist to client stores
 	$effect(() => {
 		currentUser.set(data.user);
+		if (data.wishlistProductIds) {
+			wishlistIds.init(data.wishlistProductIds);
+		}
 	});
 </script>
 
