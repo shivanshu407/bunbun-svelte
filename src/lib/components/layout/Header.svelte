@@ -1,7 +1,7 @@
 <script lang="ts">
-	import { Search, User, Heart, ShoppingBag, Menu } from 'lucide-svelte';
-	import { cartItemCount, cartDrawerOpen } from '$lib/stores/cart';
-	import type { UserStore } from '$lib/stores/user';
+	import { Search, User, Heart, ShoppingBag, Menu } from "lucide-svelte";
+	import { cartCount, cartDrawerOpen } from "$lib/stores/cart";
+	import type { UserStore } from "$lib/stores/user";
 
 	interface Props {
 		user: UserStore | null;
@@ -10,7 +10,7 @@
 
 	let { user, onMenuToggle }: Props = $props();
 	let searchOpen = $state(false);
-	let searchQuery = $state('');
+	let searchQuery = $state("");
 	let userMenuOpen = $state(false);
 </script>
 
@@ -28,7 +28,9 @@
 
 			<!-- Logo -->
 			<a href="/" class="flex-shrink-0">
-				<span class="text-2xl font-bold font-[family-name:var(--font-heading)] text-stone-900">
+				<span
+					class="text-2xl font-bold font-[family-name:var(--font-heading)] text-stone-900"
+				>
 					Bun<span class="text-rose-500">Bun</span>
 				</span>
 			</a>
@@ -56,7 +58,7 @@
 			<div class="flex items-center gap-1 sm:gap-2">
 				<!-- Mobile Search Toggle -->
 				<button
-					onclick={() => searchOpen = !searchOpen}
+					onclick={() => (searchOpen = !searchOpen)}
 					class="lg:hidden p-2 text-stone-700 hover:text-rose-600 transition-colors"
 					aria-label="Search"
 				>
@@ -66,9 +68,9 @@
 				<!-- Account -->
 				<div class="relative">
 					<a
-						href={user ? '/account' : '/login'}
+						href={user ? "/account" : "/login"}
 						class="p-2 text-stone-700 hover:text-rose-600 transition-colors inline-flex"
-						aria-label={user ? 'My Account' : 'Login'}
+						aria-label={user ? "My Account" : "Login"}
 					>
 						<User size={22} />
 					</a>
@@ -90,9 +92,11 @@
 					aria-label="Shopping cart"
 				>
 					<ShoppingBag size={22} />
-					{#if $cartItemCount > 0}
-						<span class="absolute -top-0.5 -right-0.5 bg-rose-500 text-white text-xs font-bold w-5 h-5 flex items-center justify-center rounded-full">
-							{$cartItemCount}
+					{#if $cartCount > 0}
+						<span
+							class="absolute -top-0.5 -right-0.5 bg-rose-500 text-white text-xs font-bold w-5 h-5 flex items-center justify-center rounded-full"
+						>
+							{$cartCount}
 						</span>
 					{/if}
 				</button>
@@ -102,7 +106,9 @@
 
 	<!-- Mobile Search Overlay -->
 	{#if searchOpen}
-		<div class="lg:hidden border-t border-stone-200 p-3 bg-white animate-fade-in">
+		<div
+			class="lg:hidden border-t border-stone-200 p-3 bg-white animate-fade-in"
+		>
 			<form action="/search" method="GET" class="relative">
 				<input
 					type="text"
