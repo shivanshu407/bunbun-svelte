@@ -327,13 +327,13 @@
                                 type="text"
                                 bind:value={couponCode}
                                 placeholder="Enter coupon code"
-                                class="flex-1 px-3 py-2 text-sm border border-stone-300 rounded-lg focus:ring-2 focus:ring-rose-500 focus:border-transparent outline-none"
+                                class="flex-1 min-w-0 px-3 py-2 text-sm border border-stone-300 rounded-lg focus:ring-2 focus:ring-rose-500 focus:border-transparent outline-none"
                                 onkeydown={(e) =>
                                     e.key === "Enter" && applyCoupon()}
                             />
                             <button
                                 onclick={applyCoupon}
-                                class="px-4 py-2 bg-stone-800 hover:bg-stone-900 text-white text-sm font-medium rounded-lg transition-colors"
+                                class="flex-shrink-0 px-4 py-2 bg-stone-800 hover:bg-stone-900 text-white text-sm font-medium rounded-lg transition-colors"
                             >
                                 Apply
                             </button>
