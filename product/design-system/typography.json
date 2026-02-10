@@ -1,0 +1,67 @@
+{
+    "heading": {
+        "name": "Playfair Display",
+        "source": "Google Fonts",
+        "url": "https://fonts.google.com/specimen/Playfair+Display",
+        "description": "Elegant serif font for headings. Playfair Display conveys luxury and sophistication — ideal for a fashion/clothing brand.",
+        "weights": [
+            "400",
+            "500",
+            "600",
+            "700"
+        ],
+        "style": "serif",
+        "usage": {
+            "h1": "text-4xl md:text-5xl font-bold",
+            "h2": "text-3xl md:text-4xl font-semibold",
+            "h3": "text-2xl md:text-3xl font-semibold",
+            "h4": "text-xl md:text-2xl font-medium",
+            "productTitle": "text-lg font-medium"
+        }
+    },
+    "body": {
+        "name": "Inter",
+        "source": "Google Fonts",
+        "url": "https://fonts.google.com/specimen/Inter",
+        "description": "Clean, modern sans-serif for body text and UI. Inter offers excellent readability across all screen sizes.",
+        "weights": [
+            "300",
+            "400",
+            "500",
+            "600",
+            "700"
+        ],
+        "style": "sans-serif",
+        "usage": {
+            "body": "text-base font-normal",
+            "bodySmall": "text-sm font-normal",
+            "caption": "text-xs font-normal",
+            "button": "text-sm font-medium",
+            "label": "text-sm font-medium",
+            "price": "text-lg font-semibold",
+            "salePrice": "text-lg font-bold"
+        }
+    },
+    "mono": {
+        "name": "JetBrains Mono",
+        "source": "Google Fonts",
+        "url": "https://fonts.google.com/specimen/JetBrains+Mono",
+        "description": "Monospace font for order numbers, product codes, and technical content.",
+        "weights": [
+            "400",
+            "500"
+        ],
+        "style": "monospace",
+        "usage": {
+            "orderNumber": "text-sm font-mono",
+            "sku": "text-xs font-mono",
+            "couponCode": "text-base font-mono font-medium"
+        }
+    },
+    "fontImport": "@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Playfair+Display:wght@400;500;600;700&display=swap');",
+    "cssFallbacks": {
+        "heading": "'Playfair Display', Georgia, 'Times New Roman', serif",
+        "body": "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+        "mono": "'JetBrains Mono', 'Fira Code', Consolas, monospace"
+    }
+}

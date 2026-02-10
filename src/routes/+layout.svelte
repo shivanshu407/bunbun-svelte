@@ -1,0 +1,40 @@
+<script lang="ts">
+	import "../app.css";
+	import Header from "$lib/components/layout/Header.svelte";
+	import NavBar from "$lib/components/layout/NavBar.svelte";
+	import MobileNav from "$lib/components/layout/MobileNav.svelte";
+	import Footer from "$lib/components/layout/Footer.svelte";
+	import AnnouncementBar from "$lib/components/layout/AnnouncementBar.svelte";
+	import CartDrawer from "$lib/components/cart/CartDrawer.svelte";
+	import { currentUser } from "$lib/stores/user";
+
+	let { data, children } = $props();
+
+	let mobileNavOpen = $state(false);
+
+	// Sync server user data to client store
+	$effect(() => {
+		currentUser.set(data.user);
+	});
+</script>
+
+<div class="min-h-screen flex flex-col">
+	<AnnouncementBar />
+	<Header
+		user={data.user}
+		onMenuToggle={() => (mobileNavOpen = !mobileNavOpen)}
+	/>
+	<NavBar />
+	<MobileNav
+		open={mobileNavOpen}
+		user={data.user}
+		onClose={() => (mobileNavOpen = false)}
+	/>
+	<CartDrawer />
+
+	<main class="flex-1">
+		{@render children()}
+	</main>
+
+	<Footer />
+</div>

@@ -1,0 +1,153 @@
+{
+    "orders": [
+        {
+            "id": "order-001",
+            "orderNumber": "BBC2026020912345",
+            "userId": "user-001",
+            "items": [
+                {
+                    "id": "oi-001",
+                    "productId": "prod-001",
+                    "variantId": "var-001-1",
+                    "productName": "Red Silk Patola Saree",
+                    "variantInfo": "Free Size | Red",
+                    "price": 899,
+                    "quantity": 1,
+                    "total": 899,
+                    "image": "/images/products/red-patola-1.jpg"
+                },
+                {
+                    "id": "oi-002",
+                    "productId": "prod-004",
+                    "variantId": "var-004-2",
+                    "productName": "Designer Embroidered Blouse - White",
+                    "variantInfo": "M | White",
+                    "price": 499,
+                    "quantity": 2,
+                    "total": 998,
+                    "image": "/images/products/white-blouse-1.jpg"
+                }
+            ],
+            "shippingAddress": {
+                "id": "addr-001",
+                "name": "Priya Sharma",
+                "phone": "9876543210",
+                "line1": "123 Main Street",
+                "line2": "Apartment 4B",
+                "city": "Mumbai",
+                "state": "Maharashtra",
+                "pincode": "400001",
+                "type": "home"
+            },
+            "subtotal": 1897,
+            "discount": 190,
+            "shipping": 0,
+            "tax": 307,
+            "total": 2014,
+            "couponCode": "BUNBUN10",
+            "status": "shipped",
+            "paymentStatus": "paid",
+            "paymentMethod": "UPI",
+            "razorpayOrderId": "order_NjHXX9YZ1234",
+            "razorpayPaymentId": "pay_NjHXY2AB5678",
+            "trackingNumber": "DTDC12345678",
+            "estimatedDelivery": "2026-02-14T00:00:00Z",
+            "deliveredAt": null,
+            "createdAt": "2026-02-09T10:30:00Z",
+            "updatedAt": "2026-02-10T14:00:00Z"
+        },
+        {
+            "id": "order-002",
+            "orderNumber": "BBC2026012898765",
+            "userId": "user-001",
+            "items": [
+                {
+                    "id": "oi-003",
+                    "productId": "prod-003",
+                    "variantId": "var-003-1",
+                    "productName": "Pink Cotton Printed Saree",
+                    "variantInfo": "Free Size | Pink",
+                    "price": 499,
+                    "quantity": 1,
+                    "total": 499,
+                    "image": "/images/products/pink-cotton-1.jpg"
+                }
+            ],
+            "shippingAddress": {
+                "id": "addr-001",
+                "name": "Priya Sharma",
+                "phone": "9876543210",
+                "line1": "123 Main Street",
+                "line2": "Apartment 4B",
+                "city": "Mumbai",
+                "state": "Maharashtra",
+                "pincode": "400001",
+                "type": "home"
+            },
+            "subtotal": 499,
+            "discount": 0,
+            "shipping": 49,
+            "tax": 99,
+            "total": 647,
+            "couponCode": null,
+            "status": "delivered",
+            "paymentStatus": "paid",
+            "paymentMethod": "Card",
+            "razorpayOrderId": "order_NjGGG8YZ9876",
+            "razorpayPaymentId": "pay_NjGGH1AB1234",
+            "trackingNumber": "DTDC98765432",
+            "estimatedDelivery": "2026-02-02T00:00:00Z",
+            "deliveredAt": "2026-02-01T15:30:00Z",
+            "createdAt": "2026-01-28T16:45:00Z",
+            "updatedAt": "2026-02-01T15:30:00Z"
+        }
+    ],
+    "users": [
+        {
+            "id": "user-001",
+            "email": "priya.sharma@email.com",
+            "phone": "9876543210",
+            "name": "Priya Sharma",
+            "role": "customer",
+            "createdAt": "2026-01-15T10:00:00Z",
+            "updatedAt": "2026-02-09T10:30:00Z"
+        },
+        {
+            "id": "user-admin",
+            "email": "admin@bunbunclothing.com",
+            "phone": "9898989898",
+            "name": "Admin User",
+            "role": "admin",
+            "createdAt": "2026-01-01T00:00:00Z",
+            "updatedAt": "2026-01-01T00:00:00Z"
+        }
+    ],
+    "addresses": [
+        {
+            "id": "addr-001",
+            "userId": "user-001",
+            "name": "Priya Sharma",
+            "phone": "9876543210",
+            "line1": "123 Main Street",
+            "line2": "Apartment 4B",
+            "city": "Mumbai",
+            "state": "Maharashtra",
+            "pincode": "400001",
+            "type": "home",
+            "isDefault": true
+        },
+        {
+            "id": "addr-002",
+            "userId": "user-001",
+            "name": "Priya Sharma",
+            "phone": "9876543210",
+            "line1": "456 Business Park",
+            "line2": "Floor 12",
+            "city": "Mumbai",
+            "state": "Maharashtra",
+            "pincode": "400051",
+            "type": "office",
+            "isDefault": false
+        }
+    ]
+}

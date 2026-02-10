@@ -1,0 +1,147 @@
+{
+    "banners": [
+        {
+            "id": "banner-001",
+            "title": "Elegance Redefined",
+            "subtitle": "Discover our new collection of handcrafted silk sarees",
+            "imageDesktop": "/images/banners/hero-silk-desktop.jpg",
+            "imageMobile": "/images/banners/hero-silk-mobile.jpg",
+            "linkUrl": "/collections/silk-sarees",
+            "linkText": "Shop Now",
+            "order": 1,
+            "isActive": true,
+            "validFrom": "2026-02-01T00:00:00Z",
+            "validTo": "2026-03-31T23:59:59Z"
+        },
+        {
+            "id": "banner-002",
+            "title": "Flat 50% Off",
+            "subtitle": "Festival Sale - Limited Time Only!",
+            "imageDesktop": "/images/banners/sale-desktop.jpg",
+            "imageMobile": "/images/banners/sale-mobile.jpg",
+            "linkUrl": "/collections/sale",
+            "linkText": "Shop Sale",
+            "order": 2,
+            "isActive": true,
+            "validFrom": "2026-02-01T00:00:00Z",
+            "validTo": "2026-02-28T23:59:59Z"
+        },
+        {
+            "id": "banner-003",
+            "title": "New Arrivals",
+            "subtitle": "Fresh styles added every week",
+            "imageDesktop": "/images/banners/new-arrivals-desktop.jpg",
+            "imageMobile": "/images/banners/new-arrivals-mobile.jpg",
+            "linkUrl": "/collections/new-arrivals",
+            "linkText": "Explore Now",
+            "order": 3,
+            "isActive": true,
+            "validFrom": null,
+            "validTo": null
+        }
+    ],
+    "testimonials": [
+        {
+            "id": "test-001",
+            "customerName": "Priya Sharma",
+            "customerImage": "/images/customers/priya.jpg",
+            "location": "Mumbai, Maharashtra",
+            "rating": 5,
+            "content": "Absolutely love the Red Patola Saree! The quality is outstanding and it looks exactly like the pictures. Got so many compliments at my friend's wedding.",
+            "productId": "prod-001",
+            "isApproved": true,
+            "createdAt": "2026-02-05T10:30:00Z"
+        },
+        {
+            "id": "test-002",
+            "customerName": "Anjali Reddy",
+            "customerImage": "/images/customers/anjali.jpg",
+            "location": "Hyderabad, Telangana",
+            "rating": 5,
+            "content": "BunBunClothing has become my go-to for ethnic wear. Fast delivery, great packaging, and the products are always top-notch. Highly recommend!",
+            "productId": null,
+            "isApproved": true,
+            "createdAt": "2026-01-28T14:15:00Z"
+        },
+        {
+            "id": "test-003",
+            "customerName": "Deepika Patel",
+            "customerImage": "/images/customers/deepika.jpg",
+            "location": "Ahmedabad, Gujarat",
+            "rating": 5,
+            "content": "The Kanjivaram saree I ordered is simply gorgeous! Worth every penny. The customer service was also very helpful with size queries.",
+            "productId": "prod-006",
+            "isApproved": true,
+            "createdAt": "2026-01-20T09:45:00Z"
+        },
+        {
+            "id": "test-004",
+            "customerName": "Meera Krishnan",
+            "customerImage": "/images/customers/meera.jpg",
+            "location": "Chennai, Tamil Nadu",
+            "rating": 5,
+            "content": "I've ordered multiple times from BunBunClothing and every time the experience has been wonderful. The blouses fit perfectly!",
+            "productId": "prod-004",
+            "isApproved": true,
+            "createdAt": "2026-01-15T16:20:00Z"
+        }
+    ],
+    "coupons": [
+        {
+            "id": "coupon-001",
+            "code": "BUNBUN10",
+            "description": "10% off on your first order",
+            "type": "percentage",
+            "value": 10,
+            "minOrderAmount": 500,
+            "maxDiscount": 500,
+            "usageLimit": null,
+            "usedCount": 1245,
+            "validFrom": "2026-01-01T00:00:00Z",
+            "validTo": "2026-12-31T23:59:59Z",
+            "isActive": true
+        },
+        {
+            "id": "coupon-002",
+            "code": "SILK20",
+            "description": "₹200 off on Silk Sarees",
+            "type": "fixed",
+            "value": 200,
+            "minOrderAmount": 1000,
+            "maxDiscount": null,
+            "usageLimit": 500,
+            "usedCount": 234,
+            "validFrom": "2026-02-01T00:00:00Z",
+            "validTo": "2026-02-28T23:59:59Z",
+            "isActive": true
+        },
+        {
+            "id": "coupon-003",
+            "code": "FESTIVE",
+            "description": "Extra 15% off on orders above ₹1500",
+            "type": "percentage",
+            "value": 15,
+            "minOrderAmount": 1500,
+            "maxDiscount": 750,
+            "usageLimit": 1000,
+            "usedCount": 456,
+            "validFrom": "2026-02-01T00:00:00Z",
+            "validTo": "2026-03-15T23:59:59Z",
+            "isActive": true
+        },
+        {
+            "id": "coupon-004",
+            "code": "FREESHIP",
+            "description": "Free shipping on any order",
+            "type": "fixed",
+            "value": 49,
+            "minOrderAmount": 0,
+            "maxDiscount": null,
+            "usageLimit": null,
+            "usedCount": 2341,
+            "validFrom": "2026-01-01T00:00:00Z",
+            "validTo": "2026-06-30T23:59:59Z",
+            "isActive": true
+        }
+    ]
+}

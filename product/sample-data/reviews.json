@@ -1,0 +1,119 @@
+{
+    "reviews": [
+        {
+            "id": "rev-001",
+            "productId": "prod-001",
+            "userId": "user-001",
+            "userName": "Priya S.",
+            "rating": 5,
+            "title": "Beautiful saree!",
+            "content": "The saree is exactly as shown. Fabric quality is amazing and the color is so vibrant. Got so many compliments at the wedding I wore it to. Definitely worth the price!",
+            "images": [
+                "/images/reviews/rev-001-1.jpg",
+                "/images/reviews/rev-001-2.jpg"
+            ],
+            "isVerified": true,
+            "helpfulCount": 45,
+            "createdAt": "2026-02-05T10:30:00Z"
+        },
+        {
+            "id": "rev-002",
+            "productId": "prod-001",
+            "userId": "user-002",
+            "userName": "Anita M.",
+            "rating": 5,
+            "title": "Exceeded expectations",
+            "content": "I was a bit skeptical ordering online but this saree exceeded all my expectations. The silk is pure and the work is exquisite. Packaging was also premium.",
+            "images": [],
+            "isVerified": true,
+            "helpfulCount": 32,
+            "createdAt": "2026-01-28T14:15:00Z"
+        },
+        {
+            "id": "rev-003",
+            "productId": "prod-001",
+            "userId": "user-003",
+            "userName": "Kavitha R.",
+            "rating": 4,
+            "title": "Good quality, slight color difference",
+            "content": "The saree is of good quality and the fabric is nice. However, the color is slightly different from the pictures - a bit more orange than red. Still happy with the purchase.",
+            "images": [
+                "/images/reviews/rev-003-1.jpg"
+            ],
+            "isVerified": true,
+            "helpfulCount": 18,
+            "createdAt": "2026-01-20T09:45:00Z"
+        },
+        {
+            "id": "rev-004",
+            "productId": "prod-001",
+            "userId": "user-004",
+            "userName": "Lakshmi N.",
+            "rating": 5,
+            "title": "Perfect for my daughter's wedding",
+            "content": "Ordered this for my daughter's wedding and it was perfect. The patola work is traditional and authentic. Fast delivery too!",
+            "images": [
+                "/images/reviews/rev-004-1.jpg",
+                "/images/reviews/rev-004-2.jpg",
+                "/images/reviews/rev-004-3.jpg"
+            ],
+            "isVerified": true,
+            "helpfulCount": 67,
+            "createdAt": "2026-01-15T16:20:00Z"
+        },
+        {
+            "id": "rev-005",
+            "productId": "prod-002",
+            "userId": "user-005",
+            "userName": "Sneha G.",
+            "rating": 5,
+            "title": "Stunning Banarasi",
+            "content": "This Banarasi saree is absolutely stunning. The zari work is intricate and the silk quality is premium. Worth every rupee!",
+            "images": [
+                "/images/reviews/rev-005-1.jpg"
+            ],
+            "isVerified": true,
+            "helpfulCount": 28,
+            "createdAt": "2026-02-01T11:00:00Z"
+        },
+        {
+            "id": "rev-006",
+            "productId": "prod-003",
+            "userId": "user-006",
+            "userName": "Divya K.",
+            "rating": 5,
+            "title": "Best cotton saree for daily wear",
+            "content": "Super comfortable and the print is lovely. Perfect for work. I've already ordered two more colors!",
+            "images": [],
+            "isVerified": true,
+            "helpfulCount": 22,
+            "createdAt": "2026-01-25T08:30:00Z"
+        },
+        {
+            "id": "rev-007",
+            "productId": "prod-004",
+            "userId": "user-007",
+            "userName": "Rashmi P.",
+            "rating": 4,
+            "title": "Good blouse, sizing runs small",
+            "content": "The embroidery is beautiful and quality is good. However, sizing runs a bit small. Recommend ordering one size up.",
+            "images": [],
+            "isVerified": true,
+            "helpfulCount": 56,
+            "createdAt": "2026-01-30T13:45:00Z"
+        },
+        {
+            "id": "rev-008",
+            "productId": "prod-005",
+            "userId": "user-008",
+            "userName": "Pooja D.",
+            "rating": 5,
+            "title": "Perfect shapewear",
+            "content": "Finally found the perfect shapewear for sarees! Comfortable, doesn't roll up, and gives a smooth look. Already bought 3 more.",
+            "images": [],
+            "isVerified": true,
+            "helpfulCount": 89,
+            "createdAt": "2026-02-03T10:15:00Z"
+        }
+    ]
+}

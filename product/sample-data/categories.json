@@ -1,0 +1,84 @@
+{
+    "categories": [
+        {
+            "id": "cat-sarees",
+            "name": "Sarees",
+            "slug": "sarees",
+            "description": "Explore our exquisite collection of sarees",
+            "image": "/images/categories/sarees.jpg",
+            "parentId": null,
+            "order": 1,
+            "isActive": true
+        },
+        {
+            "id": "cat-silk-sarees",
+            "name": "Silk Sarees",
+            "slug": "silk-sarees",
+            "description": "Luxurious silk sarees for every occasion",
+            "image": "/images/categories/silk-sarees.jpg",
+            "parentId": "cat-sarees",
+            "order": 1,
+            "isActive": true
+        },
+        {
+            "id": "cat-cotton-sarees",
+            "name": "Cotton Sarees",
+            "slug": "cotton-sarees",
+            "description": "Comfortable cotton sarees for daily wear",
+            "image": "/images/categories/cotton-sarees.jpg",
+            "parentId": "cat-sarees",
+            "order": 2,
+            "isActive": true
+        },
+        {
+            "id": "cat-designer-sarees",
+            "name": "Designer Sarees",
+            "slug": "designer-sarees",
+            "description": "Premium designer sarees for special occasions",
+            "image": "/images/categories/designer-sarees.jpg",
+            "parentId": "cat-sarees",
+            "order": 3,
+            "isActive": true
+        },
+        {
+            "id": "cat-blouses",
+            "name": "Blouses",
+            "slug": "blouses",
+            "description": "Ready-made and designer blouses",
+            "image": "/images/categories/blouses.jpg",
+            "parentId": null,
+            "order": 2,
+            "isActive": true
+        },
+        {
+            "id": "cat-shapewear",
+            "name": "Shapewear",
+            "slug": "shapewear",
+            "description": "Comfortable shapewear for perfect draping",
+            "image": "/images/categories/shapewear.jpg",
+            "parentId": null,
+            "order": 3,
+            "isActive": true
+        },
+        {
+            "id": "cat-towels",
+            "name": "Towels",
+            "slug": "towels",
+            "description": "Premium quality bath and hand towels",
+            "image": "/images/categories/towels.jpg",
+            "parentId": null,
+            "order": 4,
+            "isActive": true
+        },
+        {
+            "id": "cat-essentials",
+            "name": "Essentials",
+            "slug": "essentials",
+            "description": "Daily essentials for women",
+            "image": "/images/categories/essentials.jpg",
+            "parentId": null,
+            "order": 5,
+            "isActive": true
+        }
+    ]
+}

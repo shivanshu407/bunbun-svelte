@@ -1,0 +1,480 @@
+{
+    "products": [
+        {
+            "id": "prod-001",
+            "name": "Red Silk Patola Saree",
+            "slug": "red-silk-patola-saree",
+            "description": "This stunning Red Silk Patola Saree is a true masterpiece of traditional Indian weaving. Featuring intricate double ikat patterns, this handcrafted saree showcases the rich heritage of Patan, Gujarat. The vibrant red color is perfect for festive occasions and weddings.",
+            "shortDescription": "Handcrafted Patola silk saree with traditional double ikat patterns",
+            "categoryId": "cat-silk-sarees",
+            "images": [
+                {
+                    "id": "img-001-1",
+                    "url": "/images/products/red-patola-1.jpg",
+                    "alt": "Red Silk Patola Saree - Front View",
+                    "order": 1
+                },
+                {
+                    "id": "img-001-2",
+                    "url": "/images/products/red-patola-2.jpg",
+                    "alt": "Red Silk Patola Saree - Pallu Detail",
+                    "order": 2
+                },
+                {
+                    "id": "img-001-3",
+                    "url": "/images/products/red-patola-3.jpg",
+                    "alt": "Red Silk Patola Saree - Border Detail",
+                    "order": 3
+                }
+            ],
+            "variants": [
+                {
+                    "id": "var-001-1",
+                    "size": "Free Size",
+                    "color": "Red",
+                    "colorHex": "#DC2626",
+                    "sku": "BBC-SAR-001-RED",
+                    "price": 1999,
+                    "salePrice": 899,
+                    "stock": 25,
+                    "isAvailable": true
+                }
+            ],
+            "basePrice": 1999,
+            "salePrice": 899,
+            "discount": 55,
+            "rating": 4.8,
+            "reviewCount": 256,
+            "tags": [
+                "silk",
+                "patola",
+                "wedding",
+                "festive",
+                "traditional"
+            ],
+            "isFeatured": true,
+            "isTrending": true,
+            "isBestseller": true,
+            "isNewArrival": false,
+            "fabric": "Pure Silk",
+            "careInstructions": "Dry clean only. Store in muslin cloth.",
+            "specifications": {
+                "Length": "5.5 meters",
+                "Width": "1.1 meters",
+                "Weight": "450 grams",
+                "Blouse Piece": "Included (0.8 meters)"
+            }
+        },
+        {
+            "id": "prod-002",
+            "name": "Blue Banarasi Silk Saree",
+            "slug": "blue-banarasi-silk-saree",
+            "description": "Elegant Blue Banarasi Silk Saree with intricate gold zari work. This exquisite piece features traditional motifs that reflect the rich weaving heritage of Varanasi. Perfect for weddings and grand celebrations.",
+            "shortDescription": "Premium Banarasi silk with gold zari work",
+            "categoryId": "cat-silk-sarees",
+            "images": [
+                {
+                    "id": "img-002-1",
+                    "url": "/images/products/blue-banarasi-1.jpg",
+                    "alt": "Blue Banarasi Silk Saree",
+                    "order": 1
+                },
+                {
+                    "id": "img-002-2",
+                    "url": "/images/products/blue-banarasi-2.jpg",
+                    "alt": "Blue Banarasi - Zari Detail",
+                    "order": 2
+                }
+            ],
+            "variants": [
+                {
+                    "id": "var-002-1",
+                    "size": "Free Size",
+                    "color": "Royal Blue",
+                    "colorHex": "#1E40AF",
+                    "sku": "BBC-SAR-002-BLU",
+                    "price": 2499,
+                    "salePrice": 1299,
+                    "stock": 15,
+                    "isAvailable": true
+                },
+                {
+                    "id": "var-002-2",
+                    "size": "Free Size",
+                    "color": "Navy",
+                    "colorHex": "#1E3A5F",
+                    "sku": "BBC-SAR-002-NAV",
+                    "price": 2499,
+                    "salePrice": 1299,
+                    "stock": 8,
+                    "isAvailable": true
+                }
+            ],
+            "basePrice": 2499,
+            "salePrice": 1299,
+            "discount": 48,
+            "rating": 4.7,
+            "reviewCount": 189,
+            "tags": [
+                "silk",
+                "banarasi",
+                "wedding",
+                "zari",
+                "traditional"
+            ],
+            "isFeatured": true,
+            "isTrending": true,
+            "isBestseller": false,
+            "isNewArrival": false,
+            "fabric": "Pure Banarasi Silk",
+            "careInstructions": "Dry clean only"
+        },
+        {
+            "id": "prod-003",
+            "name": "Pink Cotton Printed Saree",
+            "slug": "pink-cotton-printed-saree",
+            "description": "Lightweight and comfortable Pink Cotton Printed Saree, perfect for daily wear. Features beautiful floral prints and a soft texture that keeps you cool throughout the day.",
+            "shortDescription": "Comfortable printed cotton saree for daily wear",
+            "categoryId": "cat-cotton-sarees",
+            "images": [
+                {
+                    "id": "img-003-1",
+                    "url": "/images/products/pink-cotton-1.jpg",
+                    "alt": "Pink Cotton Saree",
+                    "order": 1
+                }
+            ],
+            "variants": [
+                {
+                    "id": "var-003-1",
+                    "size": "Free Size",
+                    "color": "Pink",
+                    "colorHex": "#EC4899",
+                    "sku": "BBC-SAR-003-PNK",
+                    "price": 799,
+                    "salePrice": 499,
+                    "stock": 50,
+                    "isAvailable": true
+                }
+            ],
+            "basePrice": 799,
+            "salePrice": 499,
+            "discount": 38,
+            "rating": 4.5,
+            "reviewCount": 342,
+            "tags": [
+                "cotton",
+                "printed",
+                "daily",
+                "casual",
+                "lightweight"
+            ],
+            "isFeatured": false,
+            "isTrending": false,
+            "isBestseller": true,
+            "isNewArrival": false,
+            "fabric": "100% Cotton",
+            "careInstructions": "Machine wash cold. Tumble dry low."
+        },
+        {
+            "id": "prod-004",
+            "name": "Designer Embroidered Blouse - White",
+            "slug": "designer-embroidered-blouse-white",
+            "description": "Elegant white designer blouse with intricate embroidery. Perfect to pair with silk and designer sarees for festive occasions.",
+            "shortDescription": "Ready-made designer blouse with embroidery",
+            "categoryId": "cat-blouses",
+            "images": [
+                {
+                    "id": "img-004-1",
+                    "url": "/images/products/white-blouse-1.jpg",
+                    "alt": "White Embroidered Blouse",
+                    "order": 1
+                }
+            ],
+            "variants": [
+                {
+                    "id": "var-004-1",
+                    "size": "S",
+                    "color": "White",
+                    "colorHex": "#FFFFFF",
+                    "sku": "BBC-BLS-004-WHT-S",
+                    "price": 699,
+                    "salePrice": 499,
+                    "stock": 20,
+                    "isAvailable": true
+                },
+                {
+                    "id": "var-004-2",
+                    "size": "M",
+                    "color": "White",
+                    "colorHex": "#FFFFFF",
+                    "sku": "BBC-BLS-004-WHT-M",
+                    "price": 699,
+                    "salePrice": 499,
+                    "stock": 25,
+                    "isAvailable": true
+                },
+                {
+                    "id": "var-004-3",
+                    "size": "L",
+                    "color": "White",
+                    "colorHex": "#FFFFFF",
+                    "sku": "BBC-BLS-004-WHT-L",
+                    "price": 699,
+                    "salePrice": 499,
+                    "stock": 18,
+                    "isAvailable": true
+                },
+                {
+                    "id": "var-004-4",
+                    "size": "XL",
+                    "color": "White",
+                    "colorHex": "#FFFFFF",
+                    "sku": "BBC-BLS-004-WHT-XL",
+                    "price": 699,
+                    "salePrice": 499,
+                    "stock": 12,
+                    "isAvailable": true
+                }
+            ],
+            "basePrice": 699,
+            "salePrice": 499,
+            "discount": 29,
+            "rating": 4.6,
+            "reviewCount": 178,
+            "tags": [
+                "blouse",
+                "designer",
+                "embroidered",
+                "ready-made",
+                "festive"
+            ],
+            "isFeatured": false,
+            "isTrending": true,
+            "isBestseller": false,
+            "isNewArrival": true,
+            "fabric": "Silk Blend",
+            "careInstructions": "Dry clean recommended"
+        },
+        {
+            "id": "prod-005",
+            "name": "Saree Shapewear Petticoat - Black",
+            "slug": "saree-shapewear-petticoat-black",
+            "description": "High-quality saree shapewear petticoat that provides a smooth silhouette. Comfortable elastic waist and breathable fabric for all-day wear.",
+            "shortDescription": "Comfortable shapewear petticoat for perfect draping",
+            "categoryId": "cat-shapewear",
+            "images": [
+                {
+                    "id": "img-005-1",
+                    "url": "/images/products/shapewear-black-1.jpg",
+                    "alt": "Black Shapewear Petticoat",
+                    "order": 1
+                }
+            ],
+            "variants": [
+                {
+                    "id": "var-005-1",
+                    "size": "M",
+                    "color": "Black",
+                    "colorHex": "#000000",
+                    "sku": "BBC-SHP-005-BLK-M",
+                    "price": 599,
+                    "salePrice": 399,
+                    "stock": 40,
+                    "isAvailable": true
+                },
+                {
+                    "id": "var-005-2",
+                    "size": "L",
+                    "color": "Black",
+                    "colorHex": "#000000",
+                    "sku": "BBC-SHP-005-BLK-L",
+                    "price": 599,
+                    "salePrice": 399,
+                    "stock": 35,
+                    "isAvailable": true
+                },
+                {
+                    "id": "var-005-3",
+                    "size": "XL",
+                    "color": "Black",
+                    "colorHex": "#000000",
+                    "sku": "BBC-SHP-005-BLK-XL",
+                    "price": 599,
+                    "salePrice": 399,
+                    "stock": 30,
+                    "isAvailable": true
+                }
+            ],
+            "basePrice": 599,
+            "salePrice": 399,
+            "discount": 33,
+            "rating": 4.4,
+            "reviewCount": 521,
+            "tags": [
+                "shapewear",
+                "petticoat",
+                "innerwear",
+                "comfortable"
+            ],
+            "isFeatured": false,
+            "isTrending": false,
+            "isBestseller": true,
+            "isNewArrival": false,
+            "fabric": "Cotton Lycra Blend",
+            "careInstructions": "Machine wash cold"
+        },
+        {
+            "id": "prod-006",
+            "name": "Green Kanjivaram Silk Saree",
+            "slug": "green-kanjivaram-silk-saree",
+            "description": "Authentic Kanjivaram silk saree in rich green with traditional temple border. An investment piece for your ethnic wardrobe.",
+            "shortDescription": "Authentic Kanjivaram with temple border",
+            "categoryId": "cat-silk-sarees",
+            "images": [
+                {
+                    "id": "img-006-1",
+                    "url": "/images/products/green-kanjivaram-1.jpg",
+                    "alt": "Green Kanjivaram Saree",
+                    "order": 1
+                }
+            ],
+            "variants": [
+                {
+                    "id": "var-006-1",
+                    "size": "Free Size",
+                    "color": "Emerald Green",
+                    "colorHex": "#059669",
+                    "sku": "BBC-SAR-006-GRN",
+                    "price": 3999,
+                    "salePrice": 2499,
+                    "stock": 10,
+                    "isAvailable": true
+                }
+            ],
+            "basePrice": 3999,
+            "salePrice": 2499,
+            "discount": 38,
+            "rating": 4.9,
+            "reviewCount": 89,
+            "tags": [
+                "silk",
+                "kanjivaram",
+                "wedding",
+                "premium",
+                "traditional"
+            ],
+            "isFeatured": true,
+            "isTrending": false,
+            "isBestseller": false,
+            "isNewArrival": true,
+            "fabric": "Pure Kanjivaram Silk",
+            "careInstructions": "Dry clean only. Store carefully."
+        },
+        {
+            "id": "prod-007",
+            "name": "Premium Bath Towel Set",
+            "slug": "premium-bath-towel-set",
+            "description": "Luxuriously soft premium bath towel set. Highly absorbent, quick-drying, and perfect for everyday use.",
+            "shortDescription": "Set of 2 premium quality bath towels",
+            "categoryId": "cat-towels",
+            "images": [
+                {
+                    "id": "img-007-1",
+                    "url": "/images/products/towel-set-1.jpg",
+                    "alt": "Premium Bath Towel Set",
+                    "order": 1
+                }
+            ],
+            "variants": [
+                {
+                    "id": "var-007-1",
+                    "size": "Large",
+                    "color": "White",
+                    "colorHex": "#FFFFFF",
+                    "sku": "BBC-TWL-007-WHT",
+                    "price": 999,
+                    "salePrice": 699,
+                    "stock": 60,
+                    "isAvailable": true
+                },
+                {
+                    "id": "var-007-2",
+                    "size": "Large",
+                    "color": "Grey",
+                    "colorHex": "#6B7280",
+                    "sku": "BBC-TWL-007-GRY",
+                    "price": 999,
+                    "salePrice": 699,
+                    "stock": 45,
+                    "isAvailable": true
+                }
+            ],
+            "basePrice": 999,
+            "salePrice": 699,
+            "discount": 30,
+            "rating": 4.3,
+            "reviewCount": 234,
+            "tags": [
+                "towel",
+                "bath",
+                "premium",
+                "cotton",
+                "home"
+            ],
+            "isFeatured": false,
+            "isTrending": false,
+            "isBestseller": true,
+            "isNewArrival": false,
+            "fabric": "100% Cotton Terry",
+            "careInstructions": "Machine wash warm"
+        },
+        {
+            "id": "prod-008",
+            "name": "Yellow Georgette Party Saree",
+            "slug": "yellow-georgette-party-saree",
+            "description": "Stunning yellow georgette saree with sequin work. Lightweight and perfect for parties and celebrations.",
+            "shortDescription": "Lightweight georgette with sequin detailing",
+            "categoryId": "cat-designer-sarees",
+            "images": [
+                {
+                    "id": "img-008-1",
+                    "url": "/images/products/yellow-georgette-1.jpg",
+                    "alt": "Yellow Georgette Saree",
+                    "order": 1
+                }
+            ],
+            "variants": [
+                {
+                    "id": "var-008-1",
+                    "size": "Free Size",
+                    "color": "Yellow",
+                    "colorHex": "#EAB308",
+                    "sku": "BBC-SAR-008-YLW",
+                    "price": 1499,
+                    "salePrice": 899,
+                    "stock": 22,
+                    "isAvailable": true
+                }
+            ],
+            "basePrice": 1499,
+            "salePrice": 899,
+            "discount": 40,
+            "rating": 4.6,
+            "reviewCount": 156,
+            "tags": [
+                "georgette",
+                "party",
+                "sequin",
+                "designer",
+                "lightweight"
+            ],
+            "isFeatured": false,
+            "isTrending": true,
+            "isBestseller": false,
+            "isNewArrival": true,
+            "fabric": "Georgette",
+            "careInstructions": "Dry clean only"
+        }
+    ]
+}
