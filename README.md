@@ -1,6 +1,6 @@
 # BunBunClothing 🐰👗
 
-A modern, full-stack e-commerce platform built for selling ethnic wear (Sarees, Blouses, etc.) with a premium user experience. Built with SvelteKit, Prisma, and Tailwind CSS.
+A modern, full-stack e-commerce platform built for selling ethnic wear (Sarees, suits, etc.) with a premium user experience. Built with SvelteKit, Prisma, and Tailwind CSS.
 
 ![BunBunClothing Preview](/static/og-image.png)
 
