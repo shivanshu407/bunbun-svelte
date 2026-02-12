@@ -5,8 +5,8 @@
         RotateCcw,
         Shield,
         BadgeCheck,
-        Heart,
     } from "lucide-svelte";
+    import ProductCard from "$lib/components/product/ProductCard.svelte";
     import { formatPrice } from "$lib/utils";
 
     let { data } = $props();
@@ -146,74 +146,7 @@
             class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6"
         >
             {#each data.trending as product}
-                <a
-                    href="/products/{product.slug}"
-                    class="group bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all"
-                >
-                    <div
-                        class="aspect-[3/4] bg-gradient-to-br from-stone-100 to-stone-200 relative overflow-hidden"
-                    >
-                        {#if product.images[0]}
-                            <img
-                                src={product.images[0].url}
-                                alt={product.name}
-                                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                            />
-                        {:else}
-                            <div
-                                class="w-full h-full flex items-center justify-center text-stone-300"
-                            >
-                                <p class="text-5xl">👗</p>
-                            </div>
-                        {/if}
-                        {#if product.discount}
-                            <span
-                                class="absolute top-3 left-3 px-2 py-1 bg-rose-500 text-white text-xs font-bold rounded-md"
-                                >-{product.discount}%</span
-                            >
-                        {/if}
-                        <button
-                            class="absolute top-3 right-3 w-8 h-8 bg-white/80 backdrop-blur-sm rounded-full flex items-center justify-center text-stone-400 hover:text-rose-500 opacity-0 group-hover:opacity-100 transition-all"
-                        >
-                            <Heart size={16} />
-                        </button>
-                    </div>
-                    <div class="p-3 md:p-4">
-                        <h3 class="text-sm font-medium text-stone-800 truncate">
-                            {product.name}
-                        </h3>
-                        {#if product.rating > 0}
-                            <div class="flex items-center gap-1 mt-1">
-                                {#each Array(5) as _, i}
-                                    <span
-                                        class="text-xs {i <
-                                        Math.round(product.rating)
-                                            ? 'text-amber-400'
-                                            : 'text-stone-200'}">★</span
-                                    >
-                                {/each}
-                                <span class="text-xs text-stone-400 ml-1"
-                                    >({product.reviewCount})</span
-                                >
-                            </div>
-                        {/if}
-                        <div class="flex items-center gap-2 mt-2">
-                            {#if product.salePrice}
-                                <span class="text-base font-bold text-rose-600"
-                                    >{formatPrice(product.salePrice)}</span
-                                >
-                                <span
-                                    class="text-sm text-stone-400 line-through"
-                                    >{formatPrice(product.basePrice)}</span
-                                >
-                            {:else}
-                                <span class="text-base font-bold text-stone-900"
-                                    >{formatPrice(product.basePrice)}</span
-                                >
-                            {/if}
-                        </div>
-                    </div>
-                </a>
+                <ProductCard {product} />
             {:else}
                 <p class="col-span-full text-center text-stone-400 py-12">
                     No products available yet
@@ -285,74 +218,7 @@
             class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6"
         >
             {#each data.bestsellers as product}
-                <a
-                    href="/products/{product.slug}"
-                    class="group bg-white rounded-xl overflow-hidden border border-stone-200 hover:shadow-md transition-all"
-                >
-                    <div
-                        class="aspect-[3/4] bg-gradient-to-br from-stone-100 to-stone-200 relative overflow-hidden"
-                    >
-                        {#if product.images[0]}
-                            <img
-                                src={product.images[0].url}
-                                alt={product.name}
-                                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                            />
-                        {:else}
-                            <div
-                                class="w-full h-full flex items-center justify-center text-stone-300"
-                            >
-                                <p class="text-5xl">👚</p>
-                            </div>
-                        {/if}
-                        {#if product.discount}
-                            <span
-                                class="absolute top-3 left-3 px-2 py-1 bg-amber-500 text-white text-xs font-bold rounded-md"
-                                >-{product.discount}%</span
-                            >
-                        {/if}
-                        <button
-                            class="absolute top-3 right-3 w-8 h-8 bg-white/80 backdrop-blur-sm rounded-full flex items-center justify-center text-stone-400 hover:text-rose-500 opacity-0 group-hover:opacity-100 transition-all"
-                        >
-                            <Heart size={16} />
-                        </button>
-                    </div>
-                    <div class="p-3 md:p-4">
-                        <h3 class="text-sm font-medium text-stone-800 truncate">
-                            {product.name}
-                        </h3>
-                        {#if product.rating > 0}
-                            <div class="flex items-center gap-1 mt-1">
-                                {#each Array(5) as _, i}
-                                    <span
-                                        class="text-xs {i <
-                                        Math.round(product.rating)
-                                            ? 'text-amber-400'
-                                            : 'text-stone-200'}">★</span
-                                    >
-                                {/each}
-                                <span class="text-xs text-stone-400 ml-1"
-                                    >({product.reviewCount})</span
-                                >
-                            </div>
-                        {/if}
-                        <div class="flex items-center gap-2 mt-2">
-                            {#if product.salePrice}
-                                <span class="text-base font-bold text-rose-600"
-                                    >{formatPrice(product.salePrice)}</span
-                                >
-                                <span
-                                    class="text-sm text-stone-400 line-through"
-                                    >{formatPrice(product.basePrice)}</span
-                                >
-                            {:else}
-                                <span class="text-base font-bold text-stone-900"
-                                    >{formatPrice(product.basePrice)}</span
-                                >
-                            {/if}
-                        </div>
-                    </div>
-                </a>
+                <ProductCard {product} />
             {:else}
                 <p class="col-span-full text-center text-stone-400 py-12">
                     No products available yet
