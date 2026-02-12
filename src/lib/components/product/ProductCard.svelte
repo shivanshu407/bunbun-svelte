@@ -45,6 +45,20 @@
         aria-label="View {product.name}"
     ></a>
 
+    <!-- Wishlist -->
+    <button
+        onclick={toggleWishlist}
+        class="absolute top-3 right-3 p-2 bg-white/80 hover:bg-white rounded-full shadow-sm transition-all opacity-0 group-hover:opacity-100 z-20 cursor-pointer"
+        aria-label="Add to wishlist"
+    >
+        <Heart
+            size={18}
+            class={wishlisted
+                ? "fill-rose-500 text-rose-500"
+                : "text-stone-600"}
+        />
+    </button>
+
     <!-- Image -->
     <div class="relative aspect-[3/4] bg-stone-100 overflow-hidden">
         {#if product.images.length > 0}
@@ -87,20 +101,6 @@
                 >
             {/if}
         </div>
-
-        <!-- Wishlist -->
-        <button
-            onclick={toggleWishlist}
-            class="absolute top-3 right-3 p-2 bg-white/80 hover:bg-white rounded-full shadow-sm transition-all opacity-0 group-hover:opacity-100 z-20 cursor-pointer"
-            aria-label="Add to wishlist"
-        >
-            <Heart
-                size={18}
-                class={wishlisted
-                    ? "fill-rose-500 text-rose-500"
-                    : "text-stone-600"}
-            />
-        </button>
 
         <!-- Quick View on Hover -->
         <div
