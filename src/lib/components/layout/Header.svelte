@@ -17,23 +17,26 @@
 <header class="bg-white border-b border-stone-200 sticky top-0 z-40">
 	<div class="max-w-7xl mx-auto px-4">
 		<div class="flex items-center justify-between h-16">
-			<!-- Mobile: Hamburger -->
-			<button
-				onclick={onMenuToggle}
-				class="lg:hidden p-2 -ml-2 text-stone-700 hover:text-rose-600 transition-colors"
-				aria-label="Open menu"
-			>
-				<Menu size={24} />
-			</button>
-
-			<!-- Logo -->
-			<a href="/" class="flex-shrink-0">
-				<span
-					class="text-2xl font-bold font-[family-name:var(--font-heading)] text-stone-900"
+			<!-- Left Section: Hamburger + Logo -->
+			<div class="flex items-center gap-2 lg:gap-0">
+				<!-- Mobile: Hamburger -->
+				<button
+					onclick={onMenuToggle}
+					class="lg:hidden p-2 -ml-2 text-stone-700 hover:text-rose-600 transition-colors"
+					aria-label="Open menu"
 				>
-					Bun<span class="text-rose-500">Bun</span>
-				</span>
-			</a>
+					<Menu size={24} />
+				</button>
+
+				<!-- Logo -->
+				<a href="/" class="flex-shrink-0">
+					<span
+						class="text-2xl font-bold font-[family-name:var(--font-heading)] text-stone-900"
+					>
+						Bun<span class="text-rose-500">Bun</span>
+					</span>
+				</a>
+			</div>
 
 			<!-- Desktop Search Bar -->
 			<div class="hidden lg:flex flex-1 max-w-lg mx-8">
