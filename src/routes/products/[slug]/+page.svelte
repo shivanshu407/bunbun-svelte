@@ -15,14 +15,31 @@
     import { cartItems, cartDrawerOpen } from "$lib/stores/cart";
     import { formatPrice, calculateDiscount } from "$lib/utils";
     import ProductCard from "$lib/components/product/ProductCard.svelte";
+    import { recentlyViewed } from "$lib/stores/recentlyViewed";
+    import { wishlistIds } from "$lib/stores/wishlist";
 
     let { data } = $props();
-    const { product, coupons, related } = data;
+    let product = $derived(data.product);
+    let coupons = $derived(data.coupons);
+    let related = $derived(data.related);
 
     let selectedVariant = $state(product.variants[0] ?? null);
     let quantity = $state(1);
     let activeImage = $state(0);
-    let wishlisted = $state(false);
+
+    // Sync wishlist with global store
+    let wishlistSet = $state<Set<string>>(new Set());
+    wishlistIds.subscribe((v) => (wishlistSet = v));
+    let wishlisted = $derived(wishlistSet.has(product.id));
+
+    // Reset state when product changes (navigation)
+    $effect(() => {
+        // We use the ID to detect change
+        const _id = product.id;
+        selectedVariant = product.variants[0] ?? null;
+        quantity = 1;
+        activeImage = 0;
+    });
 
     let displayPrice = $derived(
         selectedVariant?.salePrice ??
@@ -62,9 +79,9 @@
     }
 
     function toggleWishlist() {
-        wishlisted = !wishlisted;
+        const added = wishlistIds.toggle(product.id);
         fetch(`/api/wishlist/${product.id}`, {
-            method: wishlisted ? "POST" : "DELETE",
+            method: added ? "POST" : "DELETE",
         });
     }
 
@@ -75,6 +92,26 @@
     let colors = $derived([
         ...new Set(product.variants.map((v: any) => v.color).filter(Boolean)),
     ]);
+
+    // Track recently viewed
+    $effect(() => {
+        recentlyViewed.addProduct({
+            id: product.id,
+            name: product.name,
+            slug: product.slug,
+            basePrice: product.basePrice,
+            salePrice: product.salePrice,
+            rating: product.rating,
+            reviewCount: product.reviewCount,
+            isTrending: product.isTrending,
+            isNewArrival: product.isNewArrival,
+            images: product.images,
+        });
+    });
+
+    let viewHistory = $derived(
+        $recentlyViewed.filter((i) => i.id !== product.id),
+    );
 </script>
 
 <svelte:head>
@@ -437,6 +474,22 @@
                             ).toLocaleDateString("en-IN")}
                         </p>
                     </div>
+                {/each}
+            </div>
+        </section>
+    {/if}
+
+    <!-- Recently Viewed -->
+    {#if viewHistory.length > 0}
+        <section class="mt-16 pt-16 border-t border-stone-200">
+            <h2
+                class="text-xl font-semibold font-[family-name:var(--font-heading)] text-stone-900 mb-6"
+            >
+                Recently Viewed
+            </h2>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+                {#each viewHistory as historyItem (historyItem.id)}
+                    <ProductCard product={historyItem} />
                 {/each}
             </div>
         </section>
