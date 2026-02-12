@@ -3,11 +3,24 @@
     import { quintOut } from "svelte/easing";
     import { fly } from "svelte/transition";
     import { X, CheckCircle, AlertCircle, Info } from "lucide-svelte";
+    import { browser } from "$app/environment";
 
     let toasts = $state<any[]>([]);
+    let isMobile = $state(false);
 
     toast.subscribe((value) => {
         toasts = value;
+    });
+
+    $effect(() => {
+        if (browser) {
+            const checkMobile = () => {
+                isMobile = window.innerWidth < 768; // md breakpoint
+            };
+            checkMobile();
+            window.addEventListener("resize", checkMobile);
+            return () => window.removeEventListener("resize", checkMobile);
+        }
     });
 
     function getIcon(type: string) {
@@ -34,16 +47,16 @@
 </script>
 
 <div
-    class="fixed bottom-4 right-4 z-50 flex flex-col gap-2 max-w-sm w-full pointer-events-none"
+    class="fixed top-4 left-4 right-4 md:top-auto md:bottom-4 md:right-4 md:left-auto md:w-full md:max-w-sm z-50 flex flex-col gap-2 pointer-events-none"
 >
     {#each toasts as t (t.id)}
         {@const Icon = getIcon(t.type)}
         <div
-            in:fly={{ y: 20, duration: 300, easing: quintOut }}
+            in:fly={{ y: isMobile ? -20 : 20, duration: 300, easing: quintOut }}
             out:fly={{ x: 100, duration: 300, opacity: 0 }}
             class="pointer-events-auto flex items-start gap-3 p-4 rounded-lg border shadow-lg {getColor(
                 t.type,
-            )}"
+            )} bg-white"
         >
             <div class="flex-shrink-0 mt-0.5">
                 <Icon size={20} />
