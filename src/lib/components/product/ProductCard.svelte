@@ -48,7 +48,7 @@
     <!-- Wishlist -->
     <button
         onclick={toggleWishlist}
-        class="absolute top-3 right-3 p-2 bg-white/80 hover:bg-white rounded-full shadow-sm transition-all opacity-0 group-hover:opacity-100 z-20 cursor-pointer"
+        class="absolute top-3 right-3 p-2 bg-white/80 hover:bg-white rounded-full shadow-sm transition-all opacity-100 md:opacity-0 group-hover:opacity-100 z-20 cursor-pointer"
         aria-label="Add to wishlist"
     >
         <Heart
