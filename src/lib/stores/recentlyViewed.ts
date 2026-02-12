@@ -39,7 +39,7 @@ function createRecentlyViewedStore() {
                 // Remove if already exists to move it to the top
                 const filtered = items.filter((item) => item.id !== product.id);
                 // Add to start
-                const updated = [product, ...filtered].slice(0, 10); // Keep last 10
+                const updated = [product, ...filtered].slice(0, 8); // Keep last 8
 
                 localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
                 return updated;

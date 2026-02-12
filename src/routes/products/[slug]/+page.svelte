@@ -487,9 +487,13 @@
             >
                 Recently Viewed
             </h2>
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+            <div
+                class="flex gap-4 overflow-x-auto pb-4 snap-x snap-mandatory scrollbar-hide"
+            >
                 {#each viewHistory as historyItem (historyItem.id)}
-                    <ProductCard product={historyItem} />
+                    <div class="flex-shrink-0 w-48 snap-start">
+                        <ProductCard product={historyItem} />
+                    </div>
                 {/each}
             </div>
         </section>
