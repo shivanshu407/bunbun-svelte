@@ -1,11 +1,30 @@
 <script lang="ts">
     import { enhance } from "$app/forms";
+    import { page } from "$app/stores";
+    import { toast } from "$lib/stores/toast";
     import { Eye, EyeOff, Mail, Lock, ArrowRight } from "lucide-svelte";
 
-    let { form } = $props();
+    let { form } = $props<{ form: any }>();
 
     let showPassword = $state(false);
     let loading = $state(false);
+
+    $effect(() => {
+        if ($page.url.searchParams.get("wishlist")) {
+            // Tiny delay to ensure toast component is ready
+            setTimeout(() => {
+                toast.add(
+                    "Login to save your wishlist and never lose it",
+                    "error",
+                    5000,
+                );
+            }, 100);
+            // Clean up URL
+            const url = new URL(window.location.href);
+            url.searchParams.delete("wishlist");
+            window.history.replaceState({}, "", url);
+        }
+    });
 </script>
 
 <svelte:head>

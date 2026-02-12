@@ -82,8 +82,7 @@
 
     function toggleWishlist() {
         if (!$currentUser) {
-            toast.add("Login to save your wishlist and never lose it", "error");
-            window.location.href = "/login";
+            window.location.href = "/login?wishlist=true";
             return;
         }
 
