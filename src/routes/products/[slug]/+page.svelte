@@ -17,6 +17,8 @@
     import ProductCard from "$lib/components/product/ProductCard.svelte";
     import { recentlyViewed } from "$lib/stores/recentlyViewed";
     import { wishlistIds } from "$lib/stores/wishlist";
+    import { currentUser } from "$lib/stores/user";
+    import { toast } from "$lib/stores/toast";
 
     let { data } = $props();
     let product = $derived(data.product);
@@ -79,6 +81,12 @@
     }
 
     function toggleWishlist() {
+        if (!$currentUser) {
+            toast.add("Login to save your wishlist and never lose it", "error");
+            window.location.href = "/login";
+            return;
+        }
+
         const added = wishlistIds.toggle(product.id);
         fetch(`/api/wishlist/${product.id}`, {
             method: added ? "POST" : "DELETE",

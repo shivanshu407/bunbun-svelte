@@ -2,6 +2,8 @@
     import { Heart } from "lucide-svelte";
     import { formatPrice, calculateDiscount } from "$lib/utils";
     import { wishlistIds } from "$lib/stores/wishlist";
+    import { currentUser } from "$lib/stores/user";
+    import { toast } from "$lib/stores/toast";
 
     interface Props {
         product: {
@@ -28,6 +30,13 @@
     function toggleWishlist(e: Event) {
         e.preventDefault();
         e.stopPropagation();
+
+        if (!$currentUser) {
+            toast.add("Login to save your wishlist and never lose it", "error");
+            window.location.href = "/login";
+            return;
+        }
+
         const added = wishlistIds.toggle(product.id);
         fetch(`/api/wishlist/${product.id}`, {
             method: added ? "POST" : "DELETE",
