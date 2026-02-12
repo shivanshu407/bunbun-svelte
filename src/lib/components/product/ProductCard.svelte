@@ -35,10 +35,16 @@
     }
 </script>
 
-<a
-    href="/products/{product.slug}"
-    class="group block bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300"
+<div
+    class="group relative block bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300"
 >
+    <!-- Full card link -->
+    <a
+        href="/products/{product.slug}"
+        class="absolute inset-0 z-10"
+        aria-label="View {product.name}"
+    ></a>
+
     <!-- Image -->
     <div class="relative aspect-[3/4] bg-stone-100 overflow-hidden">
         {#if product.images.length > 0}
@@ -57,7 +63,9 @@
         {/if}
 
         <!-- Badges -->
-        <div class="absolute top-3 left-3 flex flex-col gap-1.5">
+        <div
+            class="absolute top-3 left-3 flex flex-col gap-1.5 pointer-events-none"
+        >
             {#if product.salePrice}
                 <span class="discount-badge"
                     >-{calculateDiscount(
@@ -83,7 +91,7 @@
         <!-- Wishlist -->
         <button
             onclick={toggleWishlist}
-            class="absolute top-3 right-3 p-2 bg-white/80 hover:bg-white rounded-full shadow-sm transition-all opacity-0 group-hover:opacity-100"
+            class="absolute top-3 right-3 p-2 bg-white/80 hover:bg-white rounded-full shadow-sm transition-all opacity-0 group-hover:opacity-100 z-20 cursor-pointer"
             aria-label="Add to wishlist"
         >
             <Heart
@@ -96,7 +104,7 @@
 
         <!-- Quick View on Hover -->
         <div
-            class="absolute bottom-0 left-0 right-0 p-3 translate-y-full group-hover:translate-y-0 transition-transform duration-300"
+            class="absolute bottom-0 left-0 right-0 p-3 translate-y-full group-hover:translate-y-0 transition-transform duration-300 pointer-events-none"
         >
             <span
                 class="block w-full py-2.5 bg-stone-900/90 text-white text-center text-sm font-medium rounded-lg backdrop-blur-sm"
@@ -144,4 +152,4 @@
             {/if}
         </div>
     </div>
-</a>
+</div>
