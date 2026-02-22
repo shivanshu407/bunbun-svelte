@@ -8,6 +8,10 @@ node_modules
 /.svelte-kit
 /build
 
+# Uploads (user-uploaded images)
+/static/uploads/*
+!/static/uploads/.gitkeep
+
 # OS
 .DS_Store
 Thumbs.db
