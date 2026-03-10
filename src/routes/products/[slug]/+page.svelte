@@ -40,6 +40,8 @@
         // We use the ID to detect change
         const _id = product.id;
         selectedVariant = product.variants[0] ?? null;
+        selectedSize = product.variants[0]?.size ?? null;
+        selectedColor = product.variants[0]?.color ?? null;
         quantity = 1;
         activeImage = 0;
     });
@@ -100,6 +102,29 @@
     let colors = $derived([
         ...new Set(product.variants.map((v: any) => v.color).filter(Boolean)),
     ]);
+
+    // Independent size/color selection state
+    let selectedSize = $state(product.variants[0]?.size ?? null);
+    let selectedColor = $state(product.variants[0]?.color ?? null);
+
+    // Find the matching variant from size + color combination
+    let matchingVariant = $derived(() => {
+        return (
+            product.variants.find((v: any) => {
+                const sizeMatch = !selectedSize || v.size === selectedSize;
+                const colorMatch = !selectedColor || v.color === selectedColor;
+                return sizeMatch && colorMatch;
+            }) ??
+            product.variants[0] ??
+            null
+        );
+    });
+
+    // Keep selectedVariant in sync
+    $effect(() => {
+        const match = matchingVariant();
+        if (match) selectedVariant = match;
+    });
 
     // Track recently viewed
     $effect(() => {
@@ -291,16 +316,23 @@
                         Size
                     </h3>
                     <div class="flex flex-wrap gap-2">
-                        {#each product.variants.filter((v: any) => v.size) as variant}
+                        {#each sizes as size}
+                            {@const variantsWithSize = product.variants.filter(
+                                (v: any) => v.size === size,
+                            )}
+                            {@const outOfStock = variantsWithSize.every(
+                                (v: any) => v.stock === 0,
+                            )}
                             <button
-                                onclick={() => (selectedVariant = variant)}
+                                onclick={() => (selectedSize = size)}
+                                disabled={outOfStock}
                                 class="px-4 py-2 border rounded-lg text-sm font-medium transition-all
-									{selectedVariant?.id === variant.id
+									{selectedSize === size
                                     ? 'border-rose-500 bg-rose-50 text-rose-700'
                                     : 'border-stone-300 text-stone-700 hover:border-rose-300'}
-									{variant.stock === 0 ? 'opacity-40 cursor-not-allowed line-through' : ''}"
+									{outOfStock ? 'opacity-40 cursor-not-allowed line-through' : ''}"
                             >
-                                {variant.size}
+                                {size}
                             </button>
                         {/each}
                     </div>
@@ -314,21 +346,32 @@
                         Color
                     </h3>
                     <div class="flex flex-wrap gap-2">
-                        {#each product.variants.filter((v: any) => v.color) as variant}
+                        {#each colors as color}
+                            {@const sampleVariant = product.variants.find(
+                                (v: any) => v.color === color,
+                            )}
+                            {@const variantsWithColor = product.variants.filter(
+                                (v: any) => v.color === color,
+                            )}
+                            {@const outOfStock = variantsWithColor.every(
+                                (v: any) => v.stock === 0,
+                            )}
                             <button
-                                onclick={() => (selectedVariant = variant)}
+                                onclick={() => (selectedColor = color)}
+                                disabled={outOfStock}
                                 class="flex items-center gap-2 px-3 py-2 border rounded-lg text-sm transition-all
-									{selectedVariant?.id === variant.id
+									{selectedColor === color
                                     ? 'border-rose-500 bg-rose-50'
-                                    : 'border-stone-300 hover:border-rose-300'}"
+                                    : 'border-stone-300 hover:border-rose-300'}
+									{outOfStock ? 'opacity-40 cursor-not-allowed' : ''}"
                             >
-                                {#if variant.colorHex}
+                                {#if sampleVariant?.colorHex}
                                     <span
                                         class="w-4 h-4 rounded-full border border-stone-200"
-                                        style="background-color: {variant.colorHex}"
+                                        style="background-color: {sampleVariant.colorHex}"
                                     ></span>
                                 {/if}
-                                {variant.color}
+                                {color}
                             </button>
                         {/each}
                     </div>
