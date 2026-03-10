@@ -66,7 +66,11 @@
                         class="w-full h-full flex items-center justify-center text-stone-400"
                     >
                         <div class="text-center">
-                            <p class="text-6xl mb-4">👗</p>
+                            <img
+                                src="/icons/product-placeholder.png"
+                                alt="Hero"
+                                class="w-24 h-24 object-contain opacity-60 mx-auto mb-4"
+                            />
                             <p class="text-sm font-medium">Hero Image</p>
                         </div>
                     </div>
@@ -105,15 +109,19 @@
         <div
             class="flex overflow-x-auto snap-x snap-mandatory gap-6 pb-4 scrollbar-hide md:grid md:grid-cols-5 md:overflow-visible"
         >
-            {#each [{ name: "Sarees", emoji: "🥻", href: "/collections/sarees", color: "from-rose-100 to-rose-200" }, { name: "Blouses", emoji: "👚", href: "/collections/blouses", color: "from-amber-100 to-amber-200" }, { name: "Shapewear", emoji: "👗", href: "/collections/shapewear", color: "from-purple-100 to-purple-200" }, { name: "Towels", emoji: "🧖", href: "/collections/towels", color: "from-sky-100 to-sky-200" }, { name: "Essentials", emoji: "✨", href: "/collections/essentials", color: "from-emerald-100 to-emerald-200" }] as cat}
+            {#each [{ name: "Sarees", icon: "/icons/category-sarees.png", href: "/collections/sarees", color: "from-rose-100 to-rose-200" }, { name: "Blouses", icon: "/icons/category-blouses.png", href: "/collections/blouses", color: "from-amber-100 to-amber-200" }, { name: "Shapewear", icon: "/icons/category-shapewear.png", href: "/collections/shapewear", color: "from-purple-100 to-purple-200" }, { name: "Towels", icon: "/icons/category-towels.png", href: "/collections/towels", color: "from-sky-100 to-sky-200" }, { name: "Essentials", icon: "/icons/category-essentials.png", href: "/collections/essentials", color: "from-emerald-100 to-emerald-200" }] as cat}
                 <a
                     href={cat.href}
                     class="snap-center flex-shrink-0 group flex flex-col items-center gap-3 w-28 md:w-auto"
                 >
                     <div
-                        class="w-24 h-24 md:w-28 md:h-28 bg-gradient-to-br {cat.color} rounded-full flex items-center justify-center text-4xl md:text-5xl group-hover:scale-110 group-hover:shadow-lg transition-all duration-300"
+                        class="w-24 h-24 md:w-28 md:h-28 bg-gradient-to-br {cat.color} rounded-full flex items-center justify-center overflow-hidden group-hover:scale-110 group-hover:shadow-lg transition-all duration-300"
                     >
-                        {cat.emoji}
+                        <img
+                            src={cat.icon}
+                            alt={cat.name}
+                            class="w-16 h-16 md:w-20 md:h-20 object-contain"
+                        />
                     </div>
                     <span
                         class="text-sm font-medium text-stone-700 group-hover:text-rose-600 transition-colors"

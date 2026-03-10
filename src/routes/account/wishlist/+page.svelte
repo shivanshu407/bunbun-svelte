@@ -57,9 +57,13 @@
                                 />
                             {:else}
                                 <div
-                                    class="w-full h-full flex items-center justify-center text-5xl text-stone-300"
+                                    class="w-full h-full flex items-center justify-center bg-stone-100"
                                 >
-                                    👗
+                                    <img
+                                        src="/icons/product-placeholder.png"
+                                        alt="No product"
+                                        class="w-16 h-16 object-contain opacity-60"
+                                    />
                                 </div>
                             {/if}
                             {#if item.product.salePrice}

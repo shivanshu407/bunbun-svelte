@@ -80,9 +80,13 @@
                                     />
                                 {:else}
                                     <div
-                                        class="w-20 h-20 bg-stone-200 rounded-md flex items-center justify-center text-2xl"
+                                        class="w-20 h-20 bg-stone-200 rounded-md flex items-center justify-center"
                                     >
-                                        👗
+                                        <img
+                                            src="/icons/product-placeholder.png"
+                                            alt="No product"
+                                            class="w-10 h-10 object-contain opacity-60"
+                                        />
                                     </div>
                                 {/if}
                                 <div class="flex-1 min-w-0">

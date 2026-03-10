@@ -78,9 +78,13 @@
             />
         {:else}
             <div
-                class="w-full h-full flex items-center justify-center text-stone-300"
+                class="w-full h-full flex items-center justify-center bg-stone-100"
             >
-                <p class="text-5xl">👗</p>
+                <img
+                    src="/icons/product-placeholder.png"
+                    alt="No image"
+                    class="w-20 h-20 object-contain opacity-60"
+                />
             </div>
         {/if}
 

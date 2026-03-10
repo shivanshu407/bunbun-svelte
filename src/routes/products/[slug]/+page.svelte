@@ -155,9 +155,13 @@
                     />
                 {:else}
                     <div
-                        class="w-full h-full flex items-center justify-center text-stone-300 text-8xl"
+                        class="w-full h-full flex items-center justify-center bg-stone-100"
                     >
-                        👗
+                        <img
+                            src="/icons/product-placeholder.png"
+                            alt="No image"
+                            class="w-24 h-24 object-contain opacity-60"
+                        />
                     </div>
                 {/if}
 
