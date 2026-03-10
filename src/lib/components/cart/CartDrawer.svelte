@@ -1,5 +1,6 @@
 <script lang="ts">
     import { X, Plus, Minus, Trash2, ShoppingBag } from "lucide-svelte";
+    import ImagePlaceholder from "$lib/components/ui/ImagePlaceholder.svelte";
     import {
         cartItems,
         cartTotal,
@@ -80,13 +81,9 @@
                                     />
                                 {:else}
                                     <div
-                                        class="w-20 h-20 bg-stone-200 rounded-md flex items-center justify-center"
+                                        class="w-20 h-20 rounded-md overflow-hidden"
                                     >
-                                        <img
-                                            src="/icons/product-placeholder.png"
-                                            alt="No product"
-                                            class="w-10 h-10 object-contain opacity-60"
-                                        />
+                                        <ImagePlaceholder size="sm" />
                                     </div>
                                 {/if}
                                 <div class="flex-1 min-w-0">

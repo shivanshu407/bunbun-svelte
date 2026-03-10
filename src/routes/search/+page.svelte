@@ -2,6 +2,7 @@
     import { Search } from "lucide-svelte";
     import { goto } from "$app/navigation";
     import { formatPrice } from "$lib/utils";
+    import ImagePlaceholder from "$lib/components/ui/ImagePlaceholder.svelte";
 
     let { data } = $props();
     let searchQuery = $state(data.query);
@@ -58,15 +59,7 @@
                                 class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                             />
                         {:else}
-                            <div
-                                class="w-full h-full flex items-center justify-center bg-stone-100"
-                            >
-                                <img
-                                    src="/icons/product-placeholder.png"
-                                    alt="No image"
-                                    class="w-12 h-12 object-contain opacity-60"
-                                />
-                            </div>
+                            <ImagePlaceholder size="md" />
                         {/if}
                     </div>
                     <div class="p-3">

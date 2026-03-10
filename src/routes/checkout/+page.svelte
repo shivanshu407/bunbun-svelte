@@ -16,6 +16,7 @@
         Trash2,
     } from "lucide-svelte";
     import { formatPrice } from "$lib/utils";
+    import ImagePlaceholder from "$lib/components/ui/ImagePlaceholder.svelte";
     import { appliedCouponStore } from "$lib/stores/coupon";
     import { get } from "svelte/store";
 
@@ -474,15 +475,7 @@
                                         class="w-full h-full object-cover"
                                     />
                                 {:else}
-                                    <div
-                                        class="w-full h-full flex items-center justify-center bg-stone-100"
-                                    >
-                                        <img
-                                            src="/icons/product-placeholder.png"
-                                            alt="No image"
-                                            class="w-8 h-8 object-contain opacity-60"
-                                        />
-                                    </div>
+                                    <ImagePlaceholder size="sm" />
                                 {/if}
                             </div>
                             <div class="flex-1 min-w-0">

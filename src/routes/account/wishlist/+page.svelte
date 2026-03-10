@@ -1,6 +1,7 @@
 <script lang="ts">
     import { Heart, ShoppingBag, Trash2 } from "lucide-svelte";
     import { formatPrice, calculateDiscount } from "$lib/utils";
+    import ImagePlaceholder from "$lib/components/ui/ImagePlaceholder.svelte";
     import { invalidateAll } from "$app/navigation";
 
     let { data } = $props();
@@ -56,15 +57,7 @@
                                     loading="lazy"
                                 />
                             {:else}
-                                <div
-                                    class="w-full h-full flex items-center justify-center bg-stone-100"
-                                >
-                                    <img
-                                        src="/icons/product-placeholder.png"
-                                        alt="No product"
-                                        class="w-16 h-16 object-contain opacity-60"
-                                    />
-                                </div>
+                                <ImagePlaceholder size="lg" />
                             {/if}
                             {#if item.product.salePrice}
                                 <span

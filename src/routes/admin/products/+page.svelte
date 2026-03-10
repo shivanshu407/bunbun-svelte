@@ -10,6 +10,7 @@
         Package,
     } from "lucide-svelte";
     import { formatPrice } from "$lib/utils";
+    import ImagePlaceholder from "$lib/components/ui/ImagePlaceholder.svelte";
     import { goto } from "$app/navigation";
 
     let { data, form } = $props();
@@ -116,15 +117,7 @@
                                                     class="w-full h-full object-cover"
                                                 />
                                             {:else}
-                                                <div
-                                                    class="w-full h-full flex items-center justify-center bg-stone-100"
-                                                >
-                                                    <img
-                                                        src="/icons/product-placeholder.png"
-                                                        alt="No image"
-                                                        class="w-6 h-6 object-contain opacity-60"
-                                                    />
-                                                </div>
+                                                <ImagePlaceholder size="sm" />
                                             {/if}
                                         </div>
                                         <div>

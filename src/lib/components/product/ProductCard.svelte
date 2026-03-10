@@ -1,6 +1,7 @@
 <script lang="ts">
     import { Heart } from "lucide-svelte";
     import { formatPrice, calculateDiscount } from "$lib/utils";
+    import ImagePlaceholder from "$lib/components/ui/ImagePlaceholder.svelte";
     import { wishlistIds } from "$lib/stores/wishlist";
     import { currentUser } from "$lib/stores/user";
     import { toast } from "$lib/stores/toast";
@@ -77,15 +78,7 @@
                 loading="lazy"
             />
         {:else}
-            <div
-                class="w-full h-full flex items-center justify-center bg-stone-100"
-            >
-                <img
-                    src="/icons/product-placeholder.png"
-                    alt="No image"
-                    class="w-20 h-20 object-contain opacity-60"
-                />
-            </div>
+            <ImagePlaceholder size="lg" />
         {/if}
 
         <!-- Badges -->

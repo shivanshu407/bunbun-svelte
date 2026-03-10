@@ -19,6 +19,7 @@
     import { wishlistIds } from "$lib/stores/wishlist";
     import { currentUser } from "$lib/stores/user";
     import { toast } from "$lib/stores/toast";
+    import ImagePlaceholder from "$lib/components/ui/ImagePlaceholder.svelte";
 
     let { data } = $props();
     let product = $derived(data.product);
@@ -154,15 +155,7 @@
                         class="w-full h-full object-cover"
                     />
                 {:else}
-                    <div
-                        class="w-full h-full flex items-center justify-center bg-stone-100"
-                    >
-                        <img
-                            src="/icons/product-placeholder.png"
-                            alt="No image"
-                            class="w-24 h-24 object-contain opacity-60"
-                        />
-                    </div>
+                    <ImagePlaceholder size="xl" />
                 {/if}
 
                 {#if product.images.length > 1}

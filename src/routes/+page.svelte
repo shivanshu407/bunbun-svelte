@@ -7,6 +7,7 @@
         BadgeCheck,
     } from "lucide-svelte";
     import ProductCard from "$lib/components/product/ProductCard.svelte";
+    import ImagePlaceholder from "$lib/components/ui/ImagePlaceholder.svelte";
     import { formatPrice } from "$lib/utils";
 
     let { data } = $props();
@@ -66,12 +67,7 @@
                         class="w-full h-full flex items-center justify-center text-stone-400"
                     >
                         <div class="text-center">
-                            <img
-                                src="/icons/product-placeholder.png"
-                                alt="Hero"
-                                class="w-24 h-24 object-contain opacity-60 mx-auto mb-4"
-                            />
-                            <p class="text-sm font-medium">Hero Image</p>
+                            <ImagePlaceholder size="xl" />
                         </div>
                     </div>
                 </div>
