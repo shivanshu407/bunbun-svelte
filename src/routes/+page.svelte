@@ -61,15 +61,13 @@
             </div>
             <div class="relative hidden lg:block">
                 <div
-                    class="aspect-[4/5] bg-gradient-to-br from-rose-200 to-amber-100 rounded-3xl overflow-hidden shadow-2xl"
+                    class="aspect-[4/5] rounded-3xl overflow-hidden shadow-2xl"
                 >
-                    <div
-                        class="w-full h-full flex items-center justify-center text-stone-400"
-                    >
-                        <div class="text-center">
-                            <ImagePlaceholder size="xl" />
-                        </div>
-                    </div>
+                    <img
+                        src="/icons/hero-banner.png"
+                        alt="BunBunClothing - Elegant Indian Fashion"
+                        class="w-full h-full object-cover"
+                    />
                 </div>
                 <!-- Floating badge -->
                 <div
@@ -116,7 +114,7 @@
                         <img
                             src={cat.icon}
                             alt={cat.name}
-                            class="w-16 h-16 md:w-20 md:h-20 object-contain"
+                            class="w-16 h-16 md:w-20 md:h-20 object-cover rounded-full"
                         />
                     </div>
                     <span
