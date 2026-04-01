@@ -177,7 +177,7 @@
             </p>
             <a
                 href="/collections/sarees"
-                class="inline-flex items-center gap-2 mt-4 px-6 py-2.5 bg-rose-500 hover:bg-rose-600 text-white text-sm font-medium rounded-lg transition-colors"
+                class="inline-flex items-center gap-2 mt-4 px-6 py-2.5 bg-primary-500 hover:bg-primary-600 text-white text-sm font-medium rounded-lg transition-colors"
             >
                 Continue Shopping <ArrowRight size={18} />
             </a>
@@ -296,7 +296,7 @@
                     <h3
                         class="text-sm font-semibold text-stone-900 flex items-center gap-2 mb-3"
                     >
-                        <Tag size={16} class="text-rose-500" />
+                        <Tag size={16} class="text-primary-500" />
                         Apply Coupon
                     </h3>
 
@@ -327,7 +327,7 @@
                                 type="text"
                                 bind:value={couponCode}
                                 placeholder="Enter coupon code"
-                                class="flex-1 min-w-0 px-3 py-2 text-sm border border-stone-300 rounded-lg focus:ring-2 focus:ring-rose-500 focus:border-transparent outline-none"
+                                class="flex-1 min-w-0 px-3 py-2 text-sm border border-stone-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none"
                                 onkeydown={(e) =>
                                     e.key === "Enter" && applyCoupon()}
                             />
@@ -378,7 +378,7 @@
                                         <button
                                             onclick={() =>
                                                 copyCode(coupon.code)}
-                                            class="flex items-center gap-1 text-xs text-rose-600 hover:text-rose-700 font-medium"
+                                            class="flex items-center gap-1 text-xs text-primary-600 hover:text-primary-700 font-medium"
                                         >
                                             {#if copiedCode === coupon.code}
                                                 <Check size={12} /> Copied
@@ -434,14 +434,14 @@
 
                     <a
                         href="/checkout"
-                        class="mt-5 w-full py-3 bg-rose-500 hover:bg-rose-600 text-white font-medium rounded-xl flex items-center justify-center gap-2 transition-all block text-center"
+                        class="mt-5 w-full py-3 bg-primary-500 hover:bg-primary-600 text-white font-medium rounded-xl flex items-center justify-center gap-2 transition-all block text-center"
                     >
                         Proceed to Checkout <ArrowRight size={18} />
                     </a>
 
                     <a
                         href="/collections/sarees"
-                        class="block mt-3 text-center text-sm text-stone-500 hover:text-rose-600"
+                        class="block mt-3 text-center text-sm text-stone-500 hover:text-primary-600"
                     >
                         ← Continue Shopping
                     </a>

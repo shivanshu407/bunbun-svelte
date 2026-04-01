@@ -47,7 +47,11 @@
 					<a
 						href={cat.href}
 						class="flex items-center gap-1 px-4 py-3 text-sm font-medium transition-colors
-							{$page.url.pathname.startsWith(cat.href) ? 'text-rose-600' : 'text-stone-700 hover:text-rose-600'}"
+							{$page.url.pathname.startsWith(cat.href) 
+								? 'text-primary-600' 
+								: cat.name.includes('Sale') 
+									? 'text-secondary-600 hover:text-secondary-700' 
+									: 'text-stone-700 hover:text-primary-600'}"
 					>
 						{cat.name}
 						{#if cat.hasMega}
@@ -66,7 +70,7 @@
 											<li>
 												<a
 													href={item.href}
-													class="text-sm text-stone-700 hover:text-rose-600 transition-colors"
+													class="text-sm text-stone-700 hover:text-primary-600 transition-colors"
 												>
 													{item.name}
 												</a>
@@ -78,7 +82,7 @@
 							<div class="col-span-3 border-t border-stone-100 pt-4 mt-2">
 								<a
 									href="/collections/sarees"
-									class="text-sm font-semibold text-rose-600 hover:text-rose-700 transition-colors"
+									class="text-sm font-semibold text-primary-600 hover:text-primary-700 transition-colors"
 								>
 									Shop All Sarees →
 								</a>

@@ -64,7 +64,7 @@
                         <a
                             href="/collections/sarees"
                             onclick={close}
-                            class="mt-6 px-6 py-2.5 bg-rose-500 hover:bg-rose-600 text-white text-sm font-medium rounded-full transition-colors"
+                            class="mt-6 px-6 py-2.5 bg-primary-500 hover:bg-primary-600 text-white text-sm font-medium rounded-full transition-colors"
                         >
                             Start Shopping
                         </a>
@@ -184,7 +184,7 @@
                         <a
                             href="/checkout"
                             onclick={close}
-                            class="block text-center py-2.5 bg-rose-500 hover:bg-rose-600 text-white text-sm font-medium rounded-full transition-colors"
+                            class="block text-center py-2.5 bg-primary-500 hover:bg-primary-600 text-white text-sm font-medium rounded-full transition-colors"
                         >
                             Checkout Now
                         </a>

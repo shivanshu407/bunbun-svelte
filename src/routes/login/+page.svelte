@@ -32,7 +32,7 @@
 </svelte:head>
 
 <div
-    class="min-h-[80vh] flex items-center justify-center px-4 py-12 bg-gradient-to-br from-rose-50 via-white to-amber-50"
+    class="min-h-[80vh] flex items-center justify-center px-4 py-12 bg-gradient-to-br from-primary-50 via-white to-amber-50"
 >
     <div class="w-full max-w-md">
         <div class="text-center mb-8">
@@ -40,7 +40,7 @@
                 href="/"
                 class="text-3xl font-bold font-[family-name:var(--font-heading)] text-stone-900"
             >
-                Bun<span class="text-rose-500">Bun</span>
+                Bun<span class="text-primary-500">Bun</span>
             </a>
             <h1
                 class="mt-4 text-2xl font-semibold font-[family-name:var(--font-heading)] text-stone-900"
@@ -98,7 +98,7 @@
                             required
                             placeholder="you@example.com"
                             value={form?.email ?? ""}
-                            class="w-full pl-10 pr-4 py-3 border border-stone-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-rose-500 focus:border-transparent transition-all"
+                            class="w-full pl-10 pr-4 py-3 border border-stone-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all"
                         />
                     </div>
                 </div>
@@ -113,7 +113,7 @@
                         >
                         <a
                             href="/forgot-password"
-                            class="text-xs text-rose-600 hover:text-rose-700"
+                            class="text-xs text-primary-600 hover:text-primary-700"
                             >Forgot password?</a
                         >
                     </div>
@@ -128,7 +128,7 @@
                             type={showPassword ? "text" : "password"}
                             required
                             placeholder="Enter your password"
-                            class="w-full pl-10 pr-12 py-3 border border-stone-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-rose-500 focus:border-transparent transition-all"
+                            class="w-full pl-10 pr-12 py-3 border border-stone-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all"
                         />
                         <button
                             type="button"
@@ -147,7 +147,7 @@
                 <button
                     type="submit"
                     disabled={loading}
-                    class="w-full py-3 bg-rose-500 hover:bg-rose-600 disabled:bg-rose-300 text-white font-medium rounded-xl flex items-center justify-center gap-2 transition-all"
+                    class="w-full py-3 bg-primary-500 hover:bg-primary-600 disabled:bg-primary-300 text-white font-medium rounded-xl flex items-center justify-center gap-2 transition-all"
                 >
                     {#if loading}
                         <span
@@ -164,7 +164,7 @@
                 Don't have an account?
                 <a
                     href="/register"
-                    class="text-rose-600 hover:text-rose-700 font-medium"
+                    class="text-primary-600 hover:text-primary-700 font-medium"
                     >Create one</a
                 >
             </div>

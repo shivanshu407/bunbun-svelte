@@ -39,7 +39,7 @@
             case "success":
                 return "bg-emerald-50 text-emerald-800 border-emerald-200";
             case "error":
-                return "bg-rose-50 text-rose-800 border-rose-200";
+                return "bg-primary-50 text-primary-800 border-primary-200";
             default:
                 return "bg-blue-50 text-blue-800 border-blue-200";
         }

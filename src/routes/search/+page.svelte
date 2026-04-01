@@ -30,7 +30,7 @@
             <input
                 bind:value={searchQuery}
                 placeholder="Search for sarees, blouses, shapewear..."
-                class="w-full pl-12 pr-4 py-3.5 border-2 border-stone-200 rounded-xl text-sm focus:outline-none focus:border-rose-500 transition-colors"
+                class="w-full pl-12 pr-4 py-3.5 border-2 border-stone-200 rounded-xl text-sm focus:outline-none focus:border-primary-500 transition-colors"
             />
         </div>
     </form>
@@ -63,7 +63,7 @@
                         {/if}
                     </div>
                     <div class="p-3">
-                        <p class="text-xs text-rose-500 font-medium">
+                        <p class="text-xs text-primary-500 font-medium">
                             {product.category.name}
                         </p>
                         <h3

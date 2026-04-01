@@ -34,7 +34,7 @@
             </p>
             <a
                 href="/collections/sarees"
-                class="inline-flex items-center gap-2 mt-4 px-6 py-2.5 bg-rose-500 hover:bg-rose-600 text-white text-sm font-medium rounded-lg transition-colors"
+                class="inline-flex items-center gap-2 mt-4 px-6 py-2.5 bg-primary-500 hover:bg-primary-600 text-white text-sm font-medium rounded-lg transition-colors"
             >
                 <ShoppingBag size={18} /> Start Shopping
             </a>
@@ -72,7 +72,7 @@
                     </a>
                     <div class="p-3 md:p-4">
                         <p
-                            class="text-xs text-rose-500 uppercase tracking-wider"
+                            class="text-xs text-primary-500 uppercase tracking-wider"
                         >
                             {item.product.category.name}
                         </p>

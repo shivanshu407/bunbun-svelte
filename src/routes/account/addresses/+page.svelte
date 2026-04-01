@@ -17,7 +17,7 @@
         </h2>
         <button
             onclick={() => (showForm = !showForm)}
-            class="flex items-center gap-1.5 px-4 py-2 bg-rose-500 hover:bg-rose-600 text-white text-sm font-medium rounded-lg"
+            class="flex items-center gap-1.5 px-4 py-2 bg-primary-500 hover:bg-primary-600 text-white text-sm font-medium rounded-lg"
         >
             <Plus size={16} /> Add
         </button>
@@ -49,47 +49,47 @@
                     name="name"
                     required
                     placeholder="Full Name"
-                    class="px-3 py-2.5 border border-stone-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-rose-500"
+                    class="px-3 py-2.5 border border-stone-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
                 />
                 <input
                     name="phone"
                     required
                     placeholder="Phone Number"
-                    class="px-3 py-2.5 border border-stone-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-rose-500"
+                    class="px-3 py-2.5 border border-stone-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
                 />
                 <input
                     name="line1"
                     required
                     placeholder="Address Line 1"
-                    class="md:col-span-2 px-3 py-2.5 border border-stone-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-rose-500"
+                    class="md:col-span-2 px-3 py-2.5 border border-stone-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
                 />
                 <input
                     name="line2"
                     placeholder="Address Line 2"
-                    class="md:col-span-2 px-3 py-2.5 border border-stone-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-rose-500"
+                    class="md:col-span-2 px-3 py-2.5 border border-stone-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
                 />
                 <input
                     name="city"
                     required
                     placeholder="City"
-                    class="px-3 py-2.5 border border-stone-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-rose-500"
+                    class="px-3 py-2.5 border border-stone-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
                 />
                 <input
                     name="state"
                     required
                     placeholder="State"
-                    class="px-3 py-2.5 border border-stone-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-rose-500"
+                    class="px-3 py-2.5 border border-stone-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
                 />
                 <input
                     name="pincode"
                     required
                     placeholder="Pincode"
                     pattern="[0-9]{6}"
-                    class="px-3 py-2.5 border border-stone-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-rose-500"
+                    class="px-3 py-2.5 border border-stone-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
                 />
                 <select
                     name="type"
-                    class="px-3 py-2.5 border border-stone-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-rose-500"
+                    class="px-3 py-2.5 border border-stone-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
                 >
                     <option value="home">Home</option>
                     <option value="office">Office</option>
@@ -114,7 +114,7 @@
                         >
                         <button
                             type="submit"
-                            class="px-5 py-2 bg-rose-500 hover:bg-rose-600 text-white text-sm font-medium rounded-lg"
+                            class="px-5 py-2 bg-primary-500 hover:bg-primary-600 text-white text-sm font-medium rounded-lg"
                             >Save</button
                         >
                     </div>
@@ -140,12 +140,12 @@
             {#each data.addresses as addr}
                 <div
                     class="bg-white rounded-xl border border-stone-200 p-5 relative {addr.isDefault
-                        ? 'ring-2 ring-rose-200'
+                        ? 'ring-2 ring-primary-200'
                         : ''}"
                 >
                     {#if addr.isDefault}
                         <span
-                            class="absolute top-3 right-3 px-2 py-0.5 text-xs bg-rose-100 text-rose-600 rounded-full"
+                            class="absolute top-3 right-3 px-2 py-0.5 text-xs bg-primary-100 text-primary-600 rounded-full"
                             >Default</span
                         >
                     {/if}
@@ -181,7 +181,7 @@
                                 />
                                 <button
                                     type="submit"
-                                    class="flex items-center gap-1 text-xs text-stone-500 hover:text-rose-500"
+                                    class="flex items-center gap-1 text-xs text-stone-500 hover:text-primary-500"
                                 >
                                     <Star size={12} /> Set Default
                                 </button>

@@ -63,7 +63,7 @@
                 <span
                     class="text-xl font-bold font-[family-name:var(--font-heading)] text-stone-900"
                 >
-                    Bun<span class="text-rose-500">Bun</span>
+                    Bun<span class="text-primary-500">Bun</span>
                 </span>
                 <button
                     onclick={onClose}
@@ -85,7 +85,7 @@
                         type="text"
                         name="q"
                         placeholder="Search..."
-                        class="w-full pl-9 pr-4 py-2.5 bg-stone-100 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-rose-500"
+                        class="w-full pl-9 pr-4 py-2.5 bg-stone-100 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
                     />
                 </form>
             </div>
@@ -98,7 +98,7 @@
                         onclick={onClose}
                         class="flex items-center justify-between px-4 py-3 text-sm font-medium transition-colors
 							{$page.url.pathname.startsWith(cat.href)
-                            ? 'text-rose-600 bg-rose-50'
+                            ? 'text-primary-600 bg-primary-50'
                             : 'text-stone-800 hover:bg-stone-50'}"
                     >
                         {cat.name}
@@ -127,7 +127,7 @@
                     <a
                         href="/login"
                         onclick={onClose}
-                        class="block px-4 py-3 text-sm font-medium text-rose-600 hover:bg-rose-50 transition-colors"
+                        class="block px-4 py-3 text-sm font-medium text-primary-600 hover:bg-primary-50 transition-colors"
                     >
                         Login / Register
                     </a>

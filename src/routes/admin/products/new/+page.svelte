@@ -108,7 +108,7 @@
                         required
                         oninput={(e) =>
                             generateSlug((e.target as HTMLInputElement).value)}
-                        class="w-full px-3 py-2.5 border border-stone-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-rose-500"
+                        class="w-full px-3 py-2.5 border border-stone-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
                     />
                 </div>
                 <div>
@@ -122,7 +122,7 @@
                         name="slug"
                         required
                         bind:value={slug}
-                        class="w-full px-3 py-2.5 border border-stone-300 rounded-lg text-sm bg-stone-50 focus:outline-none focus:ring-2 focus:ring-rose-500"
+                        class="w-full px-3 py-2.5 border border-stone-300 rounded-lg text-sm bg-stone-50 focus:outline-none focus:ring-2 focus:ring-primary-500"
                     />
                 </div>
                 <div class="md:col-span-2">
@@ -136,7 +136,7 @@
                         name="description"
                         required
                         rows={4}
-                        class="w-full px-3 py-2.5 border border-stone-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-rose-500"
+                        class="w-full px-3 py-2.5 border border-stone-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
                     ></textarea>
                 </div>
                 <div class="md:col-span-2">
@@ -148,7 +148,7 @@
                     <input
                         id="shortDescription"
                         name="shortDescription"
-                        class="w-full px-3 py-2.5 border border-stone-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-rose-500"
+                        class="w-full px-3 py-2.5 border border-stone-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
                     />
                 </div>
             </div>
@@ -170,7 +170,7 @@
                         id="categoryId"
                         name="categoryId"
                         required
-                        class="w-full px-3 py-2.5 border border-stone-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-rose-500"
+                        class="w-full px-3 py-2.5 border border-stone-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
                     >
                         <option value="">Select category</option>
                         {#each data.categories as cat}
@@ -191,7 +191,7 @@
                         required
                         min="0"
                         step="0.01"
-                        class="w-full px-3 py-2.5 border border-stone-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-rose-500"
+                        class="w-full px-3 py-2.5 border border-stone-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
                     />
                 </div>
                 <div>
@@ -206,7 +206,7 @@
                         type="number"
                         min="0"
                         step="0.01"
-                        class="w-full px-3 py-2.5 border border-stone-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-rose-500"
+                        class="w-full px-3 py-2.5 border border-stone-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
                     />
                 </div>
             </div>
@@ -227,7 +227,7 @@
                     <input
                         id="fabric"
                         name="fabric"
-                        class="w-full px-3 py-2.5 border border-stone-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-rose-500"
+                        class="w-full px-3 py-2.5 border border-stone-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
                     />
                 </div>
                 <div>
@@ -239,7 +239,7 @@
                     <input
                         id="careInstructions"
                         name="careInstructions"
-                        class="w-full px-3 py-2.5 border border-stone-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-rose-500"
+                        class="w-full px-3 py-2.5 border border-stone-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
                     />
                 </div>
                 <div class="md:col-span-2 flex flex-wrap gap-5">
@@ -249,7 +249,7 @@
                         <input
                             type="checkbox"
                             name="isFeatured"
-                            class="rounded text-rose-500"
+                            class="rounded text-primary-500"
                         /> Featured
                     </label>
                     <label
@@ -258,7 +258,7 @@
                         <input
                             type="checkbox"
                             name="isTrending"
-                            class="rounded text-rose-500"
+                            class="rounded text-primary-500"
                         /> Trending
                     </label>
                     <label
@@ -267,7 +267,7 @@
                         <input
                             type="checkbox"
                             name="isNewArrival"
-                            class="rounded text-rose-500"
+                            class="rounded text-primary-500"
                         /> New Arrival
                     </label>
                     <label
@@ -276,7 +276,7 @@
                         <input
                             type="checkbox"
                             name="isBestseller"
-                            class="rounded text-rose-500"
+                            class="rounded text-primary-500"
                         /> Bestseller
                     </label>
                 </div>
@@ -289,27 +289,27 @@
 
             <!-- File Upload Area -->
             <div
-                class="border-2 border-dashed border-stone-300 rounded-lg p-6 text-center hover:border-rose-400 transition-colors cursor-pointer mb-4"
+                class="border-2 border-dashed border-stone-300 rounded-lg p-6 text-center hover:border-primary-400 transition-colors cursor-pointer mb-4"
                 role="button"
                 tabindex="0"
                 ondragover={(e) => {
                     e.preventDefault();
                     e.currentTarget.classList.add(
-                        "border-rose-400",
-                        "bg-rose-50",
+                        "border-primary-400",
+                        "bg-primary-50",
                     );
                 }}
                 ondragleave={(e) => {
                     e.currentTarget.classList.remove(
-                        "border-rose-400",
-                        "bg-rose-50",
+                        "border-primary-400",
+                        "bg-primary-50",
                     );
                 }}
                 ondrop={async (e) => {
                     e.preventDefault();
                     e.currentTarget.classList.remove(
-                        "border-rose-400",
-                        "bg-rose-50",
+                        "border-primary-400",
+                        "bg-primary-50",
                     );
                     const files = e.dataTransfer?.files;
                     if (files) await handleFileUpload(files);
@@ -320,7 +320,7 @@
                 }}
             >
                 <p class="text-sm text-stone-500">
-                    <span class="text-rose-500 font-medium"
+                    <span class="text-primary-500 font-medium"
                         >Click to upload</span
                     > or drag & drop
                 </p>
@@ -345,7 +345,7 @@
                     class="flex items-center gap-2 text-sm text-stone-500 mb-4"
                 >
                     <span
-                        class="w-4 h-4 border-2 border-stone-300 border-t-rose-500 rounded-full animate-spin"
+                        class="w-4 h-4 border-2 border-stone-300 border-t-primary-500 rounded-full animate-spin"
                     ></span>
                     Uploading...
                 </div>
@@ -390,7 +390,7 @@
                     id="imageUrlsManual"
                     rows={2}
                     placeholder="https://example.com/image1.jpg&#10;https://example.com/image2.jpg"
-                    class="w-full mt-2 px-3 py-2.5 border border-stone-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-rose-500 font-mono"
+                    class="w-full mt-2 px-3 py-2.5 border border-stone-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 font-mono"
                     onchange={(e) => {
                         const urls = (e.target as HTMLTextAreaElement).value
                             .split("\n")
@@ -413,7 +413,7 @@
                 <button
                     type="button"
                     onclick={addVariant}
-                    class="flex items-center gap-1 text-sm text-rose-500 hover:text-rose-600 font-medium"
+                    class="flex items-center gap-1 text-sm text-primary-500 hover:text-primary-600 font-medium"
                 >
                     <Plus size={16} /> Add Variant
                 </button>
@@ -432,7 +432,7 @@
                                 bind:value={v.sku}
                                 required
                                 placeholder="SKU-001"
-                                class="w-full px-2 py-1.5 border border-stone-300 rounded text-xs focus:outline-none focus:ring-1 focus:ring-rose-500"
+                                class="w-full px-2 py-1.5 border border-stone-300 rounded text-xs focus:outline-none focus:ring-1 focus:ring-primary-500"
                             />
                         </div>
                         <div>
@@ -442,7 +442,7 @@
                             <input
                                 bind:value={v.size}
                                 placeholder="S/M/L"
-                                class="w-full px-2 py-1.5 border border-stone-300 rounded text-xs focus:outline-none focus:ring-1 focus:ring-rose-500"
+                                class="w-full px-2 py-1.5 border border-stone-300 rounded text-xs focus:outline-none focus:ring-1 focus:ring-primary-500"
                             />
                         </div>
                         <div>
@@ -452,7 +452,7 @@
                             <input
                                 bind:value={v.color}
                                 placeholder="Red"
-                                class="w-full px-2 py-1.5 border border-stone-300 rounded text-xs focus:outline-none focus:ring-1 focus:ring-rose-500"
+                                class="w-full px-2 py-1.5 border border-stone-300 rounded text-xs focus:outline-none focus:ring-1 focus:ring-primary-500"
                             />
                         </div>
                         <div>
@@ -463,7 +463,7 @@
                                 bind:value={v.price}
                                 type="number"
                                 placeholder="999"
-                                class="w-full px-2 py-1.5 border border-stone-300 rounded text-xs focus:outline-none focus:ring-1 focus:ring-rose-500"
+                                class="w-full px-2 py-1.5 border border-stone-300 rounded text-xs focus:outline-none focus:ring-1 focus:ring-primary-500"
                             />
                         </div>
                         <div>
@@ -474,7 +474,7 @@
                                 bind:value={v.salePrice}
                                 type="number"
                                 placeholder="799"
-                                class="w-full px-2 py-1.5 border border-stone-300 rounded text-xs focus:outline-none focus:ring-1 focus:ring-rose-500"
+                                class="w-full px-2 py-1.5 border border-stone-300 rounded text-xs focus:outline-none focus:ring-1 focus:ring-primary-500"
                             />
                         </div>
                         <div>
@@ -485,7 +485,7 @@
                                 bind:value={v.stock}
                                 type="number"
                                 placeholder="0"
-                                class="w-full px-2 py-1.5 border border-stone-300 rounded text-xs focus:outline-none focus:ring-1 focus:ring-rose-500"
+                                class="w-full px-2 py-1.5 border border-stone-300 rounded text-xs focus:outline-none focus:ring-1 focus:ring-primary-500"
                             />
                         </div>
                         <button
@@ -510,7 +510,7 @@
         <div class="flex justify-end">
             <button
                 type="submit"
-                class="flex items-center gap-2 px-6 py-3 bg-rose-500 hover:bg-rose-600 text-white font-medium rounded-xl transition-colors"
+                class="flex items-center gap-2 px-6 py-3 bg-primary-500 hover:bg-primary-600 text-white font-medium rounded-xl transition-colors"
             >
                 <Save size={18} /> Create Product
             </button>

@@ -23,7 +23,7 @@
         </h1>
         <button
             onclick={() => (showForm = !showForm)}
-            class="flex items-center gap-2 px-4 py-2.5 bg-rose-500 hover:bg-rose-600 text-white text-sm font-medium rounded-lg transition-colors"
+            class="flex items-center gap-2 px-4 py-2.5 bg-primary-500 hover:bg-primary-600 text-white text-sm font-medium rounded-lg transition-colors"
         >
             <Plus size={18} /> New Banner
         </button>
@@ -61,7 +61,7 @@
                     <input
                         name="title"
                         required
-                        class="w-full px-3 py-2.5 border border-stone-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-rose-500"
+                        class="w-full px-3 py-2.5 border border-stone-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
                     />
                 </div>
                 <div>
@@ -70,7 +70,7 @@
                     >
                     <input
                         name="subtitle"
-                        class="w-full px-3 py-2.5 border border-stone-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-rose-500"
+                        class="w-full px-3 py-2.5 border border-stone-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
                     />
                 </div>
                 <div>
@@ -80,7 +80,7 @@
                     <input
                         name="imageUrl"
                         required
-                        class="w-full px-3 py-2.5 border border-stone-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-rose-500"
+                        class="w-full px-3 py-2.5 border border-stone-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
                     />
                 </div>
                 <div>
@@ -89,7 +89,7 @@
                     >
                     <input
                         name="linkUrl"
-                        class="w-full px-3 py-2.5 border border-stone-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-rose-500"
+                        class="w-full px-3 py-2.5 border border-stone-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
                     />
                 </div>
                 <div>
@@ -100,7 +100,7 @@
                         name="order"
                         type="number"
                         value="0"
-                        class="w-full px-3 py-2.5 border border-stone-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-rose-500"
+                        class="w-full px-3 py-2.5 border border-stone-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
                     />
                 </div>
                 <div class="flex items-end gap-3 justify-end">
@@ -112,7 +112,7 @@
                     >
                     <button
                         type="submit"
-                        class="px-6 py-2.5 bg-rose-500 hover:bg-rose-600 text-white text-sm font-medium rounded-lg"
+                        class="px-6 py-2.5 bg-primary-500 hover:bg-primary-600 text-white text-sm font-medium rounded-lg"
                         >Create</button
                     >
                 </div>

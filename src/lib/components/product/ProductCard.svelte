@@ -63,7 +63,7 @@
         <Heart
             size={18}
             class={wishlisted
-                ? "fill-rose-500 text-rose-500"
+                ? "fill-primary-500 text-primary-500"
                 : "text-stone-600"}
         />
     </button>
@@ -101,7 +101,7 @@
             {/if}
             {#if product.isTrending}
                 <span
-                    class="bg-rose-500 text-white text-xs font-semibold px-2 py-0.5 rounded-full"
+                    class="bg-primary-500 text-white text-xs font-semibold px-2 py-0.5 rounded-full"
                     >🔥 HOT</span
                 >
             {/if}

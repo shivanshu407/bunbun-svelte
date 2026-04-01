@@ -146,11 +146,11 @@
                     <h2
                         class="text-lg font-semibold flex items-center gap-2 text-stone-900"
                     >
-                        <MapPin size={20} class="text-rose-500" /> Delivery Address
+                        <MapPin size={20} class="text-primary-500" /> Delivery Address
                     </h2>
                     <button
                         onclick={() => (showAddressForm = !showAddressForm)}
-                        class="flex items-center gap-1 text-sm text-rose-500 hover:text-rose-600 font-medium"
+                        class="flex items-center gap-1 text-sm text-primary-500 hover:text-primary-600 font-medium"
                     >
                         <Plus size={16} /> Add New
                     </button>
@@ -172,47 +172,47 @@
                             name="name"
                             required
                             placeholder="Full Name"
-                            class="px-3 py-2.5 border border-stone-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-rose-500"
+                            class="px-3 py-2.5 border border-stone-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
                         />
                         <input
                             name="phone"
                             required
                             placeholder="Phone Number"
-                            class="px-3 py-2.5 border border-stone-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-rose-500"
+                            class="px-3 py-2.5 border border-stone-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
                         />
                         <input
                             name="line1"
                             required
                             placeholder="Address Line 1"
-                            class="md:col-span-2 px-3 py-2.5 border border-stone-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-rose-500"
+                            class="md:col-span-2 px-3 py-2.5 border border-stone-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
                         />
                         <input
                             name="line2"
                             placeholder="Address Line 2 (optional)"
-                            class="md:col-span-2 px-3 py-2.5 border border-stone-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-rose-500"
+                            class="md:col-span-2 px-3 py-2.5 border border-stone-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
                         />
                         <input
                             name="city"
                             required
                             placeholder="City"
-                            class="px-3 py-2.5 border border-stone-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-rose-500"
+                            class="px-3 py-2.5 border border-stone-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
                         />
                         <input
                             name="state"
                             required
                             placeholder="State"
-                            class="px-3 py-2.5 border border-stone-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-rose-500"
+                            class="px-3 py-2.5 border border-stone-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
                         />
                         <input
                             name="pincode"
                             required
                             placeholder="Pincode"
                             pattern="[0-9]{6}"
-                            class="px-3 py-2.5 border border-stone-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-rose-500"
+                            class="px-3 py-2.5 border border-stone-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
                         />
                         <select
                             name="type"
-                            class="px-3 py-2.5 border border-stone-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-rose-500"
+                            class="px-3 py-2.5 border border-stone-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
                         >
                             <option value="home">Home</option>
                             <option value="office">Office</option>
@@ -232,7 +232,7 @@
                             </label>
                             <button
                                 type="submit"
-                                class="px-5 py-2 bg-rose-500 hover:bg-rose-600 text-white text-sm font-medium rounded-lg"
+                                class="px-5 py-2 bg-primary-500 hover:bg-primary-600 text-white text-sm font-medium rounded-lg"
                                 >Save Address</button
                             >
                         </div>
@@ -249,7 +249,7 @@
                             <label
                                 class="flex items-start gap-3 p-4 border rounded-lg cursor-pointer transition-all
 								{selectedAddressId === addr.id
-                                    ? 'border-rose-500 bg-rose-50'
+                                    ? 'border-primary-500 bg-primary-50'
                                     : 'border-stone-200 hover:border-stone-300'}"
                             >
                                 <input
@@ -257,7 +257,7 @@
                                     name="selectedAddr"
                                     value={addr.id}
                                     bind:group={selectedAddressId}
-                                    class="mt-1 text-rose-500"
+                                    class="mt-1 text-primary-500"
                                 />
                                 <div class="flex-1">
                                     <div class="flex items-center gap-2">
@@ -270,7 +270,7 @@
                                             >{addr.type}</span
                                         >
                                         {#if addr.isDefault}<span
-                                                class="text-xs px-2 py-0.5 bg-rose-100 rounded-full text-rose-600"
+                                                class="text-xs px-2 py-0.5 bg-primary-100 rounded-full text-primary-600"
                                                 >Default</span
                                             >{/if}
                                     </div>
@@ -297,20 +297,20 @@
                 <h2
                     class="text-lg font-semibold flex items-center gap-2 text-stone-900 mb-4"
                 >
-                    <CreditCard size={20} class="text-rose-500" /> Payment Method
+                    <CreditCard size={20} class="text-primary-500" /> Payment Method
                 </h2>
                 <div class="space-y-3">
                     <label
                         class="flex items-center gap-3 p-4 border rounded-lg cursor-pointer transition-all
 						{paymentMethod === 'cod'
-                            ? 'border-rose-500 bg-rose-50'
+                            ? 'border-primary-500 bg-primary-50'
                             : 'border-stone-200 hover:border-stone-300'}"
                     >
                         <input
                             type="radio"
                             value="cod"
                             bind:group={paymentMethod}
-                            class="text-rose-500"
+                            class="text-primary-500"
                         />
                         <div class="flex-1">
                             <span class="text-sm font-medium text-stone-800"
@@ -325,14 +325,14 @@
                     <label
                         class="flex items-center gap-3 p-4 border rounded-lg cursor-pointer transition-all
 						{paymentMethod === 'razorpay'
-                            ? 'border-rose-500 bg-rose-50'
+                            ? 'border-primary-500 bg-primary-50'
                             : 'border-stone-200 hover:border-stone-300'}"
                     >
                         <input
                             type="radio"
                             value="razorpay"
                             bind:group={paymentMethod}
-                            class="text-rose-500"
+                            class="text-primary-500"
                         />
                         <div class="flex-1">
                             <span class="text-sm font-medium text-stone-800"
@@ -352,7 +352,7 @@
                 <h2
                     class="text-lg font-semibold flex items-center gap-2 text-stone-900 mb-4"
                 >
-                    <Tag size={20} class="text-rose-500" /> Apply Coupon
+                    <Tag size={20} class="text-primary-500" /> Apply Coupon
                 </h2>
 
                 {#if appliedCoupon}
@@ -388,7 +388,7 @@
                             name="couponCode"
                             bind:value={couponCode}
                             placeholder="Enter coupon code"
-                            class="flex-1 px-3 py-2.5 border border-stone-300 rounded-lg text-sm uppercase tracking-wider font-mono focus:outline-none focus:ring-2 focus:ring-rose-500"
+                            class="flex-1 px-3 py-2.5 border border-stone-300 rounded-lg text-sm uppercase tracking-wider font-mono focus:outline-none focus:ring-2 focus:ring-primary-500"
                         />
                         <button
                             type="submit"
@@ -434,7 +434,7 @@
                                         <button
                                             onclick={() =>
                                                 copyCode(coupon.code)}
-                                            class="flex items-center gap-1 px-3 py-1.5 bg-white border border-rose-200 text-rose-500 hover:bg-rose-50 text-xs font-medium rounded-lg transition-colors"
+                                            class="flex items-center gap-1 px-3 py-1.5 bg-white border border-primary-200 text-primary-500 hover:bg-primary-50 text-xs font-medium rounded-lg transition-colors"
                                         >
                                             {#if copiedCode === coupon.code}
                                                 <Check size={12} /> Copied!
@@ -509,7 +509,7 @@
                                                     item.id,
                                                     item.quantity - 1,
                                                 )}
-                                            class="w-6 h-6 flex items-center justify-center rounded border border-stone-200 text-stone-500 hover:border-rose-300 hover:text-rose-500 transition-colors"
+                                            class="w-6 h-6 flex items-center justify-center rounded border border-stone-200 text-stone-500 hover:border-primary-300 hover:text-primary-500 transition-colors"
                                             disabled={updating ||
                                                 item.quantity <= 1}
                                         >
@@ -525,7 +525,7 @@
                                                     item.id,
                                                     item.quantity + 1,
                                                 )}
-                                            class="w-6 h-6 flex items-center justify-center rounded border border-stone-200 text-stone-500 hover:border-rose-300 hover:text-rose-500 transition-colors"
+                                            class="w-6 h-6 flex items-center justify-center rounded border border-stone-200 text-stone-500 hover:border-primary-300 hover:text-primary-500 transition-colors"
                                             disabled={updating}
                                         >
                                             <Plus size={12} />
@@ -611,7 +611,7 @@
                     <button
                         type="submit"
                         disabled={placing || !selectedAddressId}
-                        class="mt-5 w-full py-3.5 bg-rose-500 hover:bg-rose-600 disabled:bg-stone-300 text-white font-semibold rounded-xl flex items-center justify-center gap-2 transition-all"
+                        class="mt-5 w-full py-3.5 bg-primary-500 hover:bg-primary-600 disabled:bg-stone-300 text-white font-semibold rounded-xl flex items-center justify-center gap-2 transition-all"
                     >
                         {#if placing}
                             <span class="animate-spin">⏳</span> Placing Order...

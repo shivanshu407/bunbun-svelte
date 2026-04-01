@@ -42,7 +42,7 @@
             </p>
             <a
                 href="/collections/sarees"
-                class="inline-block mt-4 px-6 py-2.5 bg-rose-500 hover:bg-rose-600 text-white text-sm font-medium rounded-full"
+                class="inline-block mt-4 px-6 py-2.5 bg-primary-500 hover:bg-primary-600 text-white text-sm font-medium rounded-full"
             >
                 Start Shopping
             </a>
@@ -123,7 +123,7 @@
                         >
                         <a
                             href="/account/orders/{order.id}"
-                            class="flex items-center gap-1 text-xs text-rose-500 hover:text-rose-600 font-medium"
+                            class="flex items-center gap-1 text-xs text-primary-500 hover:text-primary-600 font-medium"
                         >
                             <Eye size={14} /> View Details <ChevronRight
                                 size={14}

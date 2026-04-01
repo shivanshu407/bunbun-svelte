@@ -27,7 +27,7 @@
             <div
                 class="inline-flex items-center justify-center w-16 h-16 bg-stone-900 rounded-2xl mb-4"
             >
-                <ShieldCheck size={32} class="text-rose-400" />
+                <ShieldCheck size={32} class="text-primary-400" />
             </div>
             <h1
                 class="text-2xl font-semibold font-[family-name:var(--font-heading)] text-stone-900"

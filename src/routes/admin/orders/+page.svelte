@@ -150,7 +150,7 @@
                                             name="status"
                                             onchange={(e) =>
                                                 e.currentTarget.form?.requestSubmit()}
-                                            class="text-xs border border-stone-300 rounded-lg px-2 py-1.5 focus:outline-none focus:ring-1 focus:ring-rose-500
+                                            class="text-xs border border-stone-300 rounded-lg px-2 py-1.5 focus:outline-none focus:ring-1 focus:ring-primary-500
 												{order.status === 'delivered'
                                                 ? 'bg-emerald-50 text-emerald-700'
                                                 : order.status === 'shipped'

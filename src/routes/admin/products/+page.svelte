@@ -28,7 +28,7 @@
         </h1>
         <a
             href="/admin/products/new"
-            class="flex items-center gap-2 px-4 py-2.5 bg-rose-500 hover:bg-rose-600 text-white text-sm font-medium rounded-lg transition-colors"
+            class="flex items-center gap-2 px-4 py-2.5 bg-primary-500 hover:bg-primary-600 text-white text-sm font-medium rounded-lg transition-colors"
         >
             <Plus size={18} /> Add Product
         </a>
@@ -59,7 +59,7 @@
                 type="text"
                 placeholder="Search products..."
                 bind:value={searchQuery}
-                class="w-full pl-10 pr-4 py-2.5 border border-stone-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-rose-500"
+                class="w-full pl-10 pr-4 py-2.5 border border-stone-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
             />
         </form>
     </div>
@@ -139,7 +139,7 @@
                                     <div class="text-sm">
                                         {#if product.salePrice}
                                             <span
-                                                class="font-semibold text-rose-600"
+                                                class="font-semibold text-primary-600"
                                                 >{formatPrice(
                                                     product.salePrice,
                                                 )}</span
@@ -288,7 +288,7 @@
                                 href="?page={i + 1}&search={data.search}"
                                 class="w-8 h-8 flex items-center justify-center rounded text-sm
 									{data.pagination.page === i + 1
-                                    ? 'bg-rose-500 text-white'
+                                    ? 'bg-primary-500 text-white'
                                     : 'text-stone-600 hover:bg-stone-100'}"
                             >
                                 {i + 1}

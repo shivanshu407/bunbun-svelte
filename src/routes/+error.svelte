@@ -19,7 +19,7 @@
         <div class="flex flex-col sm:flex-row gap-3 justify-center">
             <button
                 onclick={() => location.reload()}
-                class="inline-flex items-center justify-center gap-2 px-6 py-2.5 bg-rose-500 hover:bg-rose-600 text-white text-sm font-medium rounded-full transition-colors"
+                class="inline-flex items-center justify-center gap-2 px-6 py-2.5 bg-primary-500 hover:bg-primary-600 text-white text-sm font-medium rounded-full transition-colors"
             >
                 <RefreshCw size={16} /> Try Again
             </button>

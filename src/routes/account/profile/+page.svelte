@@ -13,7 +13,7 @@
         <h2
             class="text-lg font-medium text-stone-800 mb-4 flex items-center gap-2"
         >
-            <User size={18} class="text-rose-500" /> Personal Information
+            <User size={18} class="text-primary-500" /> Personal Information
         </h2>
 
         {#if form?.success}
@@ -41,7 +41,7 @@
                     name="name"
                     required
                     value={data.profile?.name ?? ""}
-                    class="w-full px-3 py-2.5 border border-stone-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-rose-500"
+                    class="w-full px-3 py-2.5 border border-stone-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
                 />
             </div>
             <div>
@@ -71,12 +71,12 @@
                     id="phone"
                     name="phone"
                     value={data.profile?.phone ?? ""}
-                    class="w-full px-3 py-2.5 border border-stone-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-rose-500"
+                    class="w-full px-3 py-2.5 border border-stone-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
                 />
             </div>
             <button
                 type="submit"
-                class="flex items-center gap-2 px-5 py-2.5 bg-rose-500 hover:bg-rose-600 text-white text-sm font-medium rounded-lg transition-colors"
+                class="flex items-center gap-2 px-5 py-2.5 bg-primary-500 hover:bg-primary-600 text-white text-sm font-medium rounded-lg transition-colors"
             >
                 <Save size={16} /> Update Profile
             </button>
@@ -88,7 +88,7 @@
         <h2
             class="text-lg font-medium text-stone-800 mb-4 flex items-center gap-2"
         >
-            <Lock size={18} class="text-rose-500" /> Change Password
+            <Lock size={18} class="text-primary-500" /> Change Password
         </h2>
 
         {#if form?.passwordError}
@@ -123,7 +123,7 @@
                     name="currentPassword"
                     type="password"
                     required
-                    class="w-full px-3 py-2.5 border border-stone-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-rose-500"
+                    class="w-full px-3 py-2.5 border border-stone-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
                 />
             </div>
             <div>
@@ -138,7 +138,7 @@
                     type="password"
                     required
                     minlength={6}
-                    class="w-full px-3 py-2.5 border border-stone-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-rose-500"
+                    class="w-full px-3 py-2.5 border border-stone-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
                 />
             </div>
             <div>
@@ -152,7 +152,7 @@
                     name="confirmPassword"
                     type="password"
                     required
-                    class="w-full px-3 py-2.5 border border-stone-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-rose-500"
+                    class="w-full px-3 py-2.5 border border-stone-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
                 />
             </div>
             <button

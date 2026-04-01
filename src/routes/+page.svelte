@@ -23,13 +23,13 @@
 
 <!-- Hero Section -->
 <section
-    class="relative bg-gradient-to-br from-rose-50 via-white to-amber-50 overflow-hidden"
+    class="relative bg-gradient-to-br from-primary-50 via-white to-amber-50 overflow-hidden"
 >
     <div class="max-w-7xl mx-auto px-4 py-16 md:py-24 lg:py-32">
         <div class="grid lg:grid-cols-2 gap-10 items-center">
             <div class="animate-slide-up">
                 <span
-                    class="inline-block px-4 py-1.5 bg-rose-100 text-rose-700 text-sm font-medium rounded-full mb-4"
+                    class="inline-block px-4 py-1.5 bg-primary-100 text-primary-700 text-sm font-medium rounded-full mb-4"
                 >
                     ✨ New Collection 2026
                 </span>
@@ -37,7 +37,7 @@
                     class="text-4xl md:text-5xl lg:text-6xl font-bold font-[family-name:var(--font-heading)] text-stone-900 leading-tight"
                 >
                     Elegance<br />
-                    <span class="text-rose-500">Redefined</span>
+                    <span class="text-primary-500">Redefined</span>
                 </h1>
                 <p class="mt-5 text-lg text-stone-600 max-w-md leading-relaxed">
                     Discover our curated collection of premium sarees, designer
@@ -47,7 +47,7 @@
                 <div class="flex flex-wrap gap-3 mt-8">
                     <a
                         href="/collections/sarees"
-                        class="inline-flex items-center gap-2 px-7 py-3.5 bg-rose-500 hover:bg-rose-600 text-white font-medium rounded-full transition-all hover:shadow-lg hover:shadow-rose-500/25"
+                        class="inline-flex items-center gap-2 px-7 py-3.5 bg-primary-500 hover:bg-primary-600 text-white font-medium rounded-full transition-all hover:shadow-lg hover:shadow-primary-500/25"
                     >
                         Shop Now <ArrowRight size={18} />
                     </a>
@@ -103,7 +103,7 @@
         <div
             class="flex overflow-x-auto snap-x snap-mandatory gap-6 pb-4 scrollbar-hide md:grid md:grid-cols-5 md:overflow-visible"
         >
-            {#each [{ name: "Sarees", icon: "/icons/category-sarees.png", href: "/collections/sarees", color: "from-rose-100 to-rose-200" }, { name: "Blouses", icon: "/icons/category-blouses.png", href: "/collections/blouses", color: "from-amber-100 to-amber-200" }, { name: "Shapewear", icon: "/icons/category-shapewear.png", href: "/collections/shapewear", color: "from-purple-100 to-purple-200" }, { name: "Towels", icon: "/icons/category-towels.png", href: "/collections/towels", color: "from-sky-100 to-sky-200" }, { name: "Essentials", icon: "/icons/category-essentials.png", href: "/collections/essentials", color: "from-emerald-100 to-emerald-200" }] as cat}
+            {#each [{ name: "Sarees", icon: "/icons/category-sarees.png", href: "/collections/sarees", color: "from-primary-100 to-primary-200" }, { name: "Blouses", icon: "/icons/category-blouses.png", href: "/collections/blouses", color: "from-amber-100 to-amber-200" }, { name: "Shapewear", icon: "/icons/category-shapewear.png", href: "/collections/shapewear", color: "from-purple-100 to-purple-200" }, { name: "Towels", icon: "/icons/category-towels.png", href: "/collections/towels", color: "from-sky-100 to-sky-200" }, { name: "Essentials", icon: "/icons/category-essentials.png", href: "/collections/essentials", color: "from-emerald-100 to-emerald-200" }] as cat}
                 <a
                     href={cat.href}
                     class="snap-center flex-shrink-0 group flex flex-col items-center gap-3 w-28 md:w-auto"
@@ -118,7 +118,7 @@
                         />
                     </div>
                     <span
-                        class="text-sm font-medium text-stone-700 group-hover:text-rose-600 transition-colors"
+                        class="text-sm font-medium text-stone-700 group-hover:text-primary-600 transition-colors"
                     >
                         {cat.name}
                     </span>
@@ -139,7 +139,7 @@
             </h2>
             <a
                 href="/collections/sarees"
-                class="text-sm font-medium text-rose-600 hover:text-rose-700 flex items-center gap-1 transition-colors"
+                class="text-sm font-medium text-primary-600 hover:text-primary-700 flex items-center gap-1 transition-colors"
             >
                 View All <ArrowRight size={16} />
             </a>
@@ -162,7 +162,7 @@
 <section class="py-12 md:py-16">
     <div class="max-w-7xl mx-auto px-4">
         <div
-            class="bg-gradient-to-r from-rose-500 to-rose-600 rounded-2xl md:rounded-3xl p-8 md:p-12 text-white text-center relative overflow-hidden"
+            class="bg-gradient-to-r from-primary-500 to-primary-600 rounded-2xl md:rounded-3xl p-8 md:p-12 text-white text-center relative overflow-hidden"
         >
             <div class="absolute inset-0 opacity-10">
                 <div
@@ -174,7 +174,7 @@
             </div>
             <div class="relative z-10">
                 <p
-                    class="text-sm font-medium text-rose-200 uppercase tracking-wider"
+                    class="text-sm font-medium text-primary-200 uppercase tracking-wider"
                 >
                     Limited Time Offer
                 </p>
@@ -183,7 +183,7 @@
                 >
                     FLAT 50% OFF on All Silk Sarees!
                 </h2>
-                <p class="mt-3 text-rose-100 text-lg">
+                <p class="mt-3 text-primary-100 text-lg">
                     Use code: <span
                         class="code font-bold bg-white/20 px-3 py-1 rounded-md"
                         >BUNBUN50</span
@@ -191,7 +191,7 @@
                 </p>
                 <a
                     href="/collections/sarees?tag=silk"
-                    class="inline-flex items-center gap-2 mt-6 px-8 py-3.5 bg-white text-rose-600 font-semibold rounded-full hover:bg-rose-50 transition-all hover:shadow-lg"
+                    class="inline-flex items-center gap-2 mt-6 px-8 py-3.5 bg-white text-primary-600 font-semibold rounded-full hover:bg-primary-50 transition-all hover:shadow-lg"
                 >
                     Shop Sale <ArrowRight size={18} />
                 </a>
@@ -211,7 +211,7 @@
             </h2>
             <a
                 href="/collections/sarees"
-                class="text-sm font-medium text-rose-600 hover:text-rose-700 flex items-center gap-1 transition-colors"
+                class="text-sm font-medium text-primary-600 hover:text-primary-700 flex items-center gap-1 transition-colors"
             >
                 View All <ArrowRight size={16} />
             </a>
@@ -239,7 +239,7 @@
                     class="flex flex-col items-center text-center gap-3 p-5 bg-white rounded-xl shadow-sm"
                 >
                     <div
-                        class="w-12 h-12 bg-rose-50 rounded-full flex items-center justify-center text-rose-500"
+                        class="w-12 h-12 bg-primary-50 rounded-full flex items-center justify-center text-primary-500"
                     >
                         <item.icon size={24} />
                     </div>
@@ -278,7 +278,7 @@
                     </p>
                     <div class="flex items-center gap-3 mt-5">
                         <div
-                            class="w-10 h-10 bg-rose-200 rounded-full flex items-center justify-center text-rose-700 font-bold text-sm"
+                            class="w-10 h-10 bg-primary-200 rounded-full flex items-center justify-center text-primary-700 font-bold text-sm"
                         >
                             {testimonial.name[0]}
                         </div>

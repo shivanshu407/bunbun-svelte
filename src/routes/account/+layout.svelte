@@ -42,7 +42,7 @@
                 <a
                     href={item.href}
                     class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all
-					{active ? 'bg-rose-50 text-rose-700' : 'text-stone-600 hover:bg-stone-50'}"
+					{active ? 'bg-primary-50 text-primary-700' : 'text-stone-600 hover:bg-stone-50'}"
                 >
                     <item.icon size={20} />
                     {item.label}

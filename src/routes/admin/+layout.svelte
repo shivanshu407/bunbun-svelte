@@ -41,7 +41,7 @@
                 <span
                     class="text-xl font-bold font-[family-name:var(--font-heading)]"
                 >
-                    Bun<span class="text-rose-400">Bun</span>
+                    Bun<span class="text-primary-400">Bun</span>
                     <span class="text-xs text-stone-400 ml-1">Admin</span>
                 </span>
             </div>
@@ -52,7 +52,7 @@
                         href={item.href}
                         class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors
 							{$page.url.pathname === item.href
-                            ? 'bg-rose-500/20 text-rose-400'
+                            ? 'bg-primary-500/20 text-primary-400'
                             : 'text-stone-400 hover:text-white hover:bg-stone-800'}"
                     >
                         <item.icon size={20} />
@@ -64,7 +64,7 @@
             <div class="px-3 py-4 border-t border-stone-800">
                 <div class="flex items-center gap-3 px-3 py-2 text-sm">
                     <div
-                        class="w-8 h-8 bg-rose-500 rounded-full flex items-center justify-center text-white font-bold text-xs"
+                        class="w-8 h-8 bg-primary-500 rounded-full flex items-center justify-center text-white font-bold text-xs"
                     >
                         {data.user?.name?.[0] ?? "A"}
                     </div>
@@ -97,7 +97,7 @@
             >
             <span
                 class="text-lg font-bold font-[family-name:var(--font-heading)]"
-                >Bun<span class="text-rose-400">Bun</span> Admin</span
+                >Bun<span class="text-primary-400">Bun</span> Admin</span
             >
             <div class="w-8"></div>
         </div>
@@ -120,7 +120,7 @@
                         <span
                             class="text-lg font-bold font-[family-name:var(--font-heading)]"
                         >
-                            Bun<span class="text-rose-400">Bun</span> Admin
+                            Bun<span class="text-primary-400">Bun</span> Admin
                         </span>
                         <button onclick={() => (sidebarOpen = false)}
                             ><X size={20} class="text-stone-400" /></button
@@ -133,7 +133,7 @@
                                 onclick={() => (sidebarOpen = false)}
                                 class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors
 									{$page.url.pathname === item.href
-                                    ? 'bg-rose-500/20 text-rose-400'
+                                    ? 'bg-primary-500/20 text-primary-400'
                                     : 'text-stone-400 hover:text-white hover:bg-stone-800'}"
                             >
                                 <item.icon size={20} />

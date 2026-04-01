@@ -17,7 +17,7 @@
         </h1>
         <button
             onclick={() => (showForm = !showForm)}
-            class="flex items-center gap-2 px-4 py-2.5 bg-rose-500 hover:bg-rose-600 text-white text-sm font-medium rounded-lg transition-colors"
+            class="flex items-center gap-2 px-4 py-2.5 bg-primary-500 hover:bg-primary-600 text-white text-sm font-medium rounded-lg transition-colors"
         >
             <Plus size={18} /> New Coupon
         </button>
@@ -60,7 +60,7 @@
                         name="code"
                         required
                         placeholder="e.g. BUNBUN50"
-                        class="w-full px-3 py-2.5 border border-stone-300 rounded-lg text-sm uppercase focus:outline-none focus:ring-2 focus:ring-rose-500"
+                        class="w-full px-3 py-2.5 border border-stone-300 rounded-lg text-sm uppercase focus:outline-none focus:ring-2 focus:ring-primary-500"
                     />
                 </div>
                 <div>
@@ -70,7 +70,7 @@
                     <input
                         name="description"
                         placeholder="50% off on all products"
-                        class="w-full px-3 py-2.5 border border-stone-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-rose-500"
+                        class="w-full px-3 py-2.5 border border-stone-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
                     />
                 </div>
                 <div>
@@ -80,7 +80,7 @@
                     <select
                         name="type"
                         required
-                        class="w-full px-3 py-2.5 border border-stone-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-rose-500"
+                        class="w-full px-3 py-2.5 border border-stone-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
                     >
                         <option value="percentage">Percentage (%)</option>
                         <option value="fixed">Fixed Amount (₹)</option>
@@ -96,7 +96,7 @@
                         step="0.01"
                         required
                         placeholder="50"
-                        class="w-full px-3 py-2.5 border border-stone-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-rose-500"
+                        class="w-full px-3 py-2.5 border border-stone-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
                     />
                 </div>
                 <div>
@@ -108,7 +108,7 @@
                         type="number"
                         step="0.01"
                         placeholder="999"
-                        class="w-full px-3 py-2.5 border border-stone-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-rose-500"
+                        class="w-full px-3 py-2.5 border border-stone-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
                     />
                 </div>
                 <div>
@@ -120,7 +120,7 @@
                         type="number"
                         step="0.01"
                         placeholder="500"
-                        class="w-full px-3 py-2.5 border border-stone-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-rose-500"
+                        class="w-full px-3 py-2.5 border border-stone-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
                     />
                 </div>
                 <div>
@@ -131,7 +131,7 @@
                         name="usageLimit"
                         type="number"
                         placeholder="100"
-                        class="w-full px-3 py-2.5 border border-stone-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-rose-500"
+                        class="w-full px-3 py-2.5 border border-stone-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
                     />
                 </div>
                 <div></div>
@@ -143,7 +143,7 @@
                         name="validFrom"
                         type="date"
                         required
-                        class="w-full px-3 py-2.5 border border-stone-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-rose-500"
+                        class="w-full px-3 py-2.5 border border-stone-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
                     />
                 </div>
                 <div>
@@ -154,7 +154,7 @@
                         name="validTo"
                         type="date"
                         required
-                        class="w-full px-3 py-2.5 border border-stone-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-rose-500"
+                        class="w-full px-3 py-2.5 border border-stone-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
                     />
                 </div>
                 <div class="md:col-span-2 flex gap-3 justify-end mt-2">
@@ -167,7 +167,7 @@
                     </button>
                     <button
                         type="submit"
-                        class="px-6 py-2.5 bg-rose-500 hover:bg-rose-600 text-white text-sm font-medium rounded-lg transition-colors"
+                        class="px-6 py-2.5 bg-primary-500 hover:bg-primary-600 text-white text-sm font-medium rounded-lg transition-colors"
                     >
                         Create Coupon
                     </button>

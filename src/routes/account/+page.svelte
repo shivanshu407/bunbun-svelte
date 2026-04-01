@@ -39,7 +39,7 @@
             </h2>
             <a
                 href="/account/orders"
-                class="text-sm text-rose-600 hover:text-rose-700 font-medium"
+                class="text-sm text-primary-600 hover:text-primary-700 font-medium"
                 >View All</a
             >
         </div>
@@ -49,7 +49,7 @@
                 <p class="text-stone-500">No orders yet</p>
                 <a
                     href="/collections/sarees"
-                    class="inline-block mt-3 text-sm text-rose-600 hover:text-rose-700 font-medium"
+                    class="inline-block mt-3 text-sm text-primary-600 hover:text-primary-700 font-medium"
                 >
                     Start Shopping →
                 </a>

@@ -25,7 +25,7 @@
 
     <!-- Stats Grid -->
     <div class="grid grid-cols-2 lg:grid-cols-5 gap-4 mb-8">
-        {#each [{ icon: DollarSign, label: "Revenue", value: formatPrice(data.stats.totalRevenue), color: "bg-emerald-50 text-emerald-600" }, { icon: ShoppingBag, label: "Orders", value: data.stats.totalOrders.toString(), color: "bg-blue-50 text-blue-600" }, { icon: Package, label: "Products", value: data.stats.totalProducts.toString(), color: "bg-amber-50 text-amber-600" }, { icon: Users, label: "Customers", value: data.stats.totalCustomers.toString(), color: "bg-purple-50 text-purple-600" }, { icon: Tag, label: "Active Coupons", value: data.stats.activeCoupons.toString(), color: "bg-rose-50 text-rose-600" }] as stat}
+        {#each [{ icon: DollarSign, label: "Revenue", value: formatPrice(data.stats.totalRevenue), color: "bg-emerald-50 text-emerald-600" }, { icon: ShoppingBag, label: "Orders", value: data.stats.totalOrders.toString(), color: "bg-blue-50 text-blue-600" }, { icon: Package, label: "Products", value: data.stats.totalProducts.toString(), color: "bg-amber-50 text-amber-600" }, { icon: Users, label: "Customers", value: data.stats.totalCustomers.toString(), color: "bg-purple-50 text-purple-600" }, { icon: Tag, label: "Active Coupons", value: data.stats.activeCoupons.toString(), color: "bg-primary-50 text-primary-600" }] as stat}
             <div class="bg-white rounded-xl border border-stone-200 p-5">
                 <div class="flex items-center gap-3">
                     <div
@@ -59,7 +59,7 @@
             </h2>
             <a
                 href="/admin/orders"
-                class="text-sm text-rose-600 hover:text-rose-700 font-medium"
+                class="text-sm text-primary-600 hover:text-primary-700 font-medium"
                 >View All →</a
             >
         </div>

@@ -25,7 +25,7 @@
         </h1>
         <button
             onclick={() => (showForm = !showForm)}
-            class="flex items-center gap-2 px-4 py-2.5 bg-rose-500 hover:bg-rose-600 text-white text-sm font-medium rounded-lg transition-colors"
+            class="flex items-center gap-2 px-4 py-2.5 bg-primary-500 hover:bg-primary-600 text-white text-sm font-medium rounded-lg transition-colors"
         >
             <Plus size={18} /> Add Category
         </button>
@@ -68,7 +68,7 @@
                         required
                         placeholder="e.g. Silk Sarees"
                         oninput={(e) => generateSlug(e.currentTarget.value)}
-                        class="w-full px-3 py-2.5 border border-stone-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-rose-500"
+                        class="w-full px-3 py-2.5 border border-stone-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
                     />
                 </div>
                 <div>
@@ -80,7 +80,7 @@
                         required
                         bind:value={slugValue}
                         placeholder="silk-sarees"
-                        class="w-full px-3 py-2.5 border border-stone-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-rose-500"
+                        class="w-full px-3 py-2.5 border border-stone-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
                     />
                 </div>
                 <div>
@@ -89,7 +89,7 @@
                     >
                     <select
                         name="parentId"
-                        class="w-full px-3 py-2.5 border border-stone-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-rose-500"
+                        class="w-full px-3 py-2.5 border border-stone-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
                     >
                         <option value="">None (Top Level)</option>
                         {#each data.categories.filter((c) => !c.parentId) as cat}
@@ -104,7 +104,7 @@
                     <input
                         name="image"
                         placeholder="https://..."
-                        class="w-full px-3 py-2.5 border border-stone-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-rose-500"
+                        class="w-full px-3 py-2.5 border border-stone-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
                     />
                 </div>
                 <div class="md:col-span-2">
@@ -115,7 +115,7 @@
                         name="description"
                         rows="2"
                         placeholder="Category description"
-                        class="w-full px-3 py-2.5 border border-stone-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-rose-500"
+                        class="w-full px-3 py-2.5 border border-stone-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
                     ></textarea>
                 </div>
                 <div class="md:col-span-2 flex gap-3 justify-end">
@@ -127,7 +127,7 @@
                     >
                     <button
                         type="submit"
-                        class="px-6 py-2.5 bg-rose-500 hover:bg-rose-600 text-white text-sm font-medium rounded-lg"
+                        class="px-6 py-2.5 bg-primary-500 hover:bg-primary-600 text-white text-sm font-medium rounded-lg"
                         >Create</button
                     >
                 </div>

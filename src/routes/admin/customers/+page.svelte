@@ -56,7 +56,7 @@
                                 <td class="px-6 py-4">
                                     <div class="flex items-center gap-3">
                                         <div
-                                            class="w-9 h-9 bg-rose-100 rounded-full flex items-center justify-center text-rose-600 font-bold text-sm"
+                                            class="w-9 h-9 bg-primary-100 rounded-full flex items-center justify-center text-primary-600 font-bold text-sm"
                                         >
                                             {customer.name[0]}
                                         </div>
