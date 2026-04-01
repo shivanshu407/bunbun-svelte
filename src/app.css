@@ -4,18 +4,18 @@
 /* === BunBunClothing Design System === */
 
 @theme {
-	/* Primary - Rose */
-	--color-rose-50: #fff1f2;
-	--color-rose-100: #ffe4e6;
-	--color-rose-200: #fecdd3;
-	--color-rose-300: #fda4af;
-	--color-rose-400: #fb7185;
-	--color-rose-500: #f43f5e;
-	--color-rose-600: #e11d48;
-	--color-rose-700: #be123c;
-	--color-rose-800: #9f1239;
-	--color-rose-900: #881337;
-	--color-rose-950: #4c0519;
+	/* Primary - Rose (Custom Pink based on #fb7dab) */
+	--color-rose-50: #fdf2f7;
+	--color-rose-100: #fbe6ef;
+	--color-rose-200: #f8cde0;
+	--color-rose-300: #f5a6cc;
+	--color-rose-400: #f993bf;
+	--color-rose-500: #fb7dab;
+	--color-rose-600: #f55594;
+	--color-rose-700: #e43377;
+	--color-rose-800: #c4205c;
+	--color-rose-900: #871d46;
+	--color-rose-950: #4e0a24;
 
 	/* Secondary - Amber */
 	--color-amber-50: #fffbeb;
