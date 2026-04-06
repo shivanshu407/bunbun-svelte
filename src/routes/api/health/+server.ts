@@ -1,7 +1,7 @@
 import { json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
 import { env } from '$env/dynamic/private';
-import { createConnection } from 'mariadb';
+import { createConnection, createPool } from 'mariadb';
 import { prisma } from '$lib/server/db';
 
 function withTimeout<T>(promise: Promise<T>, ms: number): Promise<T> {
@@ -22,6 +22,7 @@ export const GET: RequestHandler = async () => {
             DATABASE_URL: env.DATABASE_URL ? env.DATABASE_URL.replace(/:[^@]+@/, ':***@') : '(not set)',
         },
         directDbTest: 'pending',
+        poolDbTest: 'pending',
         prismaTest: 'pending',
     };
 
@@ -36,12 +37,34 @@ export const GET: RequestHandler = async () => {
             port: parseInt(env.MYSQL_PORT || '3306'),
             connectTimeout: 5000,
         });
-        const rows = await conn.query('SELECT 1 as test');
+        await conn.query('SELECT 1 as test');
         diagnostics.directDbTest = 'SUCCESS';
     } catch (error: any) {
         diagnostics.directDbTest = error.message;
     } finally {
         if (conn) await conn.end().catch(() => {});
+    }
+
+    // Test pool connection
+    let pool;
+    try {
+        pool = createPool({
+            host: env.MYSQL_HOST || 'localhost',
+            user: env.MYSQL_USER || '',
+            password: env.MYSQL_PASSWORD || '',
+            database: env.MYSQL_DATABASE || '',
+            port: parseInt(env.MYSQL_PORT || '3306'),
+            connectionLimit: 5,
+            connectTimeout: 5000,
+        });
+        const poolConn = await withTimeout(pool.getConnection(), 5000);
+        await poolConn.query('SELECT 1 as poolTest');
+        poolConn.release();
+        diagnostics.poolDbTest = 'SUCCESS';
+    } catch (error: any) {
+        diagnostics.poolDbTest = error.message;
+    } finally {
+        if (pool) await pool.end().catch(() => {});
     }
 
     // Test Prisma connection
