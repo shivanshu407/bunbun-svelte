@@ -1,29 +1,24 @@
 import { PrismaClient } from '@prisma/client';
+import { PrismaMariaDb } from '@prisma/adapter-mariadb';
 import { env } from '$env/dynamic/private';
 
-const constructUrl = () => {
-    // If DATABASE_URL is already provided natively, use it
-    if (env.DATABASE_URL) return env.DATABASE_URL;
-    
-    // Fallback designed exactly for Hostinger: Combining separated variables into Prisma URL format
-    const host = env.MYSQL_HOST;
-    const user = env.MYSQL_USER;
-    const pass = encodeURIComponent(env.MYSQL_PASSWORD || '');
-    const db = env.MYSQL_DATABASE;
-    const port = env.MYSQL_PORT || '3306';
-    
-    return `mysql://${user}:${pass}@${host}:${port}/${db}`;
+const getConnectionConfig = () => {
+    const host = env.MYSQL_HOST || 'localhost';
+    const user = env.MYSQL_USER || '';
+    const password = env.MYSQL_PASSWORD || '';
+    const database = env.MYSQL_DATABASE || '';
+    const port = parseInt(env.MYSQL_PORT || '3306');
+
+    return { host, user, password, database, port, connectionLimit: 5, connectTimeout: 5000 };
 };
 
 const globalForPrisma = globalThis as unknown as { prisma: PrismaClient };
 
-export const prisma = globalForPrisma.prisma || new PrismaClient({
-    datasources: {
-        db: {
-            url: constructUrl()
-        }
-    }
-});
+export const prisma = globalForPrisma.prisma || (() => {
+    const config = getConnectionConfig();
+    const adapter = new PrismaMariaDb(config);
+    return new PrismaClient({ adapter });
+})();
 
 if (process.env.NODE_ENV !== 'production') {
     globalForPrisma.prisma = prisma;

@@ -3,6 +3,15 @@ import type { RequestHandler } from './$types';
 import { prisma } from '$lib/server/db';
 import { env } from '$env/dynamic/private';
 
+function withTimeout<T>(promise: Promise<T>, ms: number): Promise<T> {
+    return Promise.race([
+        promise,
+        new Promise<never>((_, reject) =>
+            setTimeout(() => reject(new Error(`Timed out after ${ms}ms`)), ms)
+        )
+    ]);
+}
+
 export const GET: RequestHandler = async () => {
     const diagnostics: Record<string, any> = {
         timestamp: new Date().toISOString(),
@@ -18,14 +27,13 @@ export const GET: RequestHandler = async () => {
     };
 
     try {
-        // Try a simple query
-        const result = await prisma.$queryRaw`SELECT 1 as test`;
+        const result = await withTimeout(prisma.$queryRaw`SELECT 1 as test`, 5000);
         diagnostics.dbTest = 'SUCCESS';
         diagnostics.dbResult = result;
     } catch (error: any) {
         diagnostics.dbTest = 'FAILED';
         diagnostics.dbError = {
-            message: error?.message || String(error),
+            message: error?.message?.substring(0, 500) || String(error),
             code: error?.code,
             name: error?.name
         };
