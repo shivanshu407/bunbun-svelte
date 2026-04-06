@@ -20,24 +20,32 @@ export const actions: Actions = {
             return fail(400, { error: 'Email and password are required', email });
         }
 
-        const user = await prisma.user.findUnique({ where: { email } });
-        if (!user) {
-            return fail(400, { error: 'Invalid email or password', email });
+        try {
+            const user = await prisma.user.findUnique({ where: { email } });
+            if (!user) {
+                return fail(400, { error: 'Invalid email or password', email });
+            }
+
+            const validPassword = await bcrypt.compare(password, user.passwordHash);
+            if (!validPassword) {
+                return fail(400, { error: 'Invalid email or password', email });
+            }
+
+            // Create session
+            const session = await lucia.createSession(user.id, {});
+            const sessionCookie = lucia.createSessionCookie(session.id);
+            cookies.set(sessionCookie.name, sessionCookie.value, {
+                path: '.',
+                ...sessionCookie.attributes
+            });
+
+            throw redirect(302, user.role === 'admin' ? '/admin' : '/account');
+        } catch (err) {
+            if (err && typeof err === 'object' && 'status' in err && (err as any).status === 302) {
+                throw err;
+            }
+            console.error('Login error:', err);
+            return fail(500, { error: 'Something went wrong. Please try again.', email });
         }
-
-        const validPassword = await bcrypt.compare(password, user.passwordHash);
-        if (!validPassword) {
-            return fail(400, { error: 'Invalid email or password', email });
-        }
-
-        // Create session
-        const session = await lucia.createSession(user.id, {});
-        const sessionCookie = lucia.createSessionCookie(session.id);
-        cookies.set(sessionCookie.name, sessionCookie.value, {
-            path: '.',
-            ...sessionCookie.attributes
-        });
-
-        throw redirect(302, user.role === 'admin' ? '/admin' : '/account');
     }
 };
