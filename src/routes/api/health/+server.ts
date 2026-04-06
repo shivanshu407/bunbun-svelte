@@ -1,7 +1,7 @@
 import { json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
 import { env } from '$env/dynamic/private';
-import mariadb from 'mariadb';
+import { createConnection } from 'mariadb';
 
 export const GET: RequestHandler = async () => {
     const diagnostics: Record<string, any> = {
@@ -20,7 +20,7 @@ export const GET: RequestHandler = async () => {
     // Test direct mariadb connection (bypassing Prisma entirely)
     let conn;
     try {
-        conn = await mariadb.createConnection({
+        conn = await createConnection({
             host: env.MYSQL_HOST || 'localhost',
             user: env.MYSQL_USER || '',
             password: env.MYSQL_PASSWORD || '',
