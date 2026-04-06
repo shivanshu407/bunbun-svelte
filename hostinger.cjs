@@ -8,7 +8,7 @@ if (!DATABASE_URL && MYSQL_USER && MYSQL_HOST && MYSQL_DATABASE) {
     
     const encodedPass = encodeURIComponent(MYSQL_PASSWORD || '');
     const port = MYSQL_PORT || '3306';
-    const dbUrl = `mysql://${MYSQL_USER}:${encodedPass}@${MYSQL_HOST}:${port}/${MYSQL_DATABASE}?connect_timeout=5&socket_timeout=5`;
+    const dbUrl = `mysql://${MYSQL_USER}:${encodedPass}@${MYSQL_HOST}:${port}/${MYSQL_DATABASE}`;
     
     // Set as environment variable for current process (Prisma CLI picks this up)
     process.env.DATABASE_URL = dbUrl;

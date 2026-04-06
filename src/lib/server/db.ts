@@ -12,7 +12,7 @@ const constructUrl = () => {
     const db = env.MYSQL_DATABASE;
     const port = env.MYSQL_PORT || '3306';
     
-    return `mysql://${user}:${pass}@${host}:${port}/${db}?connect_timeout=5&socket_timeout=5`;
+    return `mysql://${user}:${pass}@${host}:${port}/${db}`;
 };
 
 const globalForPrisma = globalThis as unknown as { prisma: PrismaClient };
