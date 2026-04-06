@@ -1,11 +1,7 @@
 import type { RequestHandler } from './$types';
 import { json } from '@sveltejs/kit';
-import { writeFile, mkdir } from 'fs/promises';
-import { existsSync } from 'fs';
-import path from 'path';
-import crypto from 'crypto';
+import cloudinary from '$lib/server/cloudinary';
 
-const UPLOAD_DIR = 'static/uploads';
 const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
 const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/avif'];
 
@@ -20,11 +16,6 @@ export const POST: RequestHandler = async ({ request, locals }) => {
 
     if (!files.length) {
         return json({ error: 'No files provided' }, { status: 400 });
-    }
-
-    // Ensure upload directory exists
-    if (!existsSync(UPLOAD_DIR)) {
-        await mkdir(UPLOAD_DIR, { recursive: true });
     }
 
     const uploadedUrls: string[] = [];
@@ -46,17 +37,27 @@ export const POST: RequestHandler = async ({ request, locals }) => {
             );
         }
 
-        // Generate unique filename
-        const ext = file.name.split('.').pop()?.toLowerCase() || 'jpg';
-        const uniqueName = `${Date.now()}-${crypto.randomBytes(6).toString('hex')}.${ext}`;
-        const filePath = path.join(UPLOAD_DIR, uniqueName);
+        try {
+            // Convert web File blob to base64 Data URI for secure Cloudinary transit
+            const arrayBuffer = await file.arrayBuffer();
+            const base64String = Buffer.from(arrayBuffer).toString('base64');
+            const dataUri = `data:${file.type};base64,${base64String}`;
 
-        // Write file
-        const buffer = Buffer.from(await file.arrayBuffer());
-        await writeFile(filePath, buffer);
+            // Upload directly to your safe Cloudinary bucket
+            const uploadResult = await cloudinary.uploader.upload(dataUri, {
+                folder: 'bunbun_products',
+                resource_type: 'image'
+            });
 
-        // Return the public URL path
-        uploadedUrls.push(`/uploads/${uniqueName}`);
+            // Return the permanently hosted secure URL from Cloudinary
+            uploadedUrls.push(uploadResult.secure_url);
+        } catch (error) {
+            console.error("Cloudinary Upload Error:", error);
+            return json(
+                { error: "Failed to upload image to Cloudinary. Check API keys." },
+                { status: 500 }
+            );
+        }
     }
 
     return json({ urls: uploadedUrls });
