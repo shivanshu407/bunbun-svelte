@@ -54,13 +54,22 @@ export const actions: Actions = {
             });
 
             throw redirect(302, '/account');
-        } catch (err) {
+        } catch (err: any) {
             // Re-throw redirects (they're thrown as errors in SvelteKit)
-            if (err && typeof err === 'object' && 'status' in err && (err as any).status === 302) {
+            if (err && typeof err === 'object' && 'status' in err && err.status === 302) {
                 throw err;
             }
             console.error('Registration error:', err);
-            return fail(500, { error: 'Something went wrong. Please try again.', name, email, phone });
+            
+            const errMsg = err?.message || String(err);
+            let userMessage = 'Something went wrong. Please try again.';
+            if (errMsg.includes('connect') || errMsg.includes('ECONNREFUSED') || errMsg.includes('timeout')) {
+                userMessage = 'Database connection failed. Please contact support.';
+            } else if (errMsg.includes('Unique constraint')) {
+                userMessage = 'An account with this email already exists.';
+            }
+            
+            return fail(500, { error: userMessage, name, email, phone });
         }
     }
 };
