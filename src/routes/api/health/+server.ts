@@ -1,16 +1,7 @@
 import { json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
-import { prisma } from '$lib/server/db';
 import { env } from '$env/dynamic/private';
-
-function withTimeout<T>(promise: Promise<T>, ms: number): Promise<T> {
-    return Promise.race([
-        promise,
-        new Promise<never>((_, reject) =>
-            setTimeout(() => reject(new Error(`Timed out after ${ms}ms`)), ms)
-        )
-    ]);
-}
+import mariadb from 'mariadb';
 
 export const GET: RequestHandler = async () => {
     const diagnostics: Record<string, any> = {
@@ -23,20 +14,33 @@ export const GET: RequestHandler = async () => {
             MYSQL_PASSWORD: env.MYSQL_PASSWORD ? '***SET***' : '(not set)',
             DATABASE_URL: env.DATABASE_URL ? env.DATABASE_URL.replace(/:[^@]+@/, ':***@') : '(not set)',
         },
-        dbTest: 'pending'
+        directDbTest: 'pending',
     };
 
+    // Test direct mariadb connection (bypassing Prisma entirely)
+    let conn;
     try {
-        const result = await withTimeout(prisma.$queryRaw`SELECT 1 as test`, 5000);
-        diagnostics.dbTest = 'SUCCESS';
-        diagnostics.dbResult = result;
+        conn = await mariadb.createConnection({
+            host: env.MYSQL_HOST || 'localhost',
+            user: env.MYSQL_USER || '',
+            password: env.MYSQL_PASSWORD || '',
+            database: env.MYSQL_DATABASE || '',
+            port: parseInt(env.MYSQL_PORT || '3306'),
+            connectTimeout: 10000,
+        });
+        const rows = await conn.query('SELECT 1 as test');
+        diagnostics.directDbTest = 'SUCCESS';
+        diagnostics.directDbResult = rows;
     } catch (error: any) {
-        diagnostics.dbTest = 'FAILED';
-        diagnostics.dbError = {
+        diagnostics.directDbTest = 'FAILED';
+        diagnostics.directDbError = {
             message: error?.message?.substring(0, 500) || String(error),
             code: error?.code,
-            name: error?.name
+            errno: error?.errno,
+            sqlState: error?.sqlState,
         };
+    } finally {
+        if (conn) await conn.end().catch(() => {});
     }
 
     return json(diagnostics, { status: 200 });
