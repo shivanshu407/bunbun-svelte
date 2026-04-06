@@ -1,0 +1,753 @@
+﻿
+> bunbunclothing@0.1.0 build
+> vite build
+
+[36mvite v7.3.1 [32mbuilding ssr environment for production...[36m[39m
+transforming...
+node.exe : 12:22:53 pm 
+[vite-plugin-svelte] src/r
+outes/admin/banners/+page.
+svelte:58:20 A form label 
+must be associated with a 
+control
+At line:1 char:1
++ & "C:\Program 
+Files\nodejs/node.exe" "C:
+\Users\SHIVANSHU\AppData\R
+oam ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo        
+      : NotSpecified: (1  
+  2:22:53 pm [vi... wit   
+ h a control:String) [    
+], RemoteException
+    + FullyQualifiedError 
+   Id : NativeCommandErr  
+  or
+ 
+https://svelte.dev/e/a11y_
+label_has_associated_contr
+ol
+56:             >
+57:                 <div>
+58:                     
+<label class="block 
+text-sm font-medium 
+text-stone-700 mb-1"
+                         ^
+59:                       
+  >Title *</label
+60:                     >
+12:22:53 pm 
+[vite-plugin-svelte] src/r
+outes/admin/banners/+page.
+svelte:68:20 A form label 
+must be associated with a 
+control
+https://svelte.dev/e/a11y_
+label_has_associated_contr
+ol
+66:                 </div>
+67:                 <div>
+68:                     
+<label class="block 
+text-sm font-medium 
+text-stone-700 mb-1"
+                         ^
+69:                       
+  >Subtitle</label
+70:                     >
+12:22:53 pm 
+[vite-plugin-svelte] src/r
+outes/admin/banners/+page.
+svelte:77:20 A form label 
+must be associated with a 
+control
+https://svelte.dev/e/a11y_
+label_has_associated_contr
+ol
+75:                 </div>
+76:                 <div>
+77:                     
+<label class="block 
+text-sm font-medium 
+text-stone-700 mb-1"
+                         ^
+78:                       
+  >Image URL *</label
+79:                     >
+12:22:53 pm 
+[vite-plugin-svelte] src/r
+outes/admin/banners/+page.
+svelte:87:20 A form label 
+must be associated with a 
+control
+https://svelte.dev/e/a11y_
+label_has_associated_contr
+ol
+85:                 </div>
+86:                 <div>
+87:                     
+<label class="block 
+text-sm font-medium 
+text-stone-700 mb-1"
+                         ^
+88:                       
+  >Link URL</label
+89:                     >
+12:22:53 pm 
+[vite-plugin-svelte] src/r
+outes/admin/banners/+page.
+svelte:96:20 A form label 
+must be associated with a 
+control
+https://svelte.dev/e/a11y_
+label_has_associated_contr
+ol
+94:                 </div>
+95:                 <div>
+96:                     
+<label class="block 
+text-sm font-medium 
+text-stone-700 mb-1"
+                         ^
+97:                       
+  >Display Order</label
+98:                     >
+12:22:53 pm 
+[vite-plugin-svelte] src/r
+outes/admin/categories/+pa
+ge.svelte:63:20 A form 
+label must be associated 
+with a control
+https://svelte.dev/e/a11y_
+label_has_associated_contr
+ol
+61:             >
+62:                 <div>
+63:                     
+<label class="block 
+text-sm font-medium 
+text-stone-700 mb-1"
+                         ^
+64:                       
+  >Name *</label
+65:                     >
+12:22:53 pm 
+[vite-plugin-svelte] src/r
+outes/admin/categories/+pa
+ge.svelte:75:20 A form 
+label must be associated 
+with a control
+https://svelte.dev/e/a11y_
+label_has_associated_contr
+ol
+73:                 </div>
+74:                 <div>
+75:                     
+<label class="block 
+text-sm font-medium 
+text-stone-700 mb-1"
+                         ^
+76:                       
+  >Slug *</label
+77:                     >
+12:22:53 pm 
+[vite-plugin-svelte] src/r
+outes/admin/categories/+pa
+ge.svelte:87:20 A form 
+label must be associated 
+with a control
+https://svelte.dev/e/a11y_
+label_has_associated_contr
+ol
+85:                 </div>
+86:                 <div>
+87:                     
+<label class="block 
+text-sm font-medium 
+text-stone-700 mb-1"
+                         ^
+88:                       
+  >Parent Category</label
+89:                     >
+12:22:53 pm 
+[vite-plugin-svelte] src/r
+outes/admin/categories/+pa
+ge.svelte:101:20 A form 
+label must be associated 
+with a control
+https://svelte.dev/e/a11y_
+label_has_associated_contr
+ol
+ 99:                 
+</div>
+100:                 <div>
+101:                     
+<label class="block 
+text-sm font-medium 
+text-stone-700 mb-1"
+                          
+^
+102:                      
+   >Image URL</label
+103:                     >
+12:22:53 pm 
+[vite-plugin-svelte] src/r
+outes/admin/categories/+pa
+ge.svelte:111:20 A form 
+label must be associated 
+with a control
+https://svelte.dev/e/a11y_
+label_has_associated_contr
+ol
+109:                 
+</div>
+110:                 <div 
+class="md:col-span-2">
+111:                     
+<label class="block 
+text-sm font-medium 
+text-stone-700 mb-1"
+                          
+^
+112:                      
+   >Description</label
+113:                     >
+12:22:53 pm 
+[vite-plugin-svelte] src/r
+outes/admin/coupons/+page.
+svelte:56:20 A form label 
+must be associated with a 
+control
+https://svelte.dev/e/a11y_
+label_has_associated_contr
+ol
+54:             >
+55:                 <div>
+56:                     
+<label class="block 
+text-sm font-medium 
+text-stone-700 mb-1"
+                         ^
+57:                       
+  >Code *</label
+58:                     >
+12:22:53 pm 
+[vite-plugin-svelte] src/r
+outes/admin/coupons/+page.
+svelte:67:20 A form label 
+must be associated with a 
+control
+https://svelte.dev/e/a11y_
+label_has_associated_contr
+ol
+65:                 </div>
+66:                 <div>
+67:                     
+<label class="block 
+text-sm font-medium 
+text-stone-700 mb-1"
+                         ^
+68:                       
+  >Description</label
+69:                     >
+12:22:53 pm 
+[vite-plugin-svelte] src/r
+outes/admin/coupons/+page.
+svelte:77:20 A form label 
+must be associated with a 
+control
+https://svelte.dev/e/a11y_
+label_has_associated_contr
+ol
+75:                 </div>
+76:                 <div>
+77:                     
+<label class="block 
+text-sm font-medium 
+text-stone-700 mb-1"
+                         ^
+78:                       
+  >Type *</label
+79:                     >
+12:22:53 pm 
+[vite-plugin-svelte] src/r
+outes/admin/coupons/+page.
+svelte:90:20 A form label 
+must be associated with a 
+control
+https://svelte.dev/e/a11y_
+label_has_associated_contr
+ol
+88:                 </div>
+89:                 <div>
+90:                     
+<label class="block 
+text-sm font-medium 
+text-stone-700 mb-1"
+                         ^
+91:                       
+  >Value *</label
+92:                     >
+12:22:53 pm 
+[vite-plugin-svelte] src/r
+outes/admin/coupons/+page.
+svelte:103:20 A form 
+label must be associated 
+with a control
+https://svelte.dev/e/a11y_
+label_has_associated_contr
+ol
+101:                 
+</div>
+102:                 <div>
+103:                     
+<label class="block 
+text-sm font-medium 
+text-stone-700 mb-1"
+                          
+^
+104:                      
+   >Min Order 
+Amount</label
+105:                     >
+12:22:53 pm 
+[vite-plugin-svelte] src/r
+outes/admin/coupons/+page.
+svelte:115:20 A form 
+label must be associated 
+with a control
+https://svelte.dev/e/a11y_
+label_has_associated_contr
+ol
+113:                 
+</div>
+114:                 <div>
+115:                     
+<label class="block 
+text-sm font-medium 
+text-stone-700 mb-1"
+                          
+^
+116:                      
+   >Max Discount</label
+117:                     >
+12:22:53 pm 
+[vite-plugin-svelte] src/r
+outes/admin/coupons/+page.
+svelte:127:20 A form 
+label must be associated 
+with a control
+https://svelte.dev/e/a11y_
+label_has_associated_contr
+ol
+125:                 
+</div>
+126:                 <div>
+127:                     
+<label class="block 
+text-sm font-medium 
+text-stone-700 mb-1"
+                          
+^
+128:                      
+   >Usage Limit</label
+129:                     >
+12:22:53 pm 
+[vite-plugin-svelte] src/r
+outes/admin/coupons/+page.
+svelte:139:20 A form 
+label must be associated 
+with a control
+https://svelte.dev/e/a11y_
+label_has_associated_contr
+ol
+137:                 
+<div></div>
+138:                 <div>
+139:                     
+<label class="block 
+text-sm font-medium 
+text-stone-700 mb-1"
+                          
+^
+140:                      
+   >Valid From *</label
+141:                     >
+12:22:53 pm 
+[vite-plugin-svelte] src/r
+outes/admin/coupons/+page.
+svelte:150:20 A form 
+label must be associated 
+with a control
+https://svelte.dev/e/a11y_
+label_has_associated_contr
+ol
+148:                 
+</div>
+149:                 <div>
+150:                     
+<label class="block 
+text-sm font-medium 
+text-stone-700 mb-1"
+                          
+^
+151:                      
+   >Valid To *</label
+152:                     >
+12:22:53 pm 
+[vite-plugin-svelte] src/r
+outes/admin/products/+page
+.svelte:17:29 This 
+reference only captures 
+the initial value of 
+`data`. Did you mean to 
+reference it inside a 
+derived instead?
+https://svelte.dev/e/state
+_referenced_locally
+15: 
+16:     let { data, form 
+} = $props();
+17:     let searchQuery = 
+$state(data.search);
+                          
+           ^
+18: </script>
+19: 
+12:22:53 pm 
+[vite-plugin-svelte] src/r
+outes/admin/products/new/+
+page.svelte:428:28 A form 
+label must be associated 
+with a control
+https://svelte.dev/e/a11y_
+label_has_associated_contr
+ol
+426:                     >
+427:                      
+   <div>
+428:                      
+       <label 
+class="block text-xs 
+text-stone-500 mb-1"
+                          
+        ^
+429:                      
+           >SKU *</label
+430:                      
+       >
+12:22:53 pm 
+[vite-plugin-svelte] src/r
+outes/admin/products/new/+
+page.svelte:439:28 A form 
+label must be associated 
+with a control
+https://svelte.dev/e/a11y_
+label_has_associated_contr
+ol
+437:                      
+   </div>
+438:                      
+   <div>
+439:                      
+       <label 
+class="block text-xs 
+text-stone-500 mb-1"
+                          
+        ^
+440:                      
+           >Size</label
+441:                      
+       >
+12:22:53 pm 
+[vite-plugin-svelte] src/r
+outes/admin/products/new/+
+page.svelte:449:28 A form 
+label must be associated 
+with a control
+https://svelte.dev/e/a11y_
+label_has_associated_contr
+ol
+447:                      
+   </div>
+448:                      
+   <div>
+449:                      
+       <label 
+class="block text-xs 
+text-stone-500 mb-1"
+                          
+        ^
+450:                      
+           >Color</label
+451:                      
+       >
+12:22:53 pm 
+[vite-plugin-svelte] src/r
+outes/admin/products/new/+
+page.svelte:459:28 A form 
+label must be associated 
+with a control
+https://svelte.dev/e/a11y_
+label_has_associated_contr
+ol
+457:                      
+   </div>
+458:                      
+   <div>
+459:                      
+       <label 
+class="block text-xs 
+text-stone-500 mb-1"
+                          
+        ^
+460:                      
+           >Price 
+Γé╣</label
+461:                      
+       >
+12:22:53 pm 
+[vite-plugin-svelte] src/r
+outes/admin/products/new/+
+page.svelte:470:28 A form 
+label must be associated 
+with a control
+https://svelte.dev/e/a11y_
+label_has_associated_contr
+ol
+468:                      
+   </div>
+469:                      
+   <div>
+470:                      
+       <label 
+class="block text-xs 
+text-stone-500 mb-1"
+                          
+        ^
+471:                      
+           >Sale 
+Γé╣</label
+472:                      
+       >
+12:22:53 pm 
+[vite-plugin-svelte] src/r
+outes/admin/products/new/+
+page.svelte:481:28 A form 
+label must be associated 
+with a control
+https://svelte.dev/e/a11y_
+label_has_associated_contr
+ol
+479:                      
+   </div>
+480:                      
+   <div>
+481:                      
+       <label 
+class="block text-xs 
+text-stone-500 mb-1"
+                          
+        ^
+482:                      
+           >Stock</label
+483:                      
+       >
+12:22:53 pm 
+[vite-plugin-svelte] src/r
+outes/checkout/+page.svelt
+e:25:35 This reference 
+only captures the initial 
+value of `data`. Did you 
+mean to reference it 
+inside a derived instead?
+https://svelte.dev/e/state
+_referenced_locally
+23:     let { data, form 
+} = $props();
+24:     let 
+showAddressForm = 
+$state(false);
+25:     let 
+selectedAddressId = $state
+(data.addresses[0]?.id ?? 
+"");
+                          
+                 ^
+26:     let paymentMethod 
+= $state("cod");
+27:     let placing = 
+$state(false);
+12:22:53 pm 
+[vite-plugin-svelte] src/r
+outes/order-confirmation/[
+id]/+page.svelte:6:28 
+This reference only 
+captures the initial 
+value of `data`. Did you 
+mean to reference it 
+inside a closure instead?
+https://svelte.dev/e/state
+_referenced_locally
+4: 
+5:     let { data } = 
+$props();
+6:     const addr = JSON.p
+arse(data.order.shippingAd
+dress);
+                          
+         ^
+7: </script>
+8: 
+12:22:53 pm 
+[vite-plugin-svelte] src/r
+outes/products/[slug]/+pag
+e.svelte:29:33 This 
+reference only captures 
+the initial value of 
+`product`. Did you mean 
+to reference it inside a 
+derived instead?
+https://svelte.dev/e/state
+_referenced_locally
+27:     let related = 
+$derived(data.related);
+28: 
+29:     let 
+selectedVariant = $state(p
+roduct.variants[0] ?? 
+null);
+                          
+                  ^
+30:     let quantity = 
+$state(1);
+31:     let activeImage = 
+$state(0);
+12:22:53 pm 
+[vite-plugin-svelte] src/r
+outes/products/[slug]/+pag
+e.svelte:107:30 This 
+reference only captures 
+the initial value of 
+`product`. Did you mean 
+to reference it inside a 
+derived instead?
+https://svelte.dev/e/state
+_referenced_locally
+105: 
+106:     // Independent 
+size/color selection state
+107:     let selectedSize 
+= $state(product.variants[
+0]?.size ?? null);
+                          
+                ^
+108:     let 
+selectedColor = $state(pro
+duct.variants[0]?.color 
+?? null);
+109: 
+12:22:53 pm 
+[vite-plugin-svelte] src/r
+outes/products/[slug]/+pag
+e.svelte:108:31 This 
+reference only captures 
+the initial value of 
+`product`. Did you mean 
+to reference it inside a 
+derived instead?
+https://svelte.dev/e/state
+_referenced_locally
+106:     // Independent 
+size/color selection state
+107:     let selectedSize 
+= $state(product.variants[
+0]?.size ?? null);
+108:     let 
+selectedColor = $state(pro
+duct.variants[0]?.color 
+?? null);
+                          
+                 ^
+109: 
+110:     // Find the 
+matching variant from 
+size + color combination
+12:22:53 pm 
+[vite-plugin-svelte] src/r
+outes/search/+page.svelte:
+8:29 This reference only 
+captures the initial 
+value of `data`. Did you 
+mean to reference it 
+inside a derived instead?
+https://svelte.dev/e/state
+_referenced_locally
+ 6: 
+ 7:     let { data } = 
+$props();
+ 8:     let searchQuery = 
+$state(data.query);
+                          
+           ^
+ 9: 
+10:     function 
+handleSearch(e: Event) {
+[32mΓ£ô[39m 3583 modules transformed.
+[31mΓ£ù[39m Build 
+failed in 7.31s
+[31merror during build:
+[31m[vite:css] Failed to 
+load PostCSS config 
+(searchPath: C:/Users/SHIV
+ANSHU/Desktop/bunbun 
+website svelte): [Error] 
+Loading PostCSS Plugin 
+failed: Cannot find 
+module 
+'@tailwindcss/postcss'
+Require stack:
+- C:\Users\SHIVANSHU\postc
+ss.config.mjs
+
+(@C:\Users\SHIVANSHU\postc
+ss.config.mjs)
+Error: Loading PostCSS 
+Plugin failed: Cannot 
+find module 
+'@tailwindcss/postcss'
+Require stack:
+- C:\Users\SHIVANSHU\postc
+ss.config.mjs
+
+(@C:\Users\SHIVANSHU\postc
+ss.config.mjs)
+    at load (file:///C:/Us
+ers/SHIVANSHU/Desktop/bunb
+un%20website%20svelte/node
+_modules/vite/dist/node/ch
+unks/config.js:7660:10)
+    at async Promise.all 
+(index 0)
+    at async plugins (file
+:///C:/Users/SHIVANSHU/Des
+ktop/bunbun%20website%20sv
+elte/node_modules/vite/dis
+t/node/chunks/config.js:76
+82:11)
+    at async 
+processResult (file:///C:/
+Users/SHIVANSHU/Desktop/bu
+nbun%20website%20svelte/no
+de_modules/vite/dist/node/
+chunks/config.js:7721:13)
+[31m
+file: [36mC:/Users/SHIVAN
+SHU/Desktop/bunbun 
+website 
+svelte/src/app.css[31m
+[39m
