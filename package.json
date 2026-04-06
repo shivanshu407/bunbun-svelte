@@ -8,7 +8,7 @@
 		"build": "vite build",
 		"preview": "vite preview",
 		"start": "node build",
-		"postinstall": "npx prisma db push --accept-data-loss && npx prisma generate && npx tsx prisma/seed.ts && vite build",
+		"postinstall": "node hostinger.cjs && npx prisma db push --accept-data-loss && npx prisma generate && npx tsx prisma/seed.ts && vite build",
 		"prepare": "svelte-kit sync || echo ''",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
