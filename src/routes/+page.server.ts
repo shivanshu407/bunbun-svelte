@@ -3,7 +3,7 @@ import { prisma } from '$lib/server/db';
 
 export const load: PageServerLoad = async () => {
     try {
-        const [trending, bestsellers, newArrivals] = await Promise.all([
+        const [trending, bestsellers, newArrivals, banners] = await Promise.all([
             prisma.product.findMany({
                 where: { isActive: true, isTrending: true },
                 include: { images: { take: 1, orderBy: { order: 'asc' } }, variants: { take: 1 } },
@@ -21,6 +21,10 @@ export const load: PageServerLoad = async () => {
                 include: { images: { take: 1, orderBy: { order: 'asc' } }, variants: { take: 1 } },
                 take: 4,
                 orderBy: { createdAt: 'desc' }
+            }),
+            prisma.banner.findMany({
+                where: { isActive: true },
+                orderBy: { order: 'asc' }
             }),
         ]);
 
@@ -47,9 +51,9 @@ export const load: PageServerLoad = async () => {
             best = [...best, ...extra];
         }
 
-        return { trending: featured, bestsellers: best, newArrivals };
+        return { trending: featured, bestsellers: best, newArrivals, banners };
     } catch (error) {
         console.error('Homepage load error:', error);
-        return { trending: [], bestsellers: [], newArrivals: [] };
+        return { trending: [], bestsellers: [], newArrivals: [], banners: [] };
     }
 };

@@ -6,23 +6,44 @@
         ToggleLeft,
         ToggleRight,
         Image,
+        Upload,
+        Eye,
     } from "lucide-svelte";
 
     let { data, form } = $props();
     let showForm = $state(false);
+    let previewUrl = $state("");
+    let uploading = $state(false);
+
+    function handleImagePreview(e: Event) {
+        const input = e.target as HTMLInputElement;
+        const file = input.files?.[0];
+        if (file) {
+            previewUrl = URL.createObjectURL(file);
+        }
+    }
 </script>
 
 <svelte:head><title>Banners | Admin</title></svelte:head>
 
 <div>
     <div class="flex items-center justify-between mb-6">
-        <h1
-            class="text-2xl font-bold font-[family-name:var(--font-heading)] text-stone-900"
-        >
-            Banners
-        </h1>
+        <div>
+            <h1
+                class="text-2xl font-bold font-[family-name:var(--font-heading)] text-stone-900"
+            >
+                Banner Slider
+            </h1>
+            <p class="text-sm text-stone-500 mt-1">
+                Manage homepage hero slider images. Active banners appear on the
+                storefront.
+            </p>
+        </div>
         <button
-            onclick={() => (showForm = !showForm)}
+            onclick={() => {
+                showForm = !showForm;
+                previewUrl = "";
+            }}
             class="flex items-center gap-2 px-4 py-2.5 bg-primary-500 hover:bg-primary-600 text-white text-sm font-medium rounded-lg transition-colors"
         >
             <Plus size={18} /> New Banner
@@ -48,116 +69,225 @@
         <div
             class="bg-white rounded-xl border border-stone-200 p-6 mb-6 animate-fade-in"
         >
+            <h2 class="text-lg font-medium text-stone-800 mb-4">
+                Add New Banner
+            </h2>
             <form
                 method="POST"
                 action="?/create"
-                use:enhance
-                class="grid md:grid-cols-2 gap-4"
+                enctype="multipart/form-data"
+                use:enhance={() => {
+                    uploading = true;
+                    return async ({ update }) => {
+                        uploading = false;
+                        previewUrl = "";
+                        showForm = false;
+                        update();
+                    };
+                }}
+                class="space-y-4"
             >
+                <!-- Image Upload -->
                 <div>
-                    <label class="block text-sm font-medium text-stone-700 mb-1"
-                        >Title *</label
+                    <label class="block text-sm font-medium text-stone-700 mb-2"
+                        >Banner Image *</label
                     >
-                    <input
-                        name="title"
-                        required
-                        class="w-full px-3 py-2.5 border border-stone-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
-                    />
+                    <div class="flex items-start gap-4">
+                        <label
+                            class="flex-1 flex flex-col items-center justify-center h-48 border-2 border-dashed border-stone-300 rounded-xl cursor-pointer hover:border-primary-400 hover:bg-primary-50/50 transition-all"
+                        >
+                            {#if previewUrl}
+                                <img
+                                    src={previewUrl}
+                                    alt="Preview"
+                                    class="w-full h-full object-cover rounded-xl"
+                                />
+                            {:else}
+                                <Upload
+                                    size={32}
+                                    class="text-stone-400 mb-2"
+                                />
+                                <span class="text-sm text-stone-500"
+                                    >Click to upload banner image</span
+                                >
+                                <span class="text-xs text-stone-400 mt-1"
+                                    >Recommended: 1920×600px (JPG, PNG, WebP)</span
+                                >
+                            {/if}
+                            <input
+                                type="file"
+                                name="imageFile"
+                                accept="image/jpeg,image/png,image/webp"
+                                required
+                                class="hidden"
+                                onchange={handleImagePreview}
+                            />
+                        </label>
+                    </div>
                 </div>
-                <div>
-                    <label class="block text-sm font-medium text-stone-700 mb-1"
-                        >Subtitle</label
-                    >
-                    <input
-                        name="subtitle"
-                        class="w-full px-3 py-2.5 border border-stone-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
-                    />
+
+                <div class="grid md:grid-cols-2 gap-4">
+                    <div>
+                        <label
+                            class="block text-sm font-medium text-stone-700 mb-1"
+                            >Title *</label
+                        >
+                        <input
+                            name="title"
+                            required
+                            placeholder="e.g. Summer Sale — 50% Off"
+                            class="w-full px-3 py-2.5 border border-stone-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
+                        />
+                    </div>
+                    <div>
+                        <label
+                            class="block text-sm font-medium text-stone-700 mb-1"
+                            >Subtitle</label
+                        >
+                        <input
+                            name="subtitle"
+                            placeholder="e.g. Shop the latest collection"
+                            class="w-full px-3 py-2.5 border border-stone-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
+                        />
+                    </div>
+                    <div>
+                        <label
+                            class="block text-sm font-medium text-stone-700 mb-1"
+                            >Link URL</label
+                        >
+                        <input
+                            name="linkUrl"
+                            placeholder="e.g. /collections/sarees"
+                            class="w-full px-3 py-2.5 border border-stone-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
+                        />
+                    </div>
+                    <div>
+                        <label
+                            class="block text-sm font-medium text-stone-700 mb-1"
+                            >Button Text</label
+                        >
+                        <input
+                            name="linkText"
+                            placeholder="e.g. Shop Now"
+                            class="w-full px-3 py-2.5 border border-stone-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
+                        />
+                    </div>
+                    <div>
+                        <label
+                            class="block text-sm font-medium text-stone-700 mb-1"
+                            >Display Order</label
+                        >
+                        <input
+                            name="order"
+                            type="number"
+                            value="0"
+                            class="w-full px-3 py-2.5 border border-stone-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
+                        />
+                    </div>
                 </div>
-                <div>
-                    <label class="block text-sm font-medium text-stone-700 mb-1"
-                        >Image URL *</label
-                    >
-                    <input
-                        name="imageUrl"
-                        required
-                        class="w-full px-3 py-2.5 border border-stone-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
-                    />
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-stone-700 mb-1"
-                        >Link URL</label
-                    >
-                    <input
-                        name="linkUrl"
-                        class="w-full px-3 py-2.5 border border-stone-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
-                    />
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-stone-700 mb-1"
-                        >Display Order</label
-                    >
-                    <input
-                        name="order"
-                        type="number"
-                        value="0"
-                        class="w-full px-3 py-2.5 border border-stone-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
-                    />
-                </div>
-                <div class="flex items-end gap-3 justify-end">
+
+                <div class="flex items-center gap-3 justify-end pt-2">
                     <button
                         type="button"
-                        onclick={() => (showForm = false)}
+                        onclick={() => {
+                            showForm = false;
+                            previewUrl = "";
+                        }}
                         class="px-4 py-2.5 text-sm text-stone-600 hover:bg-stone-100 rounded-lg"
                         >Cancel</button
                     >
                     <button
                         type="submit"
-                        class="px-6 py-2.5 bg-primary-500 hover:bg-primary-600 text-white text-sm font-medium rounded-lg"
-                        >Create</button
+                        disabled={uploading}
+                        class="px-6 py-2.5 bg-primary-500 hover:bg-primary-600 disabled:opacity-60 text-white text-sm font-medium rounded-lg flex items-center gap-2"
                     >
+                        {#if uploading}
+                            <span
+                                class="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"
+                            ></span>
+                            Uploading...
+                        {:else}
+                            <Upload size={16} /> Create Banner
+                        {/if}
+                    </button>
                 </div>
             </form>
         </div>
     {/if}
 
-    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+    <!-- Banner List -->
+    <div class="space-y-3">
         {#if data.banners.length === 0}
             <div
-                class="md:col-span-3 py-16 text-center bg-white rounded-xl border border-stone-200"
+                class="py-20 text-center bg-white rounded-xl border border-stone-200"
             >
-                <Image size={40} class="mx-auto text-stone-300 mb-3" />
-                <p class="text-stone-500">No banners yet</p>
+                <Image size={48} class="mx-auto text-stone-300 mb-4" />
+                <p class="text-stone-500 font-medium">No banners yet</p>
+                <p class="text-sm text-stone-400 mt-1">
+                    Add your first banner to display the hero slider on
+                    homepage.
+                </p>
             </div>
         {:else}
-            {#each data.banners as banner}
+            {#each data.banners as banner, i}
                 <div
-                    class="bg-white rounded-xl border border-stone-200 overflow-hidden"
+                    class="bg-white rounded-xl border border-stone-200 overflow-hidden flex flex-col md:flex-row"
                 >
-                    <div class="aspect-video bg-stone-100">
+                    <!-- Image preview -->
+                    <div
+                        class="md:w-72 lg:w-80 aspect-video md:aspect-auto bg-stone-100 flex-shrink-0"
+                    >
                         <img
                             src={banner.imageUrl}
                             alt={banner.title}
                             class="w-full h-full object-cover"
                         />
                     </div>
-                    <div class="p-4">
-                        <h3 class="font-medium text-stone-800 text-sm">
-                            {banner.title}
-                        </h3>
-                        {#if banner.subtitle}<p
-                                class="text-xs text-stone-400 mt-0.5"
+
+                    <!-- Info -->
+                    <div class="flex-1 p-4 md:p-5 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-start justify-between gap-3">
+                                <div>
+                                    <h3
+                                        class="font-semibold text-stone-800"
+                                    >
+                                        {banner.title}
+                                    </h3>
+                                    {#if banner.subtitle}
+                                        <p
+                                            class="text-sm text-stone-500 mt-0.5"
+                                        >
+                                            {banner.subtitle}
+                                        </p>
+                                    {/if}
+                                </div>
+                                <span
+                                    class="text-xs px-2.5 py-1 rounded-full flex-shrink-0 {banner.isActive
+                                        ? 'bg-emerald-100 text-emerald-700'
+                                        : 'bg-stone-100 text-stone-500'}"
+                                >
+                                    {banner.isActive ? "Active" : "Inactive"}
+                                </span>
+                            </div>
+
+                            {#if banner.linkUrl}
+                                <p class="text-xs text-stone-400 mt-2">
+                                    Links to: <span
+                                        class="text-primary-600 font-medium"
+                                        >{banner.linkUrl}</span
+                                    >
+                                </p>
+                            {/if}
+                        </div>
+
+                        <div
+                            class="flex items-center gap-2 mt-3 pt-3 border-t border-stone-100"
+                        >
+                            <span class="text-xs text-stone-400"
+                                >Order: {banner.order}</span
                             >
-                                {banner.subtitle}
-                            </p>{/if}
-                        <div class="flex items-center justify-between mt-3">
-                            <span
-                                class="text-xs px-2 py-0.5 rounded-full {banner.isActive
-                                    ? 'bg-emerald-100 text-emerald-700'
-                                    : 'bg-stone-100 text-stone-500'}"
-                            >
-                                {banner.isActive ? "Active" : "Inactive"}
-                            </span>
-                            <div class="flex items-center gap-1">
+                            <div class="ml-auto flex items-center gap-1">
                                 <form
                                     method="POST"
                                     action="?/toggle"
@@ -170,13 +300,16 @@
                                     />
                                     <button
                                         type="submit"
-                                        class="p-1.5 text-stone-400 hover:text-stone-700"
+                                        class="p-2 text-stone-400 hover:text-stone-700 rounded-lg hover:bg-stone-50"
+                                        title={banner.isActive
+                                            ? "Deactivate"
+                                            : "Activate"}
                                     >
                                         {#if banner.isActive}<ToggleRight
-                                                size={18}
+                                                size={20}
                                                 class="text-emerald-500"
                                             />{:else}<ToggleLeft
-                                                size={18}
+                                                size={20}
                                             />{/if}
                                     </button>
                                 </form>
@@ -185,7 +318,11 @@
                                     action="?/delete"
                                     use:enhance
                                     onsubmit={(e) => {
-                                        if (!confirm("Delete?"))
+                                        if (
+                                            !confirm(
+                                                "Delete this banner permanently?",
+                                            )
+                                        )
                                             e.preventDefault();
                                     }}
                                 >
@@ -196,8 +333,9 @@
                                     />
                                     <button
                                         type="submit"
-                                        class="p-1.5 text-stone-400 hover:text-red-500"
-                                        ><Trash2 size={14} /></button
+                                        class="p-2 text-stone-400 hover:text-red-500 rounded-lg hover:bg-red-50"
+                                        title="Delete"
+                                        ><Trash2 size={16} /></button
                                     >
                                 </form>
                             </div>

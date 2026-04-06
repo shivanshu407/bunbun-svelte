@@ -7,90 +7,23 @@
         BadgeCheck,
     } from "lucide-svelte";
     import ProductCard from "$lib/components/product/ProductCard.svelte";
-    import ImagePlaceholder from "$lib/components/ui/ImagePlaceholder.svelte";
+    import HeroSlider from "$lib/components/home/HeroSlider.svelte";
     import { formatPrice } from "$lib/utils";
 
     let { data } = $props();
 </script>
 
 <svelte:head>
-    <title>BunBunClothing - Sarees, Blouses & Essentials | Shop Online</title>
+    <title>BunBunClothing - Sarees, Blouses &amp; Essentials | Shop Online</title>
     <meta
         name="description"
-        content="Shop the latest sarees, designer blouses, shapewear & essentials at BunBunClothing. Free shipping over ₹999. Easy returns. 100% genuine products."
+        content="Shop the latest sarees, designer blouses, shapewear &amp; essentials at BunBunClothing. Free shipping over ₹999. Easy returns. 100% genuine products."
     />
 </svelte:head>
 
-<!-- Hero Section -->
-<section
-    class="relative bg-gradient-to-br from-primary-50 via-white to-amber-50 overflow-hidden"
->
-    <div class="max-w-7xl mx-auto px-4 py-16 md:py-24 lg:py-32">
-        <div class="grid lg:grid-cols-2 gap-10 items-center">
-            <div class="animate-slide-up">
-                <span
-                    class="inline-block px-4 py-1.5 bg-primary-100 text-primary-700 text-sm font-medium rounded-full mb-4"
-                >
-                    ✨ New Collection 2026
-                </span>
-                <h1
-                    class="text-4xl md:text-5xl lg:text-6xl font-bold font-[family-name:var(--font-heading)] text-stone-900 leading-tight"
-                >
-                    Elegance<br />
-                    <span class="text-primary-500">Redefined</span>
-                </h1>
-                <p class="mt-5 text-lg text-stone-600 max-w-md leading-relaxed">
-                    Discover our curated collection of premium sarees, designer
-                    blouses, and essentials — crafted for the modern Indian
-                    woman.
-                </p>
-                <div class="flex flex-wrap gap-3 mt-8">
-                    <a
-                        href="/collections/sarees"
-                        class="inline-flex items-center gap-2 px-7 py-3.5 bg-primary-500 hover:bg-primary-600 text-white font-medium rounded-full transition-all hover:shadow-lg hover:shadow-primary-500/25"
-                    >
-                        Shop Now <ArrowRight size={18} />
-                    </a>
-                    <a
-                        href="/collections"
-                        class="inline-flex items-center gap-2 px-7 py-3.5 border-2 border-stone-800 text-stone-800 font-medium rounded-full hover:bg-stone-800 hover:text-white transition-all"
-                    >
-                        View Collections
-                    </a>
-                </div>
-            </div>
-            <div class="relative hidden lg:block">
-                <div
-                    class="aspect-[4/5] rounded-3xl overflow-hidden shadow-2xl"
-                >
-                    <img
-                        src="/icons/hero-banner.png"
-                        alt="BunBunClothing - Elegant Indian Fashion"
-                        class="w-full h-full object-cover"
-                    />
-                </div>
-                <!-- Floating badge -->
-                <div
-                    class="absolute -bottom-4 -left-4 bg-white rounded-2xl shadow-xl p-4 animate-fade-in"
-                >
-                    <div class="flex items-center gap-3">
-                        <div
-                            class="w-12 h-12 bg-amber-100 rounded-full flex items-center justify-center text-2xl"
-                        >
-                            🎉
-                        </div>
-                        <div>
-                            <p class="text-sm font-bold text-stone-800">
-                                50% OFF
-                            </p>
-                            <p class="text-xs text-stone-400">On all sarees</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
+<!-- Hero Slider Banner -->
+<HeroSlider banners={data.banners} />
+
 
 <!-- Category Quick Links -->
 <section class="py-12 md:py-16 bg-white">
