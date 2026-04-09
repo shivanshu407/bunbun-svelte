@@ -51,10 +51,10 @@ export const POST: RequestHandler = async ({ request, locals }) => {
 
             // Return the permanently hosted secure URL from Cloudinary
             uploadedUrls.push(uploadResult.secure_url);
-        } catch (error) {
+        } catch (error: any) {
             console.error("Cloudinary Upload Error:", error);
             return json(
-                { error: "Failed to upload image to Cloudinary. Check API keys." },
+                { error: `Upload failed: ${error?.message || 'Unknown error'}. Check Cloudinary credentials.` },
                 { status: 500 }
             );
         }
