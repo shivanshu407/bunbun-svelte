@@ -11,11 +11,29 @@ export const POST: RequestHandler = async ({ request, locals }) => {
         return json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const formData = await request.formData();
+    let formData: FormData;
+    try {
+        formData = await request.formData();
+    } catch (err: any) {
+        return json({ error: `Failed to parse form data: ${err?.message}` }, { status: 400 });
+    }
+
     const files = formData.getAll('files') as File[];
 
     if (!files.length) {
         return json({ error: 'No files provided' }, { status: 400 });
+    }
+
+    // Pre-check Cloudinary credentials before processing files
+    let cloudinary;
+    try {
+        cloudinary = getCloudinary();
+    } catch (err: any) {
+        console.error('Cloudinary config error:', err);
+        return json(
+            { error: `Cloudinary configuration error: ${err?.message}` },
+            { status: 500 }
+        );
     }
 
     const uploadedUrls: string[] = [];
@@ -44,7 +62,7 @@ export const POST: RequestHandler = async ({ request, locals }) => {
             const dataUri = `data:${file.type};base64,${base64String}`;
 
             // Upload directly to your safe Cloudinary bucket
-            const uploadResult = await getCloudinary().uploader.upload(dataUri, {
+            const uploadResult = await cloudinary.uploader.upload(dataUri, {
                 folder: 'bunbun_products',
                 resource_type: 'image'
             });
@@ -54,7 +72,7 @@ export const POST: RequestHandler = async ({ request, locals }) => {
         } catch (error: any) {
             console.error("Cloudinary Upload Error:", error);
             return json(
-                { error: `Upload failed: ${error?.message || 'Unknown error'}. Check Cloudinary credentials.` },
+                { error: `Upload failed: ${error?.message || 'Unknown error'}` },
                 { status: 500 }
             );
         }

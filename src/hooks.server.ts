@@ -99,3 +99,17 @@ export const handle: Handle = async ({ event, resolve }) => {
 
     return response;
 };
+
+// Surface real error messages for API routes instead of generic "Internal Error"
+export const handleError = ({ error, event }: { error: any; event: any }) => {
+    const errorMessage = error?.message || 'Unknown error';
+    console.error(`[Error] ${event.url.pathname}:`, errorMessage);
+
+    // For API routes, return the actual error message
+    if (event.url.pathname.startsWith('/api/')) {
+        return { message: errorMessage };
+    }
+
+    // For pages, keep generic message (don't leak internals)
+    return { message: 'An unexpected error occurred' };
+};
