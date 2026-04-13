@@ -13,7 +13,8 @@ export const load: PageServerLoad = async () => {
 };
 
 export const actions: Actions = {
-    create: async ({ request }) => {
+    create: async ({ request, locals }) => {
+        if (!locals.user || locals.user.role !== 'admin') return fail(403, { error: 'Forbidden' });
         const fd = await request.formData();
         const title = fd.get('title') as string;
         const subtitle = (fd.get('subtitle') as string) || null;
@@ -49,14 +50,16 @@ export const actions: Actions = {
         return { success: 'Banner created!' };
     },
 
-    toggle: async ({ request }) => {
+    toggle: async ({ request, locals }) => {
+        if (!locals.user || locals.user.role !== 'admin') return fail(403, { error: 'Forbidden' });
         const fd = await request.formData();
         const id = fd.get('id') as string;
         const banner = await prisma.banner.findUnique({ where: { id } });
         if (banner) await prisma.banner.update({ where: { id }, data: { isActive: !banner.isActive } });
     },
 
-    delete: async ({ request }) => {
+    delete: async ({ request, locals }) => {
+        if (!locals.user || locals.user.role !== 'admin') return fail(403, { error: 'Forbidden' });
         const fd = await request.formData();
         const id = fd.get('id') as string;
         await prisma.banner.delete({ where: { id } });

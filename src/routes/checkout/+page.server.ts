@@ -123,12 +123,20 @@ export const actions: Actions = {
         const addressId = fd.get('addressId') as string;
         const paymentMethod = (fd.get('paymentMethod') as string) || 'cod';
         const couponCode = (fd.get('couponCode') as string) || null;
-        const couponDiscount = parseFloat(fd.get('couponDiscount') as string) || 0;
 
         if (!addressId) return fail(400, { error: 'Please select a delivery address' });
 
-        const address = await prisma.address.findUnique({ where: { id: addressId } });
+        // C3 FIX: Verify address belongs to current user
+        const address = await prisma.address.findFirst({
+            where: { id: addressId, userId: locals.user.id }
+        });
         if (!address) return fail(400, { error: 'Invalid address' });
+
+        // Validate payment method
+        const validMethods = ['cod', 'razorpay'];
+        if (!validMethods.includes(paymentMethod)) {
+            return fail(400, { error: 'Invalid payment method' });
+        }
 
         const cart = await prisma.cart.findUnique({
             where: { userId: locals.user.id },
@@ -149,8 +157,29 @@ export const actions: Actions = {
             return sum + price * item.quantity;
         }, 0);
 
+        // C1 FIX: Server-side coupon discount recalculation — NEVER trust client
+        let couponDiscount = 0;
+        let validatedCouponCode: string | null = null;
+        if (couponCode) {
+            const coupon = await prisma.coupon.findUnique({ where: { code: couponCode } });
+            const now = new Date();
+            if (coupon && coupon.isActive && coupon.validFrom <= now && coupon.validTo >= now) {
+                if (!coupon.usageLimit || coupon.usedCount < coupon.usageLimit) {
+                    if (!coupon.minOrderAmount || subtotal >= coupon.minOrderAmount) {
+                        if (coupon.type === 'percentage') {
+                            couponDiscount = Math.round(subtotal * coupon.value / 100);
+                            if (coupon.maxDiscount) couponDiscount = Math.min(couponDiscount, coupon.maxDiscount);
+                        } else {
+                            couponDiscount = coupon.value;
+                        }
+                        validatedCouponCode = coupon.code;
+                    }
+                }
+            }
+        }
+
         const shipping = subtotal >= 999 ? 0 : 79;
-        const total = subtotal + shipping - couponDiscount;
+        const total = Math.max(subtotal + shipping - couponDiscount, 0);
 
         const order = await prisma.$transaction(async (tx) => {
             const newOrder = await tx.order.create({
@@ -160,7 +189,7 @@ export const actions: Actions = {
                     subtotal,
                     shipping,
                     discount: couponDiscount,
-                    couponCode,
+                    couponCode: validatedCouponCode,
                     total: Math.max(total, 0),
                     status: paymentMethod === 'cod' ? 'confirmed' : 'pending',
                     paymentStatus: paymentMethod === 'cod' ? 'pending' : 'pending',
@@ -189,16 +218,16 @@ export const actions: Actions = {
                     statusHistory: {
                         create: {
                             status: paymentMethod === 'cod' ? 'confirmed' : 'pending',
-                            notes: couponCode ? `Order placed with coupon ${couponCode}` : 'Order placed'
+                            notes: validatedCouponCode ? `Order placed with coupon ${validatedCouponCode}` : 'Order placed'
                         }
                     }
                 }
             });
 
             // Increment coupon usage
-            if (couponCode) {
+            if (validatedCouponCode) {
                 await tx.coupon.update({
-                    where: { code: couponCode },
+                    where: { code: validatedCouponCode },
                     data: { usedCount: { increment: 1 } }
                 });
             }

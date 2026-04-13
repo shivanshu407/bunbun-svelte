@@ -22,8 +22,15 @@ export const actions: Actions = {
             return fail(400, { error: 'All fields are required', name, email, phone });
         }
 
-        if (password.length < 6) {
-            return fail(400, { error: 'Password must be at least 6 characters', name, email, phone });
+        // M2 FIX: Validate email format
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            return fail(400, { error: 'Please enter a valid email address', name, email, phone });
+        }
+
+        // L2 FIX: Stronger password policy
+        if (password.length < 8) {
+            return fail(400, { error: 'Password must be at least 8 characters', name, email, phone });
         }
 
         try {

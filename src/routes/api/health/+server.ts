@@ -1,75 +1,38 @@
 import { json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
 import { env } from '$env/dynamic/private';
-import { createConnection, createPool } from 'mariadb';
 import { prisma } from '$lib/server/db';
 
-function withTimeout<T>(promise: Promise<T>, ms: number): Promise<T> {
-    return Promise.race([
-        promise,
-        new Promise<never>((_, reject) =>
-            setTimeout(() => reject(new Error(`Timed out after ${ms}ms`)), ms)
-        )
-    ]);
-}
+export const GET: RequestHandler = async ({ locals }) => {
+    // H1 FIX: Only admins can see detailed diagnostics
+    const isAdmin = locals.user?.role === 'admin';
 
-export const GET: RequestHandler = async () => {
+    // Basic health check for public
+    try {
+        await prisma.$queryRaw`SELECT 1 as test`;
+        if (!isAdmin) {
+            return json({ status: 'ok', timestamp: new Date().toISOString() });
+        }
+    } catch (error: any) {
+        if (!isAdmin) {
+            return json({ status: 'error', timestamp: new Date().toISOString() }, { status: 503 });
+        }
+    }
+
+    // Detailed diagnostics for admin only
     const diagnostics: Record<string, any> = {
         timestamp: new Date().toISOString(),
         env: {
-            MYSQL_HOST: env.MYSQL_HOST || '(not set)',
-            MYSQL_DATABASE: env.MYSQL_DATABASE || '(not set)',
-            DATABASE_URL: env.DATABASE_URL ? env.DATABASE_URL.replace(/:[^@]+@/, ':***@') : '(not set)',
+            MYSQL_HOST: env.MYSQL_HOST ? '***SET***' : '(not set)',
+            MYSQL_DATABASE: env.MYSQL_DATABASE ? '***SET***' : '(not set)',
+            DATABASE_URL: env.DATABASE_URL ? '***SET***' : '(not set)',
+            CLOUDINARY_CLOUD_NAME: env.CLOUDINARY_CLOUD_NAME ? '***SET***' : '(not set)',
         },
-        directDbTest: 'pending',
-        poolDbTest: 'pending',
         prismaTest: 'pending',
     };
 
-    // Test direct mariadb connection
-    let conn;
     try {
-        conn = await createConnection({
-            host: env.MYSQL_HOST || 'localhost',
-            user: env.MYSQL_USER || '',
-            password: env.MYSQL_PASSWORD || '',
-            database: env.MYSQL_DATABASE || '',
-            port: parseInt(env.MYSQL_PORT || '3306'),
-            connectTimeout: 5000,
-        });
-        await conn.query('SELECT 1 as test');
-        diagnostics.directDbTest = 'SUCCESS';
-    } catch (error: any) {
-        diagnostics.directDbTest = error.message;
-    } finally {
-        if (conn) await conn.end().catch(() => {});
-    }
-
-    // Test pool connection
-    let pool;
-    try {
-        pool = createPool({
-            host: env.MYSQL_HOST || 'localhost',
-            user: env.MYSQL_USER || '',
-            password: env.MYSQL_PASSWORD || '',
-            database: env.MYSQL_DATABASE || '',
-            port: parseInt(env.MYSQL_PORT || '3306'),
-            connectionLimit: 5,
-            connectTimeout: 5000,
-        });
-        const poolConn = await withTimeout(pool.getConnection(), 5000);
-        await poolConn.query('SELECT 1 as poolTest');
-        poolConn.release();
-        diagnostics.poolDbTest = 'SUCCESS';
-    } catch (error: any) {
-        diagnostics.poolDbTest = error.message;
-    } finally {
-        if (pool) await pool.end().catch(() => {});
-    }
-
-    // Test Prisma connection
-    try {
-        await withTimeout(prisma.$queryRaw`SELECT 1 as test`, 5000);
+        await prisma.$queryRaw`SELECT 1 as test`;
         diagnostics.prismaTest = 'SUCCESS';
     } catch (error: any) {
         diagnostics.prismaTest = error.message;

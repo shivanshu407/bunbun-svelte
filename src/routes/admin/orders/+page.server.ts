@@ -32,10 +32,21 @@ export const load: PageServerLoad = async ({ url }) => {
 };
 
 export const actions: Actions = {
-    updateStatus: async ({ request }) => {
+    updateStatus: async ({ request, locals }) => {
+        // H3 FIX: Verify admin at action level
+        if (!locals.user || locals.user.role !== 'admin') {
+            return fail(403, { error: 'Forbidden' });
+        }
+
         const fd = await request.formData();
         const id = fd.get('id') as string;
         const status = fd.get('status') as string;
+
+        // Validate status value
+        const validStatuses = ['pending', 'confirmed', 'processing', 'shipped', 'delivered', 'cancelled', 'returned'];
+        if (!validStatuses.includes(status)) {
+            return fail(400, { error: 'Invalid status' });
+        }
 
         await prisma.order.update({ where: { id }, data: { status } });
         await prisma.orderStatusHistory.create({

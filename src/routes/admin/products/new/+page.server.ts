@@ -11,7 +11,12 @@ export const load: PageServerLoad = async () => {
 };
 
 export const actions: Actions = {
-    default: async ({ request }) => {
+    default: async ({ request, locals }) => {
+        // H3 FIX: Verify admin at action level
+        if (!locals.user || locals.user.role !== 'admin') {
+            return fail(403, { error: 'Forbidden' });
+        }
+
         const fd = await request.formData();
         const name = fd.get('name') as string;
         const slug = fd.get('slug') as string;

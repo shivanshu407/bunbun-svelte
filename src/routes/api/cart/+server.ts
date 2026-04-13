@@ -10,16 +10,15 @@ export const POST: RequestHandler = async ({ request, locals }) => {
         return json({ error: 'Product and variant are required' }, { status: 400 });
     }
 
-    // Get or create cart
-    let cart;
-    if (locals.user) {
-        cart = await prisma.cart.findUnique({ where: { userId: locals.user.id } });
-        if (!cart) {
-            cart = await prisma.cart.create({ data: { userId: locals.user.id } });
-        }
-    } else {
-        // For guests, create anonymous cart
-        cart = await prisma.cart.create({ data: {} });
+    // M4 FIX: Require authentication — no anonymous cart creation
+    if (!locals.user) {
+        return json({ error: 'Please login to add items to cart' }, { status: 401 });
+    }
+
+    // Get or create cart for authenticated user
+    let cart = await prisma.cart.findUnique({ where: { userId: locals.user.id } });
+    if (!cart) {
+        cart = await prisma.cart.create({ data: { userId: locals.user.id } });
     }
 
     // Check if item exists in cart
@@ -73,6 +72,15 @@ export const PATCH: RequestHandler = async ({ request, locals }) => {
 
     const { itemId, quantity } = await request.json();
     if (!itemId) return json({ error: 'Item ID required' }, { status: 400 });
+
+    // C2 FIX: Verify cart item belongs to the current user
+    const item = await prisma.cartItem.findUnique({
+        where: { id: itemId },
+        include: { cart: true }
+    });
+    if (!item || item.cart.userId !== locals.user.id) {
+        return json({ error: 'Item not found' }, { status: 404 });
+    }
 
     if (quantity <= 0) {
         await prisma.cartItem.delete({ where: { id: itemId } });
