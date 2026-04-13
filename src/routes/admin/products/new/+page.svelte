@@ -19,14 +19,22 @@
                 method: "POST",
                 body: formData,
             });
-            const data = await res.json();
+            let data: any;
+            const text = await res.text();
+            try {
+                data = JSON.parse(text);
+            } catch {
+                alert(`Upload failed (${res.status}): Server returned non-JSON:\n${text.slice(0, 200)}`);
+                uploading = false;
+                return;
+            }
             if (res.ok && data.urls) {
                 imageUrls = [...imageUrls, ...data.urls];
             } else {
-                alert(data.error || "Upload failed");
+                alert(`Upload failed (${res.status}): ${data.error || JSON.stringify(data)}`);
             }
-        } catch {
-            alert("Upload failed. Please try again.");
+        } catch (err: any) {
+            alert(`Upload network error: ${err?.message || err}`);
         }
         uploading = false;
     }
