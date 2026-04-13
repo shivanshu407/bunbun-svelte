@@ -1,6 +1,6 @@
 import type { RequestHandler } from './$types';
 import { json } from '@sveltejs/kit';
-import cloudinary from '$lib/server/cloudinary';
+import getCloudinary from '$lib/server/cloudinary';
 
 const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
 const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/avif'];
@@ -44,7 +44,7 @@ export const POST: RequestHandler = async ({ request, locals }) => {
             const dataUri = `data:${file.type};base64,${base64String}`;
 
             // Upload directly to your safe Cloudinary bucket
-            const uploadResult = await cloudinary.uploader.upload(dataUri, {
+            const uploadResult = await getCloudinary().uploader.upload(dataUri, {
                 folder: 'bunbun_products',
                 resource_type: 'image'
             });

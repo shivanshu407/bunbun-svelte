@@ -1,7 +1,7 @@
 import type { Actions, PageServerLoad } from './$types';
 import { prisma } from '$lib/server/db';
 import { fail } from '@sveltejs/kit';
-import cloudinary from '$lib/server/cloudinary';
+import getCloudinary from '$lib/server/cloudinary';
 
 export const load: PageServerLoad = async () => {
     try {
@@ -32,7 +32,7 @@ export const actions: Actions = {
                 const arrayBuffer = await imageFile.arrayBuffer();
                 const base64 = Buffer.from(arrayBuffer).toString('base64');
                 const dataUri = `data:${imageFile.type};base64,${base64}`;
-                const result = await cloudinary.uploader.upload(dataUri, {
+                const result = await getCloudinary().uploader.upload(dataUri, {
                     folder: 'bunbun_banners',
                     resource_type: 'image'
                 });
