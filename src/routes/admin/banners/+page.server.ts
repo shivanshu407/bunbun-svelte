@@ -3,13 +3,6 @@ import { prisma } from '$lib/server/db';
 import { fail } from '@sveltejs/kit';
 import getCloudinary from '$lib/server/cloudinary';
 
-// Increase body limit for banner image uploads
-export const config = {
-    body: {
-        maxSize: '10mb'
-    }
-};
-
 export const load: PageServerLoad = async () => {
     try {
         const banners = await prisma.banner.findMany({ orderBy: { order: 'asc' } });
