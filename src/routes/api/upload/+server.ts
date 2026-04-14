@@ -2,6 +2,13 @@ import type { RequestHandler } from './$types';
 import { json } from '@sveltejs/kit';
 import getCloudinary from '$lib/server/cloudinary';
 
+// Increase SvelteKit's default 512KB body limit for image uploads
+export const config = {
+    body: {
+        maxSize: '10mb'
+    }
+};
+
 const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
 const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/avif'];
 
