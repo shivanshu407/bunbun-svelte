@@ -71,7 +71,7 @@ hostinger.cjs                # Hostinger deployment compatibility script
 |------|-------|
 | Domain | bunbunclothing.store |
 | Hosting | Hostinger Shared (Node.js 18) |
-| Database | MariaDB on `srv2088.hstgr.io` |
+| Database | MariaDB on `auth-db1953.hstgr.io` |
 | Image CDN | Cloudinary (free tier, cloud: `dusd6xfyx`) |
 | Auth | Lucia v3 + bcryptjs |
 | CSS | Vanilla CSS with custom properties |

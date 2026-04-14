@@ -4,29 +4,33 @@
 - **Platform**: Hostinger Shared Hosting (Business plan)
 - **Server**: Node.js 18 behind Nginx reverse proxy
 - **Domain**: bunbunclothing.store (SSL via Hostinger)
-- **Database**: MariaDB on `srv2088.hstgr.io:3306`
+- **Database**: MariaDB on `auth-db1953.hstgr.io:3306`
 - **Git Deployment**: GitHub → Hostinger auto-deploy on push to `master`
 
 ## Environment Variables (Hostinger Panel)
 Set these in: hPanel → Websites → Advanced → Node.js → Environment Variables
 
-| Variable | Required | Description |
-|----------|----------|-------------|
-| `MYSQL_HOST` | ✅ | `srv2088.hstgr.io` |
-| `MYSQL_USER` | ✅ | Database username |
-| `MYSQL_PASSWORD` | ✅ | Database password |
-| `MYSQL_DATABASE` | ✅ | Database name |
-| `MYSQL_PORT` | ✅ | `3306` |
-| `DATABASE_URL` | ✅ | Full connection string for Prisma |
-| `AUTH_SECRET` | ✅ | 128-char random hex string for sessions |
-| `CLOUDINARY_CLOUD_NAME` | ✅ | Cloudinary cloud name |
-| `CLOUDINARY_API_KEY` | ✅ | Cloudinary API key |
-| `CLOUDINARY_API_SECRET` | ✅ | Cloudinary API secret |
-| `PUBLIC_APP_URL` | ✅ | `https://bunbunclothing.store` |
-| `RAZORPAY_KEY_ID` | ❌ | Not yet needed |
-| `RAZORPAY_KEY_SECRET` | ❌ | Not yet needed |
-| `PUBLIC_RAZORPAY_KEY_ID` | ❌ | Not yet needed |
-| `NIMBUSPOST_API_KEY` | ❌ | Not yet needed |
+### Currently SET on Hostinger ✅
+| Variable | Value |
+|----------|-------|
+| `MYSQL_HOST` | `auth-db1953.hstgr.io` |
+| `MYSQL_USER` | `u451828854_bunbun` |
+| `MYSQL_PASSWORD` | `Bokochiko@0211` |
+| `MYSQL_DATABASE` | `u451828854_bunbun` |
+| `MYSQL_PORT` | `3306` |
+| `CLOUDINARY_API_KEY` | `837275897467999` |
+| `CLOUDINARY_API_SECRET` | `20jeuOeW0gthELPm8ghoJGv5b2w` |
+| `CLOUDINARY_CLOUD_NAME` | `dusd6xfyx` |
+
+### Optional (not currently used by code)
+| Variable | Notes |
+|----------|-------|
+| `AUTH_SECRET` | Not imported anywhere — Lucia generates its own session IDs |
+| `DATABASE_URL` | Not used — `db.ts` reads `MYSQL_*` vars directly |
+| `PUBLIC_APP_URL` | Not imported anywhere in current code |
+| `RAZORPAY_KEY_ID` | Needed later when Razorpay payment goes live |
+| `RAZORPAY_KEY_SECRET` | Needed later when Razorpay payment goes live |
+| `NIMBUSPOST_API_KEY` | Needed later when NimbusPost shipping goes live |
 
 ## Build Process
 The `package.json` `postinstall` script runs:
