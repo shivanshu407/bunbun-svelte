@@ -1,43 +1,60 @@
 # Changelog
 
-## 2026-04-13 — Full Security Audit & Vulnerability Remediation
-**What**: Fixed 14 security vulnerabilities identified by comprehensive security audit
-**Why**: Preparing for production launch with payment integration
-**Files Changed**: 
-- `src/routes/checkout/+page.server.ts`
-- `src/routes/api/cart/+server.ts`
-- `src/routes/api/health/+server.ts`
-- `src/hooks.server.ts`
-- `src/routes/admin/orders/+page.server.ts`
-- `src/routes/admin/products/new/+page.server.ts`
-- `src/routes/admin/banners/+page.server.ts`
-- `src/routes/register/+page.server.ts`
+## 2026-04-14 — Upload Body Size Limit Fix
+**What**: Discovered SvelteKit adapter-node enforces 512KB body limit via `BODY_SIZE_LIMIT` env var
+**Why**: Product image uploads were failing with "Content-length exceeds limit" errors
+**Impact**: Image uploads won't work until `BODY_SIZE_LIMIT=10M` is added to Hostinger env panel
+**Files Changed**: `src/routes/api/upload/+server.ts`, `src/routes/admin/banners/+page.server.ts` (removed non-functional `config` export)
+**Commit**: `39398f6`
+
+- Removed incorrect `export const config = { body: { maxSize } }` — doesn't work with adapter-node
+- Correct fix is `BODY_SIZE_LIMIT=10M` environment variable on Hostinger
+
+## 2026-04-14 — Environment Variable Audit
+**What**: Updated local `.env` and knowledge-base with correct Hostinger env var values
+**Why**: DB host was wrong in docs (`srv2088` → `auth-db1953`), needed to verify which vars are actually used
+**Impact**: None — documentation-only change
+**Files Changed**: `.env`, `knowledge-base/README.md`, `knowledge-base/deployment.md`
+**Commit**: `06b5c5f`
+
+- Confirmed `AUTH_SECRET`, `DATABASE_URL`, `PUBLIC_APP_URL` are NOT used by the code
+- The 8 env vars on Hostinger (5 MySQL + 3 Cloudinary) are sufficient
+
+## 2026-04-13 — Full Security Audit & Remediation
+**What**: Fixed 14 security vulnerabilities across Critical, High, and Medium severity
+**Why**: Preparing for production launch with real customer orders and payment integration
+**Impact**: Cart now requires login (no guest carts). Password minimum is 8 chars (was 6). Rate limiting on auth endpoints.
+**Files Changed**: `src/routes/checkout/+page.server.ts`, `src/routes/api/cart/+server.ts`, `src/routes/api/health/+server.ts`, `src/hooks.server.ts`, `src/routes/admin/orders/+page.server.ts`, `src/routes/admin/products/new/+page.server.ts`, `src/routes/admin/banners/+page.server.ts`, `src/routes/register/+page.server.ts`
 **Commit**: `5cf4ef1`
-- **C1 CRITICAL**: Server-side coupon discount recalculation — prevents ₹0 order exploit
-- **C2 CRITICAL**: Cart item ownership verification — prevents cross-user IDOR
-- **C3 CRITICAL**: Address lookup scoped to current user — prevents PII leak
-- **H1 HIGH**: Health endpoint restricted to admin-only detailed diagnostics
-- **H2 HIGH**: Rate limiting (10 attempts/15min) on login/register endpoints
-- **H3 HIGH**: Admin auth checks added to all mutation form actions
-- **H4 HIGH**: New cryptographic AUTH_SECRET generated (must update on Hostinger)
-- **M2 MEDIUM**: Email format regex validation on registration
-- **M3 MEDIUM**: Security headers added to all responses (HSTS, X-Frame-Options, etc.)
-- **M4 MEDIUM**: Removed anonymous cart creation (prevents DB flooding)
-- **L2 LOW**: Password minimum length increased from 6 to 8 characters
+
+- C1: Server-side coupon discount recalculation (prevents ₹0 order exploit)
+- C2: Cart item ownership verification (prevents cross-user IDOR)
+- C3: Address lookup scoped to current user (prevents PII leak)
+- H1: Health endpoint restricted to admin-only diagnostics
+- H2: Rate limiting (10 attempts/15min) on login/register
+- H3: Admin auth checks on all mutation actions
+- M2: Email format regex validation
+- M3: Security headers (HSTS, X-Frame-Options, X-Content-Type-Options, Referrer-Policy)
+- M4: Removed anonymous cart creation
+- L2: Password minimum 6 → 8 characters
 
 ## 2026-04-13 — Cloudinary Lazy Initialization
-**What**: Refactored Cloudinary config to use lazy getter function
-**Why**: Module-level Cloudinary config was crashing on Hostinger due to env var timing issues
+**What**: Refactored Cloudinary config to lazy getter function
+**Why**: Module-level `cloudinary.config()` crashed on Hostinger due to env var timing
+**Impact**: All Cloudinary consumers must use `getCloudinary()` instead of direct import
 **Files Changed**: `src/lib/server/cloudinary.ts`, `src/routes/api/upload/+server.ts`, `src/routes/admin/banners/+page.server.ts`
 **Commit**: `3091eca`
+
 - Changed from `export default cloudinary` to `export default getCloudinary` (function)
-- All consumers now call `getCloudinary().uploader.upload(...)` instead of `cloudinary.uploader.upload(...)`
-- Same pattern as the Prisma proxy fix
+- Same lazy-init pattern as the Prisma Proxy fix
 
 ## 2026-04-06 — Prisma Proxy-Based Lazy Initialization
-**What**: Fixed production database connection failures on Hostinger
-**Why**: Prisma's Rust query engine triggered PANIC errors due to Hostinger's restricted LVE container blocking timer system calls
+**What**: Fixed production database connection crashes on Hostinger
+**Why**: Prisma's Rust query engine triggered PANIC errors due to Hostinger's LVE container
+**Impact**: Database works reliably on Hostinger. Slight perf hit (JS vs Rust engine).
 **Files Changed**: `src/lib/server/db.ts`, `prisma/schema.prisma`
-- Implemented JavaScript Proxy to defer PrismaClient creation until first database query
-- Removed `engineType = "binary"` config in favor of JS adapter (PrismaMariaDb)
-- Uses `mariadb` npm package directly via `@prisma/adapter-mariadb`
+**Commit**: N/A
+
+- Implemented JavaScript Proxy to defer PrismaClient creation until first query
+- Switched to `@prisma/adapter-mariadb` (JavaScript adapter)
+- Removed `engineType = "binary"` config

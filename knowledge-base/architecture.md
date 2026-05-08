@@ -1,79 +1,105 @@
 # Architecture
 
-## Database Schema (Prisma)
-Key models and their relationships:
+## System Overview
+BunBunClothing is a server-side rendered e-commerce store built with SvelteKit 2. It uses a monolithic architecture where the frontend, backend API, and admin panel are all served from a single SvelteKit application deployed on Hostinger shared hosting. Data is stored in MariaDB via Prisma ORM, images are hosted on Cloudinary CDN, and authentication is handled by Lucia v3 with cookie-based sessions.
 
+## Architecture Diagram
 ```
-User ──┬── Session (Lucia auth sessions)
-       ├── Address (shipping addresses)
-       ├── Cart ── CartItem ──┬── Product
-       │                      └── ProductVariant
-       ├── Order ──┬── OrderItem
-       │           └── OrderStatusHistory
-       ├── Wishlist ── WishlistItem ── Product
-       └── Review
-
-Product ──┬── ProductImage
-          ├── ProductVariant (SKU, size, color, price, stock)
-          └── Category
-
-Coupon (standalone — referenced by code in Order)
-Banner (standalone — homepage hero banners)
+┌─────────────────────────────────────────────────────┐
+│                    Client Browser                    │
+│  (SSR HTML + Svelte hydration + fetch API calls)     │
+└──────────────────────┬──────────────────────────────┘
+                       │ HTTPS
+                       ▼
+┌──────────────────────────────────────────────────────┐
+│              Hostinger Nginx Reverse Proxy            │
+│              (SSL termination, static files)          │
+└──────────────────────┬───────────────────────────────┘
+                       │ :3000
+                       ▼
+┌──────────────────────────────────────────────────────┐
+│              SvelteKit Node.js Server                 │
+│  ┌────────────────────────────────────────────────┐  │
+│  │ hooks.server.ts                                 │  │
+│  │ (auth middleware, rate limiting, security hdrs)  │  │
+│  └────────────────┬───────────────────────────────┘  │
+│                   │                                   │
+│  ┌────────────────┼───────────────────────────────┐  │
+│  │  Routes        │                                │  │
+│  │  ├── Public    │ (/, /products, /category)      │  │
+│  │  ├── Auth      │ (/login, /register, /logout)   │  │
+│  │  ├── Account   │ (/account/*, /checkout)        │  │
+│  │  ├── Admin     │ (/admin/* — role-gated)        │  │
+│  │  └── API       │ (/api/cart, /api/upload, etc)  │  │
+│  └────────────────┼───────────────────────────────┘  │
+│                   │                                   │
+│  ┌────────────────┼───────────────────────────────┐  │
+│  │  Server Libs   │                                │  │
+│  │  ├── db.ts     │ (Prisma Proxy lazy init)       │  │
+│  │  ├── auth.ts   │ (Lucia v3 + Prisma adapter)    │  │
+│  │  └── cloud*.ts │ (Cloudinary lazy getter)       │  │
+│  └────────────────┼───────────────────────────────┘  │
+└───────────────────┼──────────────────────────────────┘
+                    │
+         ┌──────────┼──────────┐
+         ▼                     ▼
+┌─────────────────┐   ┌────────────────┐
+│   MariaDB       │   │   Cloudinary   │
+│ auth-db1953     │   │   CDN          │
+│ .hstgr.io:3306  │   │   (images)     │
+└─────────────────┘   └────────────────┘
 ```
 
-### Key Fields
-- `User.role`: `'customer'` | `'admin'` — controls access to `/admin/*`
-- `User.passwordHash`: bcrypt hash (cost 10)
-- `ProductVariant.salePrice`: nullable — if set, shown as discounted price
-- `Order.shippingAddress`: JSON string (snapshot of address at order time)
-- `Order.paymentMethod`: `'cod'` | `'razorpay'`
-- `Order.razorpayOrderId` / `razorpayPaymentId`: for future Razorpay integration
+## Layers & Responsibilities
+| Layer         | Technology              | Responsibility                                          |
+|---------------|-------------------------|---------------------------------------------------------|
+| Frontend      | Svelte 5 + SvelteKit 2  | SSR pages, client hydration, form actions, stores       |
+| Backend/API   | SvelteKit server routes | REST endpoints (/api/*), form actions, auth middleware  |
+| Database      | MariaDB + Prisma ORM    | All persistent data (users, products, orders, carts)    |
+| Auth          | Lucia v3 + bcryptjs     | Session cookies, password hashing, role-based access    |
+| Storage       | Cloudinary              | Product/banner image hosting and CDN delivery           |
+| CDN/Hosting   | Hostinger + Nginx       | SSL, static files, reverse proxy to Node.js             |
 
-## Authentication Flow
-1. **Register**: `POST /register` → validate → bcrypt hash → create User → Lucia session → redirect
-2. **Login**: `POST /login` → find user by email → bcrypt compare → Lucia session → redirect
-3. **Session**: `hooks.server.ts` validates session cookie on every request via `lucia.validateSession()`
-4. **Admin**: Layout guard at `/admin/+layout.server.ts` checks `role === 'admin'`
-5. **Logout**: Delete Lucia session + clear cookie
+## Data Flow
 
-## API Patterns
+### User Signup
+1. `POST /register` → validate name/email/password → bcrypt hash → `prisma.user.create()` → Lucia session → set cookie → redirect
 
-### Form Actions (SvelteKit)
-Used for: login, register, checkout, admin CRUD
-- Protected by CSRF automatically
-- Use `use:enhance` for progressive enhancement
-- All admin actions include role verification
+### Product Purchase
+1. Browse `/products` → click "Add to Cart" → `POST /api/cart` (auth required) → `prisma.cartItem.create()`
+2. Navigate to `/checkout` → select address, payment, coupon → `POST /checkout?/placeOrder`
+3. Server recalculates coupon, verifies address ownership → `prisma.$transaction()` creates Order + OrderItems + decrements stock + clears cart
+4. Redirect to `/order-confirmation/[id]`
 
-### REST API Endpoints
-Used for: cart operations, image upload, health check, wishlist
-- `/api/cart` — GET/POST/PATCH/DELETE (auth required for mutations)
-- `/api/upload` — POST (admin-only, uploads to Cloudinary)
-- `/api/health` — GET (public: ok/error, admin: full diagnostics)
+### Image Upload (Admin)
+1. Admin selects files on product form → `POST /api/upload` (FormData)
+2. Server validates auth, file type, file size → converts to base64 → `cloudinary.uploader.upload()` → returns `secure_url`
 
-## Checkout Flow
-1. User adds items to cart via `/api/cart` POST
-2. User navigates to `/checkout` — loads addresses, cart, available coupons
-3. User selects address, payment method, optional coupon
-4. `placeOrder` action:
-   - Recalculates coupon discount server-side (never trusts client)
-   - Verifies address belongs to user
-   - Creates Order + OrderItems in a transaction
-   - Decrements stock
-   - Clears cart
-   - Redirects to `/order-confirmation/[id]`
+## Key Design Patterns
+- **SSR-first monolith** — SvelteKit handles everything (frontend, API, admin). No separate backend service.
+- **Form actions** — All mutations use SvelteKit form actions with `use:enhance` for progressive enhancement and built-in CSRF protection.
+- **REST API** — Cart and upload use JSON API endpoints (`/api/*`) for client-side fetch operations.
+- **Lazy initialization** — Both Prisma and Cloudinary use deferred initialization patterns because Hostinger's env vars aren't available at module import time.
 
-## Image Upload Flow
-1. Admin selects file(s) on product/banner form
-2. Frontend sends `FormData` to `/api/upload`
-3. Server validates: admin auth, file type (jpg/png/webp/avif), size (<5MB)
-4. Converts to base64 data URI
-5. Uploads to Cloudinary (`bunbun_products` or `bunbun_banners` folder)
-6. Returns `secure_url` — stored in database as ProductImage or Banner record
+## External Dependencies
+| Service     | What it does                        | What breaks if down                    |
+|-------------|-------------------------------------|----------------------------------------|
+| MariaDB     | All data storage                    | Entire site — every page needs DB      |
+| Cloudinary  | Image hosting/CDN                   | Product images won't load, uploads fail |
+| Hostinger   | Hosting, SSL, DNS                   | Site completely offline                |
+| Razorpay    | Payment processing (NOT YET ACTIVE) | N/A — not integrated yet               |
+| NimbusPost  | Shipping rates/labels (NOT YET)     | N/A — not integrated yet               |
 
-## Pricing Logic
-- `ProductVariant.price` — base price in INR
-- `ProductVariant.salePrice` — optional discounted price
-- Display price = `salePrice ?? price`
-- Shipping: free if subtotal ≥ ₹999, else ₹79
-- Coupon: percentage (with optional maxDiscount cap) or flat amount
-- Total = `max(subtotal + shipping - couponDiscount, 0)`
+## Scalability & Limits
+- **Single Node.js instance** — Hostinger shared hosting runs one process. No horizontal scaling.
+- **In-memory rate limiter** — Resets on restart, single-instance only. Would need Redis for multi-instance.
+- **Cloudinary free tier** — 25 credits/month. May need paid plan if product catalog grows significantly.
+- **MariaDB shared** — No connection pooling control. Prisma manages connections internally.
+
+## What NOT to Do
+- **Do NOT use Prisma's Rust engine** — will crash on Hostinger. Always use JS adapter.
+- **Do NOT use `$env/static/private`** for runtime secrets — use `$env/dynamic/private`.
+- **Do NOT call `cloudinary.config()` at module level** — use the lazy getter.
+- **Do NOT create anonymous/guest carts** — DB flooding risk. Auth required.
+- **Do NOT trust client-sent prices or discounts** — always recalculate server-side.
+- **Do NOT remove admin auth checks from form actions** — defense-in-depth, not redundancy.
