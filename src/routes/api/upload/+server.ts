@@ -31,7 +31,7 @@ export const POST: RequestHandler = async ({ request, locals }) => {
     } catch (err: any) {
         console.error('Cloudinary config error:', err);
         return json(
-            { error: `Cloudinary configuration error: ${err?.message}` },
+            { error: 'Cloudinary configuration error. Please contact support.' },
             { status: 500 }
         );
     }
@@ -72,7 +72,7 @@ export const POST: RequestHandler = async ({ request, locals }) => {
         } catch (error: any) {
             console.error("Cloudinary Upload Error:", error);
             return json(
-                { error: `Upload failed: ${error?.message || 'Unknown error'}` },
+                { error: 'Upload failed. Please try again.' },
                 { status: 500 }
             );
         }

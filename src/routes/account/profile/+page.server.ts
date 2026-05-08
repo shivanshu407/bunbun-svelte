@@ -38,7 +38,7 @@ export const actions: Actions = {
         const confirm = fd.get('confirmPassword') as string;
 
         if (newPass !== confirm) return fail(400, { passwordError: 'Passwords do not match' });
-        if (newPass.length < 6) return fail(400, { passwordError: 'Password must be at least 6 characters' });
+        if (newPass.length < 8) return fail(400, { passwordError: 'Password must be at least 8 characters' });
 
         const user = await prisma.user.findUnique({ where: { id: locals.user.id } });
         if (!user) return fail(400, { passwordError: 'User not found' });
