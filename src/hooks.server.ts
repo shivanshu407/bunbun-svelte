@@ -1,5 +1,12 @@
 import type { Handle } from '@sveltejs/kit';
 import { lucia } from '$lib/server/auth';
+import { prisma } from '$lib/server/db';
+
+// Eager DB warmup — run a cheap query immediately on server start, not on first request.
+// This prevents 504 Gateway Timeout on Hostinger after deployments.
+prisma.$queryRaw`SELECT 1`
+    .then(() => console.log('[Startup] DB connection warmed up'))
+    .catch((e: any) => console.error('[Startup] DB warmup failed:', e?.message));
 
 // H2 FIX: Simple in-memory rate limiter for auth endpoints
 const rateLimits = new Map<string, { count: number; resetAt: number }>();
