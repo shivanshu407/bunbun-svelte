@@ -3,7 +3,7 @@ import { prisma } from '$lib/server/db';
 
 export const load: PageServerLoad = async () => {
     try {
-        const [trending, bestsellers, newArrivals, banners, categories, homepageBlocks] = await Promise.all([
+        const [trending, bestsellers, newArrivals, banners, categories] = await Promise.all([
             prisma.product.findMany({
                 where: { isActive: true, isTrending: true },
                 include: { images: { take: 1, orderBy: { order: 'asc' } }, variants: { take: 1 } },
@@ -31,11 +31,18 @@ export const load: PageServerLoad = async () => {
                 orderBy: { order: 'asc' },
                 select: { id: true, name: true, slug: true, image: true }
             }),
-            prisma.homepageBlock.findMany({
+        ]);
+
+        // Separate try-catch: homepageBlock table may not exist on production yet
+        let homepageBlocks: any[] = [];
+        try {
+            homepageBlocks = await prisma.homepageBlock.findMany({
                 where: { isActive: true },
                 orderBy: { order: 'asc' }
-            })
-        ]);
+            });
+        } catch (e) {
+            console.warn('[Homepage] homepageBlock query failed (table may not exist yet):', (e as any)?.message);
+        }
 
         // If not enough flagged products, fill with any active products
         let featured = trending;
