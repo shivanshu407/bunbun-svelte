@@ -181,71 +181,90 @@ export const actions: Actions = {
         const shipping = subtotal >= 999 ? 0 : 79;
         const total = Math.max(subtotal + shipping - couponDiscount, 0);
 
-        const order = await prisma.$transaction(async (tx) => {
-            const newOrder = await tx.order.create({
-                data: {
-                    orderNumber: generateOrderNumber(),
-                    userId: locals.user!.id,
-                    subtotal,
-                    shipping,
-                    discount: couponDiscount,
-                    couponCode: validatedCouponCode,
-                    total: Math.max(total, 0),
-                    status: paymentMethod === 'cod' ? 'confirmed' : 'pending',
-                    paymentStatus: paymentMethod === 'cod' ? 'pending' : 'pending',
-                    paymentMethod,
-                    shippingAddress: JSON.stringify({
-                        name: address.name,
-                        phone: address.phone,
-                        line1: address.line1,
-                        line2: address.line2,
-                        city: address.city,
-                        state: address.state,
-                        pincode: address.pincode
-                    }),
-                    items: {
-                        create: cart.items.map((item) => ({
-                            productId: item.productId,
-                            variantId: item.variantId,
-                            productName: item.product.name,
-                            variantInfo: [item.variant.size, item.variant.color].filter(Boolean).join(' / '),
-                            price: item.variant.salePrice ?? item.variant.price,
-                            quantity: item.quantity,
-                            total: (item.variant.salePrice ?? item.variant.price) * item.quantity,
-                            image: item.product.images[0]?.url
-                        }))
-                    },
-                    statusHistory: {
-                        create: {
-                            status: paymentMethod === 'cod' ? 'confirmed' : 'pending',
-                            notes: validatedCouponCode ? `Order placed with coupon ${validatedCouponCode}` : 'Order placed'
-                        }
+        try {
+            const order = await prisma.$transaction(async (tx) => {
+                // B3 FIX: Validate stock BEFORE creating order — prevents negative stock
+                for (const item of cart.items) {
+                    const variant = await tx.productVariant.findUnique({ where: { id: item.variantId } });
+                    if (!variant || variant.stock < item.quantity) {
+                        throw new Error(`Insufficient stock for "${item.product.name}" (${[item.variant.size, item.variant.color].filter(Boolean).join(' / ')}). Available: ${variant?.stock ?? 0}, Requested: ${item.quantity}`);
                     }
                 }
+
+                const newOrder = await tx.order.create({
+                    data: {
+                        orderNumber: generateOrderNumber(),
+                        userId: locals.user!.id,
+                        subtotal,
+                        shipping,
+                        discount: couponDiscount,
+                        couponCode: validatedCouponCode,
+                        total: Math.max(total, 0),
+                        status: paymentMethod === 'cod' ? 'confirmed' : 'pending',
+                        paymentStatus: paymentMethod === 'cod' ? 'pending' : 'pending',
+                        paymentMethod,
+                        shippingAddress: JSON.stringify({
+                            name: address.name,
+                            phone: address.phone,
+                            line1: address.line1,
+                            line2: address.line2,
+                            city: address.city,
+                            state: address.state,
+                            pincode: address.pincode
+                        }),
+                        items: {
+                            create: cart.items.map((item) => ({
+                                productId: item.productId,
+                                variantId: item.variantId,
+                                productName: item.product.name,
+                                variantInfo: [item.variant.size, item.variant.color].filter(Boolean).join(' / '),
+                                price: item.variant.salePrice ?? item.variant.price,
+                                quantity: item.quantity,
+                                total: (item.variant.salePrice ?? item.variant.price) * item.quantity,
+                                image: item.product.images[0]?.url
+                            }))
+                        },
+                        statusHistory: {
+                            create: {
+                                status: paymentMethod === 'cod' ? 'confirmed' : 'pending',
+                                notes: validatedCouponCode ? `Order placed with coupon ${validatedCouponCode}` : 'Order placed'
+                            }
+                        }
+                    }
+                });
+
+                // Increment coupon usage
+                if (validatedCouponCode) {
+                    await tx.coupon.update({
+                        where: { code: validatedCouponCode },
+                        data: { usedCount: { increment: 1 } }
+                    });
+                }
+
+                // Decrease stock (safe — we validated above)
+                for (const item of cart.items) {
+                    await tx.productVariant.update({
+                        where: { id: item.variantId },
+                        data: { stock: { decrement: item.quantity } }
+                    });
+                }
+
+                // Clear cart
+                await tx.cartItem.deleteMany({ where: { cartId: cart.id } });
+
+                return newOrder;
             });
 
-            // Increment coupon usage
-            if (validatedCouponCode) {
-                await tx.coupon.update({
-                    where: { code: validatedCouponCode },
-                    data: { usedCount: { increment: 1 } }
-                });
+            throw redirect(302, `/order-confirmation/${order.id}`);
+        } catch (err: any) {
+            // Re-throw SvelteKit redirects
+            if (err && typeof err === 'object' && 'status' in err && err.status === 302) throw err;
+            // Surface stock errors to the user
+            if (err?.message?.includes('Insufficient stock')) {
+                return fail(400, { error: err.message });
             }
-
-            // Decrease stock
-            for (const item of cart.items) {
-                await tx.productVariant.update({
-                    where: { id: item.variantId },
-                    data: { stock: { decrement: item.quantity } }
-                });
-            }
-
-            // Clear cart
-            await tx.cartItem.deleteMany({ where: { cartId: cart.id } });
-
-            return newOrder;
-        });
-
-        throw redirect(302, `/order-confirmation/${order.id}`);
+            console.error('Order placement error:', err);
+            return fail(500, { error: 'Something went wrong placing your order. Please try again.' });
+        }
     }
 };

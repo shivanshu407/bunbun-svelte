@@ -14,7 +14,8 @@ export const load: PageServerLoad = async () => {
 };
 
 export const actions: Actions = {
-    create: async ({ request }) => {
+    create: async ({ request, locals }) => {
+        if (!locals.user || locals.user.role !== 'admin') return fail(403, { error: 'Forbidden' });
         const fd = await request.formData();
         const name = fd.get('name') as string;
         const slug = fd.get('slug') as string;
@@ -33,7 +34,8 @@ export const actions: Actions = {
         return { success: 'Category created!' };
     },
 
-    delete: async ({ request }) => {
+    delete: async ({ request, locals }) => {
+        if (!locals.user || locals.user.role !== 'admin') return fail(403, { error: 'Forbidden' });
         const fd = await request.formData();
         const id = fd.get('id') as string;
         await prisma.category.delete({ where: { id } });

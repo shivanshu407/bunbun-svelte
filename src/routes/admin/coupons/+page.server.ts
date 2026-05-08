@@ -11,7 +11,8 @@ export const load: PageServerLoad = async () => {
 };
 
 export const actions: Actions = {
-    create: async ({ request }) => {
+    create: async ({ request, locals }) => {
+        if (!locals.user || locals.user.role !== 'admin') return fail(403, { error: 'Forbidden' });
         const fd = await request.formData();
         const code = (fd.get('code') as string)?.toUpperCase().trim();
         const description = fd.get('description') as string;
@@ -37,7 +38,8 @@ export const actions: Actions = {
         return { success: 'Coupon created!' };
     },
 
-    toggle: async ({ request }) => {
+    toggle: async ({ request, locals }) => {
+        if (!locals.user || locals.user.role !== 'admin') return fail(403, { error: 'Forbidden' });
         const fd = await request.formData();
         const id = fd.get('id') as string;
         const coupon = await prisma.coupon.findUnique({ where: { id } });
@@ -46,7 +48,8 @@ export const actions: Actions = {
         }
     },
 
-    delete: async ({ request }) => {
+    delete: async ({ request, locals }) => {
+        if (!locals.user || locals.user.role !== 'admin') return fail(403, { error: 'Forbidden' });
         const fd = await request.formData();
         const id = fd.get('id') as string;
         await prisma.coupon.delete({ where: { id } });

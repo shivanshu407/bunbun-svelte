@@ -1,5 +1,16 @@
 # Changelog
 
+## 2026-05-08 — Code Review Blocker Fixes (B1/B2/B3)
+**What**: Fixed all 3 blockers from code review — missing admin auth guards, razorpay.ts crash risk, negative stock
+**Why**: Admin actions on products/coupons/categories could be executed without authentication. Stock could go negative on concurrent orders.
+**Impact**: All admin mutations now require verified admin role. Orders will fail gracefully if stock is insufficient. Razorpay is safe for future integration.
+**Files Changed**: `src/routes/admin/products/+page.server.ts`, `src/routes/admin/coupons/+page.server.ts`, `src/routes/admin/categories/+page.server.ts`, `src/lib/server/razorpay.ts`, `src/routes/checkout/+page.server.ts`
+**Commit**: pending
+
+- B1: Added `if (!locals.user || locals.user.role !== 'admin') return fail(403)` to 8 actions: products (delete, toggleActive, toggleFeatured), coupons (create, toggle, delete), categories (create, delete)
+- B2: Refactored razorpay.ts from `$env/static/private` + module-level init to `$env/dynamic/private` + lazy getter `getRazorpay()`
+- B3: Added stock validation inside checkout transaction BEFORE order creation. Wrapped in try-catch to surface "Insufficient stock" errors as form errors instead of 500s
+
 ## 2026-04-14 — Upload Body Size Limit Fix
 **What**: Discovered SvelteKit adapter-node enforces 512KB body limit via `BODY_SIZE_LIMIT` env var
 **Why**: Product image uploads were failing with "Content-length exceeds limit" errors

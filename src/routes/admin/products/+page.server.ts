@@ -40,14 +40,16 @@ export const load: PageServerLoad = async ({ url }) => {
 };
 
 export const actions: Actions = {
-    delete: async ({ request }) => {
+    delete: async ({ request, locals }) => {
+        if (!locals.user || locals.user.role !== 'admin') return fail(403, { error: 'Forbidden' });
         const fd = await request.formData();
         const id = fd.get('id') as string;
         await prisma.product.delete({ where: { id } });
         return { success: 'Product deleted' };
     },
 
-    toggleActive: async ({ request }) => {
+    toggleActive: async ({ request, locals }) => {
+        if (!locals.user || locals.user.role !== 'admin') return fail(403, { error: 'Forbidden' });
         const fd = await request.formData();
         const id = fd.get('id') as string;
         const product = await prisma.product.findUnique({ where: { id } });
@@ -56,7 +58,8 @@ export const actions: Actions = {
         }
     },
 
-    toggleFeatured: async ({ request }) => {
+    toggleFeatured: async ({ request, locals }) => {
+        if (!locals.user || locals.user.role !== 'admin') return fail(403, { error: 'Forbidden' });
         const fd = await request.formData();
         const id = fd.get('id') as string;
         const product = await prisma.product.findUnique({ where: { id } });
