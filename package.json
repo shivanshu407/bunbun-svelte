@@ -8,7 +8,7 @@
 		"build": "vite build",
 		"preview": "vite preview",
 		"start": "node build",
-		"postinstall": "node hostinger.cjs && npx prisma generate && vite build",
+		"postinstall": "npx prisma generate && vite build",
 		"prepare": "svelte-kit sync || echo ''",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
@@ -37,14 +37,12 @@
 	},
 	"dependencies": {
 		"@lucia-auth/adapter-prisma": "^4.0.0",
-		"@prisma/adapter-mariadb": "^7.6.0",
 		"@prisma/client": "^6.0.0",
 		"bcryptjs": "^2.4.3",
 		"cloudinary": "^2.9.0",
 		"clsx": "^2.1.0",
 		"lucia": "^3.2.0",
 		"lucide-svelte": "^0.475.0",
-		"mariadb": "^3.5.2",
 		"razorpay": "^2.9.0",
 		"sveltekit-superforms": "^2.0.0",
 		"zod": "^3.23.0"
