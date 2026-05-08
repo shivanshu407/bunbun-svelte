@@ -59,3 +59,23 @@
 - Redis-based rate limiting — Redis not available on Hostinger shared hosting
 - External WAF/CDN rate limiting (Cloudflare) — not yet configured
 **Consequences**: Rate limits reset on server restart. Single-instance only (fine for shared hosting). Will need Redis if scaling to multiple instances.
+
+## Decision: Cart Quantity Cap at 10 Per Item
+**Date**: 2026-05-08
+**Status**: Accepted
+**Context**: Cart API accepted any integer for quantity — including negative values and extremely large numbers. This could corrupt cart totals or enable stock hoarding.
+**Decision**: Cap quantity at 10 per variant per cart item. Floor and clamp all quantity inputs: `Math.max(1, Math.min(Math.floor(qty), 10))`.
+**Alternatives Considered**:
+- No cap — risk of abuse and stock hoarding
+- Dynamic cap based on available stock — adds query per add-to-cart, too expensive for a simple store
+**Consequences**: Users can't add more than 10 of the same variant. This is fine for a clothing store. Can be raised later if business requires.
+
+## Decision: One Coupon Use Per User
+**Date**: 2026-05-08
+**Status**: Accepted
+**Context**: Coupon validation only checked global `usageLimit` but not per-user usage. A user could place multiple orders with the same coupon code.
+**Decision**: Check `prisma.order.findFirst({ where: { userId, couponCode } })` before allowing coupon use. One use per user.
+**Alternatives Considered**:
+- No per-user limit — allows abuse, especially for percentage-off coupons
+- Separate `CouponUsage` table — more normalized but overkill; querying the orders table is sufficient
+**Consequences**: Each coupon code works once per user account. Admin can still create multiple coupon codes for repeat promotions.

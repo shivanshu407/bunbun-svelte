@@ -10,6 +10,9 @@ export const POST: RequestHandler = async ({ request, locals }) => {
         return json({ error: 'Product and variant are required' }, { status: 400 });
     }
 
+    // S4 FIX: Validate quantity — must be positive integer, max 10 per item
+    const qty = Math.max(1, Math.min(Math.floor(Number(quantity) || 1), 10));
+
     // M4 FIX: Require authentication — no anonymous cart creation
     if (!locals.user) {
         return json({ error: 'Please login to add items to cart' }, { status: 401 });
@@ -27,9 +30,10 @@ export const POST: RequestHandler = async ({ request, locals }) => {
     });
 
     if (existingItem) {
+        const newQty = Math.min(existingItem.quantity + qty, 10);
         await prisma.cartItem.update({
             where: { id: existingItem.id },
-            data: { quantity: existingItem.quantity + (quantity ?? 1) }
+            data: { quantity: newQty }
         });
     } else {
         await prisma.cartItem.create({
@@ -37,7 +41,7 @@ export const POST: RequestHandler = async ({ request, locals }) => {
                 cartId: cart.id,
                 productId,
                 variantId,
-                quantity: quantity ?? 1
+                quantity: qty
             }
         });
     }
@@ -73,6 +77,9 @@ export const PATCH: RequestHandler = async ({ request, locals }) => {
     const { itemId, quantity } = await request.json();
     if (!itemId) return json({ error: 'Item ID required' }, { status: 400 });
 
+    // S4 FIX: Validate quantity for updates too
+    const qty = Math.floor(Number(quantity) || 0);
+
     // C2 FIX: Verify cart item belongs to the current user
     const item = await prisma.cartItem.findUnique({
         where: { id: itemId },
@@ -82,12 +89,12 @@ export const PATCH: RequestHandler = async ({ request, locals }) => {
         return json({ error: 'Item not found' }, { status: 404 });
     }
 
-    if (quantity <= 0) {
+    if (qty <= 0) {
         await prisma.cartItem.delete({ where: { id: itemId } });
     } else {
         await prisma.cartItem.update({
             where: { id: itemId },
-            data: { quantity }
+            data: { quantity: Math.min(qty, 10) }
         });
     }
 

@@ -1,7 +1,7 @@
 import type { Actions, PageServerLoad } from './$types';
 import { prisma } from '$lib/server/db';
 import { redirect, fail } from '@sveltejs/kit';
-import { generateOrderNumber } from '$lib/utils';
+import { generateOrderNumber, validateAddress } from '$lib/utils';
 
 export const load: PageServerLoad = async ({ locals }) => {
     if (!locals.user) throw redirect(302, '/login?redirect=/checkout');
@@ -47,6 +47,10 @@ export const actions: Actions = {
         if (!locals.user) return fail(401, { error: 'Login required' });
         const fd = await request.formData();
 
+        // S1 FIX: Validate address fields
+        const validationError = validateAddress(fd);
+        if (validationError) return fail(400, validationError);
+
         await prisma.address.create({
             data: {
                 userId: locals.user.id,
@@ -85,6 +89,14 @@ export const actions: Actions = {
 
         if (coupon.usageLimit && coupon.usedCount >= coupon.usageLimit) {
             return fail(400, { couponError: 'This coupon has reached its usage limit' });
+        }
+
+        // S5 FIX: Check if this user has already used this coupon
+        const previousUse = await prisma.order.findFirst({
+            where: { userId: locals.user.id, couponCode: coupon.code }
+        });
+        if (previousUse) {
+            return fail(400, { couponError: 'You have already used this coupon' });
         }
 
         // Get cart subtotal
@@ -165,14 +177,20 @@ export const actions: Actions = {
             const now = new Date();
             if (coupon && coupon.isActive && coupon.validFrom <= now && coupon.validTo >= now) {
                 if (!coupon.usageLimit || coupon.usedCount < coupon.usageLimit) {
-                    if (!coupon.minOrderAmount || subtotal >= coupon.minOrderAmount) {
-                        if (coupon.type === 'percentage') {
-                            couponDiscount = Math.round(subtotal * coupon.value / 100);
-                            if (coupon.maxDiscount) couponDiscount = Math.min(couponDiscount, coupon.maxDiscount);
-                        } else {
-                            couponDiscount = coupon.value;
+                    // S5 FIX: Check per-user coupon usage
+                    const previousUse = await prisma.order.findFirst({
+                        where: { userId: locals.user!.id, couponCode: coupon.code }
+                    });
+                    if (!previousUse) {
+                        if (!coupon.minOrderAmount || subtotal >= coupon.minOrderAmount) {
+                            if (coupon.type === 'percentage') {
+                                couponDiscount = Math.round(subtotal * coupon.value / 100);
+                                if (coupon.maxDiscount) couponDiscount = Math.min(couponDiscount, coupon.maxDiscount);
+                            } else {
+                                couponDiscount = coupon.value;
+                            }
+                            validatedCouponCode = coupon.code;
                         }
-                        validatedCouponCode = coupon.code;
                     }
                 }
             }

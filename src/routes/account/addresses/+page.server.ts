@@ -1,6 +1,7 @@
 import type { Actions, PageServerLoad } from './$types';
 import { prisma } from '$lib/server/db';
 import { redirect, fail } from '@sveltejs/kit';
+import { validateAddress } from '$lib/utils';
 
 export const load: PageServerLoad = async ({ locals }) => {
     if (!locals.user) throw redirect(302, '/login?redirect=/account/addresses');
@@ -17,6 +18,10 @@ export const actions: Actions = {
     add: async ({ request, locals }) => {
         if (!locals.user) return fail(401, { error: 'Login required' });
         const fd = await request.formData();
+
+        // S1 FIX: Validate address fields
+        const validationError = validateAddress(fd);
+        if (validationError) return fail(400, validationError);
 
         await prisma.address.create({
             data: {

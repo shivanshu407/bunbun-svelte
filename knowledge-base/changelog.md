@@ -5,11 +5,25 @@
 **Why**: Admin actions on products/coupons/categories could be executed without authentication. Stock could go negative on concurrent orders.
 **Impact**: All admin mutations now require verified admin role. Orders will fail gracefully if stock is insufficient. Razorpay is safe for future integration.
 **Files Changed**: `src/routes/admin/products/+page.server.ts`, `src/routes/admin/coupons/+page.server.ts`, `src/routes/admin/categories/+page.server.ts`, `src/lib/server/razorpay.ts`, `src/routes/checkout/+page.server.ts`
-**Commit**: pending
+**Commit**: `a5c70c4`
 
 - B1: Added `if (!locals.user || locals.user.role !== 'admin') return fail(403)` to 8 actions: products (delete, toggleActive, toggleFeatured), coupons (create, toggle, delete), categories (create, delete)
 - B2: Refactored razorpay.ts from `$env/static/private` + module-level init to `$env/dynamic/private` + lazy getter `getRazorpay()`
 - B3: Added stock validation inside checkout transaction BEFORE order creation. Wrapped in try-catch to surface "Insufficient stock" errors as form errors instead of 500s
+
+## 2026-05-08 — Code Review Suggestion Fixes (S1-S6)
+**What**: Implemented all 6 suggestions from code review — input validation, collision resistance, error handling, cart limits, coupon abuse prevention, caching
+**Why**: Hardening for production — preventing bad data, overselling, coupon abuse, and info leaks
+**Impact**: Address fields now validated (10-digit phone, 6-digit pincode). Cart items capped at 10 per variant. Each coupon can only be used once per user. API errors no longer leak internal messages.
+**Files Changed**: `src/lib/utils/index.ts`, `src/routes/checkout/+page.server.ts`, `src/routes/account/addresses/+page.server.ts`, `src/hooks.server.ts`, `src/routes/api/cart/+server.ts`, `src/lib/server/db.ts`
+**Commit**: pending
+
+- S1: Added shared `validateAddress()` function — validates name, phone (10 digits), pincode (6 digits), required fields
+- S2: Switched `generateOrderNumber()` from `Math.random()` to `crypto.randomBytes()` for collision resistance
+- S3: `handleError` no longer leaks raw error messages to API consumers — logs full error server-side
+- S4: Cart quantity validated and capped at 10 per item on both POST (add) and PATCH (update)
+- S5: Per-user coupon usage check — same coupon code can't be used twice by the same user
+- S6: Prisma client cached on `globalThis` in all environments (was dev-only)
 
 ## 2026-04-14 — Upload Body Size Limit Fix
 **What**: Discovered SvelteKit adapter-node enforces 512KB body limit via `BODY_SIZE_LIMIT` env var

@@ -25,9 +25,8 @@ function getPrisma() {
     const adapter = new PrismaMariaDb(config);
     internalPrisma = new PrismaClient({ adapter });
     
-    if (process.env.NODE_ENV !== 'production') {
-        globalForPrisma.prisma = internalPrisma;
-    }
+    // S6 FIX: Cache globally in all environments to prevent orphaned connections
+    globalForPrisma.prisma = internalPrisma;
     
     return internalPrisma;
 }
