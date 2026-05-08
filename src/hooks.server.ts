@@ -1,37 +1,5 @@
 import type { Handle } from '@sveltejs/kit';
 import { lucia } from '$lib/server/auth';
-import { prisma } from '$lib/server/db';
-
-// Runtime DB warmup + auto-migrate missing tables.
-// Creates homepage_blocks if it doesn't exist — avoids needing prisma db push during build.
-async function warmupDB() {
-    try {
-        await prisma.$queryRaw`SELECT 1`;
-        console.log('[Startup] DB connection warmed up');
-
-        // Auto-create homepage_blocks table if missing
-        await prisma.$executeRawUnsafe(`
-            CREATE TABLE IF NOT EXISTS homepage_blocks (
-                id VARCHAR(30) NOT NULL PRIMARY KEY,
-                section VARCHAR(191) NOT NULL,
-                title VARCHAR(191) NULL,
-                subtitle VARCHAR(191) NULL,
-                imageUrl TEXT NOT NULL,
-                linkUrl VARCHAR(191) NULL,
-                linkText VARCHAR(191) NULL,
-                \`order\` INT NOT NULL DEFAULT 0,
-                isActive BOOLEAN NOT NULL DEFAULT true,
-                createdAt DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
-                updatedAt DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
-                INDEX idx_homepage_blocks_section_active (section, isActive)
-            )
-        `);
-        console.log('[Startup] homepage_blocks table verified');
-    } catch (e: any) {
-        console.error('[Startup] DB warmup/migration failed:', e?.message);
-    }
-}
-warmupDB();
 
 // H2 FIX: Simple in-memory rate limiter for auth endpoints
 const rateLimits = new Map<string, { count: number; resetAt: number }>();
