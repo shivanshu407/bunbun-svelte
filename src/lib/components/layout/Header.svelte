@@ -41,7 +41,7 @@
 					<input
 						type="text"
 						name="q"
-						placeholder="Search sarees, blouses, essentials..."
+						placeholder="Search blouses, shapewear, dupatta..."
 						bind:value={searchQuery}
 						class="w-full pl-4 pr-10 py-2.5 bg-stone-100 border border-stone-200 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all placeholder:text-stone-400"
 					/>
@@ -127,3 +127,4 @@
 		</div>
 	{/if}
 </header>
+

@@ -3,30 +3,21 @@
     import { page } from "$app/stores";
     import type { UserStore } from "$lib/stores/user";
 
+    interface Category {
+        id: string;
+        name: string;
+        slug: string;
+        image: string | null;
+    }
+
     interface Props {
         open: boolean;
         user: UserStore | null;
+        categories: Category[];
         onClose: () => void;
     }
 
-    let { open, user, onClose }: Props = $props();
-
-    const categories = [
-        { name: "Sarees", href: "/collections/sarees", hasChildren: true },
-        { name: "Blouses", href: "/collections/blouses", hasChildren: false },
-        {
-            name: "Shapewear",
-            href: "/collections/shapewear",
-            hasChildren: false,
-        },
-        { name: "Towels", href: "/collections/towels", hasChildren: false },
-        {
-            name: "Essentials",
-            href: "/collections/essentials",
-            hasChildren: false,
-        },
-        { name: "Sale 🔥", href: "/collections/sale", hasChildren: false },
-    ];
+    let { open, user, categories = [], onClose }: Props = $props();
 
     const accountLinks = [
         { name: "My Account", href: "/account" },
@@ -94,19 +85,23 @@
             <nav class="py-2">
                 {#each categories as cat}
                     <a
-                        href={cat.href}
+                        href="/collections/{cat.slug}"
                         onclick={onClose}
                         class="flex items-center justify-between px-4 py-3 text-sm font-medium transition-colors
-							{$page.url.pathname.startsWith(cat.href)
+							{$page.url.pathname.startsWith(`/collections/${cat.slug}`)
                             ? 'text-primary-600 bg-primary-50'
                             : 'text-stone-800 hover:bg-stone-50'}"
                     >
                         {cat.name}
-                        {#if cat.hasChildren}
-                            <ChevronRight size={16} class="text-stone-400" />
-                        {/if}
                     </a>
                 {/each}
+                <a
+                    href="/collections"
+                    onclick={onClose}
+                    class="flex items-center justify-between px-4 py-3 text-sm font-medium text-secondary-600 hover:bg-secondary-50 transition-colors"
+                >
+                    All Collections
+                </a>
             </nav>
 
             <div class="border-t border-stone-200 my-1"></div>
@@ -151,3 +146,4 @@
         </div>
     </div>
 {/if}
+

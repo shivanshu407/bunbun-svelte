@@ -1,5 +1,47 @@
 # Changelog
 
+## 2026-05-08 — Mobile UI Redesign (Sudathi-Inspired)
+**What**: Complete mobile-first homepage overhaul with 15 sections, admin CMS for homepage images, dynamic categories
+**Why**: Mobile conversion optimization — app-like experience matching Sudathi.com design patterns
+**Impact**: Homepage is completely restructured on mobile. All categories now dynamic from DB. All homepage images admin-managed. Desktop layout preserved.
+**Files Changed**: See full list below
+**Commit**: pending
+
+### New Files
+- `src/routes/admin/homepage/+page.server.ts` — Admin CRUD for HomepageBlock
+- `src/routes/admin/homepage/+page.svelte` — Admin UI for homepage blocks
+- `src/lib/components/layout/MobileBottomNav.svelte` — Fixed bottom nav (4 tabs)
+- `src/lib/components/home/TrustTicker.svelte` — Auto-scrolling trust badges
+- `src/lib/components/home/CategoryGrid.svelte` — 2-col category image grid
+- `src/lib/components/home/PaymentStrip.svelte` — Payment method logos
+- `src/lib/components/home/StoreBentoGrid.svelte` — 2x2 masonry store grid
+- `src/lib/components/home/FeaturedVideoSlider.svelte` — Infinite loop video carousel
+- `src/lib/components/home/ExclusiveCollection.svelte` — Banner + product section
+
+### Modified Files
+- `prisma/schema.prisma` — Added `HomepageBlock` model
+- `src/app.html` — Removed saree references from title/meta
+- `src/routes/+page.svelte` — Complete homepage rewrite (15 sections)
+- `src/routes/+page.server.ts` — Added categories + HomepageBlock queries
+- `src/routes/+layout.svelte` — Added MobileBottomNav, categories prop passing
+- `src/routes/+layout.server.ts` — Load categories globally for nav
+- `src/lib/components/layout/NavBar.svelte` — Dynamic categories from DB (no hardcoded)
+- `src/lib/components/layout/MobileNav.svelte` — Dynamic categories from DB
+- `src/lib/components/layout/Footer.svelte` — Collapsible accordion on mobile
+- `src/lib/components/layout/Header.svelte` — Removed saree search placeholder
+- `src/lib/components/layout/AnnouncementBar.svelte` — Generic promo text
+- `src/lib/components/home/HeroSlider.svelte` — Portrait aspect (3/4) on mobile
+- `src/routes/admin/+layout.svelte` — Added Homepage nav link
+- `src/routes/admin/categories/+page.server.ts` — Cloudinary image upload + update action
+- `src/routes/admin/categories/+page.svelte` — Image upload UI + inline edit
+- `src/app.css` — Added scrollbar-hide utility
+
+### Database Changes
+- Added `HomepageBlock` model (homepage_blocks table)
+- Deactivated Sarees, Towels, Essentials categories
+- Added Dupatta category
+
+
 ## 2026-05-08 — Code Review Blocker Fixes (B1/B2/B3)
 **What**: Fixed all 3 blockers from code review — missing admin auth guards, razorpay.ts crash risk, negative stock
 **Why**: Admin actions on products/coupons/categories could be executed without authentication. Stock could go negative on concurrent orders.

@@ -12,6 +12,7 @@
         Menu,
         X,
         ChevronRight,
+        LayoutGrid,
     } from "lucide-svelte";
 
     let { data, children } = $props();
@@ -24,6 +25,7 @@
         { icon: ShoppingBag, label: "Orders", href: "/admin/orders" },
         { icon: Tag, label: "Coupons", href: "/admin/coupons" },
         { icon: Image, label: "Banners", href: "/admin/banners" },
+        { icon: LayoutGrid, label: "Homepage", href: "/admin/homepage" },
         { icon: Users, label: "Customers", href: "/admin/customers" },
     ];
 
@@ -157,3 +159,4 @@
         </main>
     </div>
 {/if}
+

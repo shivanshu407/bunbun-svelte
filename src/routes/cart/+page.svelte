@@ -176,7 +176,7 @@
                 Looks like you haven't added anything yet
             </p>
             <a
-                href="/collections/sarees"
+                href="/collections"
                 class="inline-flex items-center gap-2 mt-4 px-6 py-2.5 bg-primary-500 hover:bg-primary-600 text-white text-sm font-medium rounded-lg transition-colors"
             >
                 Continue Shopping <ArrowRight size={18} />
@@ -440,7 +440,7 @@
                     </a>
 
                     <a
-                        href="/collections/sarees"
+                        href="/collections"
                         class="block mt-3 text-center text-sm text-stone-500 hover:text-primary-600"
                     >
                         ← Continue Shopping
@@ -450,3 +450,4 @@
         </div>
     {/if}
 </div>
+

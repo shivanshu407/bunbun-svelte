@@ -333,3 +333,20 @@ model Banner {
 
   @@map("banners")
 }
+
+model HomepageBlock {
+  id        String   @id @default(cuid())
+  section   String   // trending_banner, store_grid, featured_card, bestseller_banner, exclusive_banner, payment_logo
+  title     String?
+  subtitle  String?
+  imageUrl  String   @db.Text
+  linkUrl   String?
+  linkText  String?
+  order     Int      @default(0)
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([section, isActive])
+  @@map("homepage_blocks")
+}

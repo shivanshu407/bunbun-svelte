@@ -157,7 +157,7 @@
                         >
                         <input
                             name="linkUrl"
-                            placeholder="e.g. /collections/sarees"
+                            placeholder="e.g. /collections"
                             class="w-full px-3 py-2.5 border border-stone-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
                         />
                     </div>
@@ -346,3 +346,4 @@
         {/if}
     </div>
 </div>
+

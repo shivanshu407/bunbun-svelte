@@ -6,6 +6,7 @@
 	import MobileNav from "$lib/components/layout/MobileNav.svelte";
 	import Footer from "$lib/components/layout/Footer.svelte";
 	import AnnouncementBar from "$lib/components/layout/AnnouncementBar.svelte";
+	import MobileBottomNav from "$lib/components/layout/MobileBottomNav.svelte";
 	import CartDrawer from "$lib/components/cart/CartDrawer.svelte";
 	import Toast from "$lib/components/ui/Toast.svelte";
 	import { currentUser } from "$lib/stores/user";
@@ -15,6 +16,7 @@
 		data: {
 			user: any;
 			wishlistProductIds?: string[];
+			categories?: { id: string; name: string; slug: string; image: string | null }[];
 		};
 		children: any;
 	}>();
@@ -42,18 +44,21 @@
 			user={data.user}
 			onMenuToggle={() => (mobileNavOpen = !mobileNavOpen)}
 		/>
-		<NavBar />
+		<NavBar categories={data.categories ?? []} />
 		<MobileNav
 			open={mobileNavOpen}
 			user={data.user}
+			categories={data.categories ?? []}
 			onClose={() => (mobileNavOpen = false)}
 		/>
 		<CartDrawer />
 
-		<main class="flex-1">
+		<main class="flex-1 pb-[72px] lg:pb-0">
 			{@render children()}
 		</main>
 
 		<Footer />
+		<MobileBottomNav onMenuToggle={() => (mobileNavOpen = !mobileNavOpen)} />
 	</div>
 {/if}
+

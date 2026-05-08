@@ -48,7 +48,7 @@
                 <Package size={40} class="mx-auto text-stone-300 mb-3" />
                 <p class="text-stone-500">No orders yet</p>
                 <a
-                    href="/collections/sarees"
+                    href="/collections"
                     class="inline-block mt-3 text-sm text-primary-600 hover:text-primary-700 font-medium"
                 >
                     Start Shopping →
@@ -94,3 +94,4 @@
         {/if}
     </div>
 </div>
+

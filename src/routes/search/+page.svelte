@@ -29,7 +29,7 @@
             />
             <input
                 bind:value={searchQuery}
-                placeholder="Search for sarees, blouses, shapewear..."
+                placeholder="Search for blouses, shapewear, dupatta..."
                 class="w-full pl-12 pr-4 py-3.5 border-2 border-stone-200 rounded-xl text-sm focus:outline-none focus:border-primary-500 transition-colors"
             />
         </div>
@@ -105,8 +105,9 @@
                 Search BunBunClothing
             </h2>
             <p class="text-sm text-stone-400 mt-1">
-                Find sarees, blouses, shapewear and more
+                Find blouses, shapewear, dupatta and more
             </p>
         </div>
     {/if}
 </div>
+

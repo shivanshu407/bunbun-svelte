@@ -33,7 +33,7 @@
                 Save your favorite items here for later
             </p>
             <a
-                href="/collections/sarees"
+                href="/collections"
                 class="inline-flex items-center gap-2 mt-4 px-6 py-2.5 bg-primary-500 hover:bg-primary-600 text-white text-sm font-medium rounded-lg transition-colors"
             >
                 <ShoppingBag size={18} /> Start Shopping
@@ -108,3 +108,4 @@
         </div>
     {/if}
 </div>
+

@@ -41,7 +41,7 @@
                 Start shopping to see your orders here
             </p>
             <a
-                href="/collections/sarees"
+                href="/collections"
                 class="inline-block mt-4 px-6 py-2.5 bg-primary-500 hover:bg-primary-600 text-white text-sm font-medium rounded-full"
             >
                 Start Shopping
@@ -135,3 +135,4 @@
         </div>
     {/if}
 </div>
+

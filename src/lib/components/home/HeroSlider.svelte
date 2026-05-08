@@ -56,7 +56,7 @@
         }}
     >
         <!-- Slides -->
-        <div class="relative w-full aspect-[16/6] md:aspect-[16/5]">
+        <div class="relative w-full aspect-[3/4] md:aspect-[16/6]">
             {#each banners as banner, i}
                 <div
                     class="absolute inset-0 transition-all duration-700 ease-in-out {i === current
@@ -165,12 +165,12 @@
                 <p
                     class="mt-5 text-lg text-stone-600 max-w-md mx-auto leading-relaxed"
                 >
-                    Discover our curated collection of premium sarees, designer
+                    Discover our curated collection of premium fashion, designer
                     blouses, and essentials.
                 </p>
                 <div class="flex flex-wrap gap-3 mt-8 justify-center">
                     <a
-                        href="/collections/sarees"
+                        href="/collections"
                         class="inline-flex items-center gap-2 px-7 py-3.5 bg-primary-500 hover:bg-primary-600 text-white font-medium rounded-full transition-all hover:shadow-lg hover:shadow-primary-500/25"
                     >
                         Shop Now <ChevronRight size={18} />
@@ -180,3 +180,4 @@
         </div>
     </section>
 {/if}
+

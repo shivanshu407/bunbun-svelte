@@ -1,227 +1,300 @@
 <script lang="ts">
-    import {
-        ArrowRight,
-        Truck,
-        RotateCcw,
-        Shield,
-        BadgeCheck,
-    } from "lucide-svelte";
+    import { ArrowRight } from "lucide-svelte";
     import ProductCard from "$lib/components/product/ProductCard.svelte";
     import HeroSlider from "$lib/components/home/HeroSlider.svelte";
-    import { formatPrice } from "$lib/utils";
+    import TrustTicker from "$lib/components/home/TrustTicker.svelte";
+    import CategoryGrid from "$lib/components/home/CategoryGrid.svelte";
+    import PaymentStrip from "$lib/components/home/PaymentStrip.svelte";
+    import StoreBentoGrid from "$lib/components/home/StoreBentoGrid.svelte";
+    import FeaturedVideoSlider from "$lib/components/home/FeaturedVideoSlider.svelte";
+    import ExclusiveCollection from "$lib/components/home/ExclusiveCollection.svelte";
 
     let { data } = $props();
 </script>
 
 <svelte:head>
-    <title>BunBunClothing - Sarees, Blouses &amp; Essentials | Shop Online</title>
+    <title>BunBunClothing - Shop Online | Premium Fashion & Essentials</title>
     <meta
         name="description"
-        content="Shop the latest sarees, designer blouses, shapewear &amp; essentials at BunBunClothing. Free shipping over ₹999. Easy returns. 100% genuine products."
+        content="Shop the latest fashion, designer blouses, shapewear & essentials at BunBunClothing. Free shipping over ₹999. Easy returns. 100% genuine products."
     />
 </svelte:head>
 
-<!-- Hero Slider Banner -->
-<HeroSlider banners={data.banners} />
-
-
-<!-- Category Quick Links -->
-<section class="py-12 md:py-16 bg-white">
-    <div class="max-w-7xl mx-auto px-4">
-        <h2
-            class="text-2xl md:text-3xl font-semibold font-[family-name:var(--font-heading)] text-center text-stone-900 mb-8"
-        >
-            Shop by Category
-        </h2>
-        <div
-            class="flex overflow-x-auto snap-x snap-mandatory gap-6 pb-4 scrollbar-hide md:grid md:grid-cols-5 md:overflow-visible"
-        >
-            {#each [{ name: "Sarees", icon: "/icons/category-sarees.png", href: "/collections/sarees", color: "from-primary-100 to-primary-200" }, { name: "Blouses", icon: "/icons/category-blouses.png", href: "/collections/blouses", color: "from-amber-100 to-amber-200" }, { name: "Shapewear", icon: "/icons/category-shapewear.png", href: "/collections/shapewear", color: "from-purple-100 to-purple-200" }, { name: "Towels", icon: "/icons/category-towels.png", href: "/collections/towels", color: "from-sky-100 to-sky-200" }, { name: "Essentials", icon: "/icons/category-essentials.png", href: "/collections/essentials", color: "from-emerald-100 to-emerald-200" }] as cat}
+<!-- ════════════════════════════════════════════════ -->
+<!-- 1. CATEGORY PILLS (Before Hero) -->
+<!-- ════════════════════════════════════════════════ -->
+{#if data.categories.length > 0}
+    <section class="bg-white py-3 border-b border-stone-100">
+        <div class="flex overflow-x-auto snap-x snap-mandatory gap-3 px-4 scrollbar-hide">
+            {#each data.categories as cat}
                 <a
-                    href={cat.href}
-                    class="snap-center flex-shrink-0 group flex flex-col items-center gap-3 w-28 md:w-auto"
+                    href="/collections/{cat.slug}"
+                    class="snap-start flex-shrink-0 group"
                 >
-                    <div
-                        class="w-24 h-24 md:w-28 md:h-28 bg-gradient-to-br {cat.color} rounded-full flex items-center justify-center overflow-hidden group-hover:scale-110 group-hover:shadow-lg transition-all duration-300"
-                    >
-                        <img
-                            src={cat.icon}
-                            alt={cat.name}
-                            class="w-16 h-16 md:w-20 md:h-20 object-cover rounded-full"
-                        />
+                    <div class="w-[72px] h-[72px] md:w-[80px] md:h-[80px] rounded-xl overflow-hidden border-2 border-stone-100 group-hover:border-primary-300 transition-colors">
+                        {#if cat.image}
+                            <img
+                                src={cat.image}
+                                alt={cat.name}
+                                class="w-full h-full object-cover"
+                                loading="lazy"
+                            />
+                        {:else}
+                            <div class="w-full h-full bg-gradient-to-br from-primary-100 to-primary-200 flex items-center justify-center">
+                                <span class="text-primary-600 text-[10px] font-bold">{cat.name[0]}</span>
+                            </div>
+                        {/if}
                     </div>
-                    <span
-                        class="text-sm font-medium text-stone-700 group-hover:text-primary-600 transition-colors"
-                    >
+                    <span class="block text-[10px] md:text-xs font-semibold text-stone-700 text-center mt-1.5 max-w-[72px] truncate">
                         {cat.name}
                     </span>
                 </a>
             {/each}
         </div>
-    </div>
-</section>
+    </section>
+{/if}
 
-<!-- Trending Products -->
-<section class="py-12 md:py-16 bg-stone-50">
+
+<!-- ════════════════════════════════════════════════ -->
+<!-- 2. HERO BANNER (Portrait on mobile) -->
+<!-- ════════════════════════════════════════════════ -->
+<HeroSlider banners={data.banners} />
+
+
+<!-- ════════════════════════════════════════════════ -->
+<!-- 3. TRUST BADGES TICKER -->
+<!-- ════════════════════════════════════════════════ -->
+<TrustTicker />
+
+
+<!-- ════════════════════════════════════════════════ -->
+<!-- 4. PROMO COUPON BAR -->
+<!-- ════════════════════════════════════════════════ -->
+<div class="bg-primary-600 text-white py-2.5 px-4 text-center">
+    <p class="text-xs md:text-sm font-semibold tracking-wide">
+        🎉 FLAT 50% OFF | Use code: <span class="bg-white/20 px-2 py-0.5 rounded text-white font-bold ml-1">BUNBUN50</span>
+    </p>
+</div>
+
+
+<!-- ════════════════════════════════════════════════ -->
+<!-- 5. TOP CATEGORIES (2-col grid) -->
+<!-- ════════════════════════════════════════════════ -->
+<CategoryGrid categories={data.categories} />
+
+
+<!-- ════════════════════════════════════════════════ -->
+<!-- 6. PAYMENT METHODS STRIP -->
+<!-- ════════════════════════════════════════════════ -->
+<PaymentStrip logos={data.blocks.paymentLogos} />
+
+
+<!-- ════════════════════════════════════════════════ -->
+<!-- 7. TRENDING NOW -->
+<!-- ════════════════════════════════════════════════ -->
+<section class="py-8 md:py-12 bg-white">
     <div class="max-w-7xl mx-auto px-4">
-        <div class="flex items-center justify-between mb-8">
-            <h2
-                class="text-2xl md:text-3xl font-semibold font-[family-name:var(--font-heading)] text-stone-900"
-            >
-                Trending Now 🔥
-            </h2>
-            <a
-                href="/collections/sarees"
-                class="text-sm font-medium text-primary-600 hover:text-primary-700 flex items-center gap-1 transition-colors"
-            >
-                View All <ArrowRight size={16} />
+        <h2 class="text-lg md:text-2xl font-bold text-center text-primary-700 uppercase tracking-wider mb-6">
+            Trending Now 🔥
+        </h2>
+
+        <!-- Promo Banner -->
+        {#if data.blocks.trendingBanner.length > 0}
+            {@const banner = data.blocks.trendingBanner[0]}
+            <a href={banner.linkUrl || '#'} class="block rounded-xl overflow-hidden mb-6 relative group">
+                <img
+                    src={banner.imageUrl}
+                    alt={banner.title || 'Trending'}
+                    class="w-full aspect-[16/7] object-cover group-hover:scale-[1.02] transition-transform duration-500"
+                    loading="lazy"
+                />
+                {#if banner.title || banner.linkText}
+                    <div class="absolute inset-0 bg-gradient-to-r from-black/40 to-transparent flex items-center p-6 md:p-10">
+                        <div>
+                            {#if banner.title}
+                                <p class="text-white text-xl md:text-3xl font-bold font-[family-name:var(--font-heading)] drop-shadow-lg">{banner.title}</p>
+                            {/if}
+                            {#if banner.subtitle}
+                                <p class="text-white/90 text-sm mt-1">{banner.subtitle}</p>
+                            {/if}
+                            {#if banner.linkText}
+                                <span class="inline-block mt-3 px-5 py-2 bg-white text-stone-900 text-xs font-bold rounded-full uppercase tracking-wide">
+                                    {banner.linkText}
+                                </span>
+                            {/if}
+                        </div>
+                    </div>
+                {/if}
             </a>
-        </div>
-        <div
-            class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6"
-        >
+        {/if}
+
+        <!-- Product Cards (horizontal scroll on mobile, grid on desktop) -->
+        <div class="flex overflow-x-auto snap-x snap-mandatory gap-3 pb-4 scrollbar-hide md:grid md:grid-cols-4 md:overflow-visible md:gap-4">
             {#each data.trending as product}
-                <ProductCard {product} />
+                <div class="snap-start flex-shrink-0 w-[160px] md:w-auto">
+                    <ProductCard {product} />
+                </div>
             {:else}
                 <p class="col-span-full text-center text-stone-400 py-12">
                     No products available yet
                 </p>
             {/each}
         </div>
-    </div>
-</section>
 
-<!-- Promotional Banner -->
-<section class="py-12 md:py-16">
-    <div class="max-w-7xl mx-auto px-4">
-        <div
-            class="bg-gradient-to-r from-primary-500 to-primary-600 rounded-2xl md:rounded-3xl p-8 md:p-12 text-white text-center relative overflow-hidden"
-        >
-            <div class="absolute inset-0 opacity-10">
-                <div
-                    class="absolute top-0 right-0 w-64 h-64 bg-white rounded-full -translate-y-1/2 translate-x-1/2"
-                ></div>
-                <div
-                    class="absolute bottom-0 left-0 w-48 h-48 bg-white rounded-full translate-y-1/2 -translate-x-1/2"
-                ></div>
-            </div>
-            <div class="relative z-10">
-                <p
-                    class="text-sm font-medium text-primary-200 uppercase tracking-wider"
-                >
-                    Limited Time Offer
-                </p>
-                <h2
-                    class="text-3xl md:text-4xl font-bold font-[family-name:var(--font-heading)] mt-3"
-                >
-                    FLAT 50% OFF on All Silk Sarees!
-                </h2>
-                <p class="mt-3 text-primary-100 text-lg">
-                    Use code: <span
-                        class="code font-bold bg-white/20 px-3 py-1 rounded-md"
-                        >BUNBUN50</span
-                    >
-                </p>
+        <!-- View All Button -->
+        {#if data.trending.length > 0}
+            <div class="mt-6 flex justify-center">
                 <a
-                    href="/collections/sarees?tag=silk"
-                    class="inline-flex items-center gap-2 mt-6 px-8 py-3.5 bg-white text-primary-600 font-semibold rounded-full hover:bg-primary-50 transition-all hover:shadow-lg"
+                    href="/collections?sort=trending"
+                    class="inline-flex items-center gap-2 px-10 py-3 bg-stone-900 text-white text-sm font-bold uppercase tracking-wider rounded-full hover:bg-stone-800 transition-colors"
                 >
-                    Shop Sale <ArrowRight size={18} />
+                    View All <ArrowRight size={16} />
                 </a>
             </div>
-        </div>
+        {/if}
     </div>
 </section>
 
-<!-- Bestsellers -->
-<section class="py-12 md:py-16 bg-white">
+
+<!-- ════════════════════════════════════════════════ -->
+<!-- 8. THE BUNBUN STORE (Bento Grid) -->
+<!-- ════════════════════════════════════════════════ -->
+<StoreBentoGrid cards={data.blocks.storeGrid} />
+
+
+<!-- ════════════════════════════════════════════════ -->
+<!-- 9. FEATURED VIDEO SLIDER (Infinite Loop) -->
+<!-- ════════════════════════════════════════════════ -->
+<FeaturedVideoSlider videos={data.blocks.featuredCards} />
+
+
+<!-- ════════════════════════════════════════════════ -->
+<!-- 10. BESTSELLERS -->
+<!-- ════════════════════════════════════════════════ -->
+<section class="py-8 md:py-12 bg-stone-50">
     <div class="max-w-7xl mx-auto px-4">
-        <div class="flex items-center justify-between mb-8">
-            <h2
-                class="text-2xl md:text-3xl font-semibold font-[family-name:var(--font-heading)] text-stone-900"
-            >
-                Bestsellers ⭐
-            </h2>
-            <a
-                href="/collections/sarees"
-                class="text-sm font-medium text-primary-600 hover:text-primary-700 flex items-center gap-1 transition-colors"
-            >
-                View All <ArrowRight size={16} />
+        <h2 class="text-lg md:text-2xl font-bold text-center text-primary-700 uppercase tracking-wider mb-6">
+            Bestsellers ⭐
+        </h2>
+
+        <!-- Promo Banner -->
+        {#if data.blocks.bestsellerBanner.length > 0}
+            {@const banner = data.blocks.bestsellerBanner[0]}
+            <a href={banner.linkUrl || '#'} class="block rounded-xl overflow-hidden mb-6 relative group">
+                <img
+                    src={banner.imageUrl}
+                    alt={banner.title || 'Bestsellers'}
+                    class="w-full aspect-[16/7] object-cover group-hover:scale-[1.02] transition-transform duration-500"
+                    loading="lazy"
+                />
+                {#if banner.title || banner.linkText}
+                    <div class="absolute inset-0 bg-gradient-to-r from-black/40 to-transparent flex items-center p-6 md:p-10">
+                        <div>
+                            {#if banner.title}
+                                <p class="text-white text-xl md:text-3xl font-bold font-[family-name:var(--font-heading)] drop-shadow-lg">{banner.title}</p>
+                            {/if}
+                            {#if banner.subtitle}
+                                <p class="text-white/90 text-sm mt-1">{banner.subtitle}</p>
+                            {/if}
+                            {#if banner.linkText}
+                                <span class="inline-block mt-3 px-5 py-2 bg-white text-stone-900 text-xs font-bold rounded-full uppercase tracking-wide">
+                                    {banner.linkText}
+                                </span>
+                            {/if}
+                        </div>
+                    </div>
+                {/if}
             </a>
-        </div>
-        <div
-            class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6"
-        >
+        {/if}
+
+        <!-- Product Cards -->
+        <div class="flex overflow-x-auto snap-x snap-mandatory gap-3 pb-4 scrollbar-hide md:grid md:grid-cols-4 md:overflow-visible md:gap-4">
             {#each data.bestsellers as product}
-                <ProductCard {product} />
+                <div class="snap-start flex-shrink-0 w-[160px] md:w-auto">
+                    <ProductCard {product} />
+                </div>
             {:else}
                 <p class="col-span-full text-center text-stone-400 py-12">
                     No products available yet
                 </p>
             {/each}
         </div>
-    </div>
-</section>
 
-<!-- Trust Indicators -->
-<section class="py-10 md:py-14 bg-stone-50">
-    <div class="max-w-7xl mx-auto px-4">
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
-            {#each [{ icon: Truck, text: "Free Shipping", sub: "On orders over ₹999" }, { icon: RotateCcw, text: "Easy Returns", sub: "7-day return policy" }, { icon: Shield, text: "Secure Payments", sub: "SSL encrypted checkout" }, { icon: BadgeCheck, text: "100% Genuine", sub: "Quality guaranteed" }] as item}
-                <div
-                    class="flex flex-col items-center text-center gap-3 p-5 bg-white rounded-xl shadow-sm"
+        <!-- View All -->
+        {#if data.bestsellers.length > 0}
+            <div class="mt-6 flex justify-center">
+                <a
+                    href="/collections?sort=bestseller"
+                    class="inline-flex items-center gap-2 px-10 py-3 bg-stone-900 text-white text-sm font-bold uppercase tracking-wider rounded-full hover:bg-stone-800 transition-colors"
                 >
-                    <div
-                        class="w-12 h-12 bg-primary-50 rounded-full flex items-center justify-center text-primary-500"
-                    >
-                        <item.icon size={24} />
-                    </div>
-                    <div>
-                        <p class="text-sm font-semibold text-stone-800">
-                            {item.text}
-                        </p>
-                        <p class="text-xs text-stone-400 mt-0.5">{item.sub}</p>
-                    </div>
-                </div>
-            {/each}
-        </div>
+                    View All <ArrowRight size={16} />
+                </a>
+            </div>
+        {/if}
     </div>
 </section>
 
-<!-- Testimonials -->
-<section class="py-12 md:py-16 bg-white">
+
+<!-- ════════════════════════════════════════════════ -->
+<!-- 11. EXCLUSIVE COLLECTION -->
+<!-- ════════════════════════════════════════════════ -->
+<ExclusiveCollection
+    banner={data.blocks.exclusiveBanner[0] || null}
+    products={data.newArrivals}
+    viewAllHref="/collections?tag=new"
+/>
+
+
+<!-- ════════════════════════════════════════════════ -->
+<!-- 12. CUSTOMER REVIEWS -->
+<!-- ════════════════════════════════════════════════ -->
+<section class="py-8 md:py-12 bg-white">
     <div class="max-w-7xl mx-auto px-4">
-        <h2
-            class="text-2xl md:text-3xl font-semibold font-[family-name:var(--font-heading)] text-center text-stone-900 mb-10"
-        >
-            What Our Customers Say 💬
+        <h2 class="text-lg md:text-2xl font-bold text-center text-primary-700 uppercase tracking-wider mb-4">
+            Customer Reviews 💬
         </h2>
-        <div class="grid md:grid-cols-3 gap-6">
-            {#each [{ name: "Priya Sharma", location: "Mumbai, Maharashtra", text: "The silk saree quality is absolutely stunning! The colors are vibrant and the fabric feels luxurious. Will definitely order again." }, { name: "Anita Gupta", location: "Delhi, NCR", text: "Best shapewear I have found online. Comfortable, fits perfectly under my saree, and the delivery was super fast!" }, { name: "Meera Patel", location: "Ahmedabad, Gujarat", text: "Love the blouse collection! Ready-made blouses that actually fit well. The customer service team was very helpful too." }] as testimonial}
-                <div
-                    class="bg-stone-50 rounded-2xl p-6 hover:shadow-md transition-all"
-                >
-                    <div class="flex items-center gap-1 mb-3">
-                        {#each Array(5) as _}
-                            <span class="text-amber-400">★</span>
+
+        <!-- Aggregate Rating -->
+        <div class="flex items-center justify-center gap-2 mb-8">
+            <div class="flex items-center gap-0.5">
+                {#each Array(5) as _, i}
+                    <span class="text-lg {i < 4 ? 'text-amber-400' : 'text-amber-300'}">★</span>
+                {/each}
+            </div>
+            <span class="text-sm font-semibold text-stone-800">4.8</span>
+            <span class="text-sm text-stone-500">★ (Reviews)</span>
+            <span class="text-xs text-emerald-600 font-semibold flex items-center gap-0.5">✓ Verified</span>
+        </div>
+
+        <!-- Review Cards (horizontal scroll) -->
+        <div class="flex overflow-x-auto snap-x snap-mandatory gap-4 pb-4 scrollbar-hide md:grid md:grid-cols-3 md:overflow-visible">
+            {#each [{ name: "Priya Sharma", location: "Mumbai", text: "The quality is absolutely stunning! The colors are vibrant and the fabric feels luxurious. Will definitely order again.", rating: 5 }, { name: "Anita Gupta", location: "Delhi", text: "Best shapewear I have found online. Comfortable, fits perfectly, and the delivery was super fast!", rating: 5 }, { name: "Meera Patel", location: "Ahmedabad", text: "Love the collection! Ready-made pieces that actually fit well. The customer service team was very helpful too.", rating: 5 }] as review}
+                <div class="snap-start flex-shrink-0 w-[280px] md:w-auto bg-stone-50 rounded-2xl p-5 border border-stone-100">
+                    <!-- Photo Placeholder -->
+                    <div class="w-full aspect-[4/3] bg-stone-200 rounded-xl mb-4 flex items-center justify-center">
+                        <span class="text-stone-400 text-xs">Customer Photo</span>
+                    </div>
+
+                    <p class="text-sm text-stone-600 leading-relaxed italic mb-3">
+                        "{review.text}"
+                    </p>
+
+                    <div class="flex items-center gap-0.5 mb-2">
+                        {#each Array(review.rating) as _}
+                            <span class="text-amber-400 text-sm">★</span>
                         {/each}
                     </div>
-                    <p class="text-sm text-stone-600 leading-relaxed italic">
-                        "{testimonial.text}"
-                    </p>
-                    <div class="flex items-center gap-3 mt-5">
-                        <div
-                            class="w-10 h-10 bg-primary-200 rounded-full flex items-center justify-center text-primary-700 font-bold text-sm"
-                        >
-                            {testimonial.name[0]}
+
+                    <div class="flex items-center gap-2">
+                        <div class="w-8 h-8 bg-primary-200 rounded-full flex items-center justify-center">
+                            <span class="text-primary-700 text-xs font-bold">{review.name[0]}</span>
                         </div>
                         <div>
-                            <p class="text-sm font-semibold text-stone-800">
-                                {testimonial.name}
+                            <p class="text-sm font-semibold text-stone-800 flex items-center gap-1">
+                                {review.name}
+                                <span class="text-emerald-500 text-xs">✓</span>
                             </p>
-                            <p class="text-xs text-stone-400">
-                                {testimonial.location}
-                            </p>
+                            <p class="text-[10px] text-stone-400">{review.location}</p>
                         </div>
                     </div>
                 </div>
@@ -229,3 +302,4 @@
         </div>
     </div>
 </section>
+

@@ -23,8 +23,8 @@
 {#if visible}
 	<div class="bg-primary-500 text-white relative">
 		<div class="max-w-7xl mx-auto px-4 py-2 flex items-center justify-center gap-2 text-sm font-medium">
-			<span>🎉 FLAT 50% OFF on All Sarees! Use code <span class="code font-bold">BUNBUN50</span></span>
-			<a href="/collections/sarees" class="underline underline-offset-2 hover:text-primary-100 ml-1">
+			<span>🎉 FLAT 50% OFF Sitewide! Use code <span class="code font-bold">BUNBUN50</span></span>
+			<a href="/collections" class="underline underline-offset-2 hover:text-primary-100 ml-1">
 				Shop Now →
 			</a>
 			<button
@@ -37,3 +37,4 @@
 		</div>
 	</div>
 {/if}
+

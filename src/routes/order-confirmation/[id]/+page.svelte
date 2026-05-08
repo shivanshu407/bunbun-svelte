@@ -117,7 +117,7 @@
             <Package size={16} /> View Orders
         </a>
         <a
-            href="/collections/sarees"
+            href="/collections"
             class="px-6 py-2.5 bg-rose-500 hover:bg-rose-600 text-white text-sm font-medium rounded-full transition-colors flex items-center justify-center gap-2"
         >
             Continue Shopping <ArrowRight size={16} />
