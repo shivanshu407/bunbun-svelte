@@ -31,7 +31,7 @@
                     href="/collections/{cat.slug}"
                     class="snap-start flex-shrink-0 group"
                 >
-                    <div class="w-[72px] h-[72px] md:w-[80px] md:h-[80px] rounded-xl overflow-hidden border-2 border-stone-100 group-hover:border-primary-300 transition-colors">
+                    <div class="w-[94px] h-[63px] md:w-[100px] md:h-[68px] rounded-xl overflow-hidden border-2 border-stone-100 group-hover:border-primary-300 transition-colors">
                         {#if cat.image}
                             <img
                                 src={cat.image}
@@ -41,15 +41,27 @@
                             />
                         {:else}
                             <div class="w-full h-full bg-gradient-to-br from-primary-100 to-primary-200 flex items-center justify-center">
-                                <span class="text-primary-600 text-[10px] font-bold">{cat.name[0]}</span>
+                                <span class="text-primary-600 text-sm font-bold">{cat.name[0]}</span>
                             </div>
                         {/if}
                     </div>
-                    <span class="block text-[10px] md:text-xs font-semibold text-stone-700 text-center mt-1.5 max-w-[72px] truncate">
+                    <span class="block text-[10px] md:text-xs font-semibold text-stone-700 text-center mt-1.5 max-w-[94px] truncate">
                         {cat.name}
                     </span>
                 </a>
             {/each}
+            <!-- Sale card — always shown as the last pill -->
+            <a
+                href="/collections?sale=true"
+                class="snap-start flex-shrink-0 group"
+            >
+                <div class="w-[94px] h-[63px] md:w-[100px] md:h-[68px] rounded-xl overflow-hidden border-2 border-red-200 group-hover:border-red-400 transition-colors bg-gradient-to-br from-red-50 to-red-100 flex items-center justify-center">
+                    <span class="text-red-500 text-sm font-extrabold">%</span>
+                </div>
+                <span class="block text-[10px] md:text-xs font-semibold text-red-600 text-center mt-1.5 max-w-[94px] truncate">
+                    Sale
+                </span>
+            </a>
         </div>
     </section>
 {/if}
