@@ -1,5 +1,4 @@
 const fs = require('fs');
-const { execSync } = require('child_process');
 
 const { MYSQL_USER, MYSQL_PASSWORD, MYSQL_HOST, MYSQL_PORT, MYSQL_DATABASE, DATABASE_URL } = process.env;
 
@@ -30,22 +29,4 @@ if (!DATABASE_URL && MYSQL_USER && MYSQL_HOST && MYSQL_DATABASE) {
     }
     
     console.log("[Deployment Config] Successfully built and attached DATABASE_URL for Prisma.");
-}
-
-// Auto-sync schema to production DB (creates missing tables like homepage_blocks)
-// Runs inside this script so DATABASE_URL is guaranteed available in process.env
-if (process.env.DATABASE_URL) {
-    console.log("[Deployment Config] Running prisma db push to sync schema...");
-    try {
-        execSync('npx prisma db push --skip-generate --accept-data-loss', {
-            stdio: 'inherit',
-            env: process.env
-        });
-        console.log("[Deployment Config] Schema sync complete.");
-    } catch (e) {
-        console.warn("[Deployment Config] prisma db push failed (non-fatal):", e.message);
-        console.warn("[Deployment Config] The app will still start, but new tables may be missing.");
-    }
-} else {
-    console.log("[Deployment Config] No DATABASE_URL available — skipping schema sync.");
 }
