@@ -1,7 +1,7 @@
 import type { Actions, PageServerLoad } from './$types';
 import { prisma } from '$lib/server/db';
 import { redirect, fail } from '@sveltejs/kit';
-import { validateAddress } from '$lib/utils';
+import { validateAddress } from '$lib/server/utils';
 
 export const load: PageServerLoad = async ({ locals }) => {
     if (!locals.user) throw redirect(302, '/login?redirect=/account/addresses');
