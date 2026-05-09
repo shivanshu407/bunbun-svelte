@@ -23,10 +23,9 @@ export const GET: RequestHandler = async ({ locals }) => {
     const diagnostics: Record<string, any> = {
         timestamp: new Date().toISOString(),
         env: {
-            MYSQL_HOST: env.MYSQL_HOST ? '***SET***' : '(not set)',
-            MYSQL_DATABASE: env.MYSQL_DATABASE ? '***SET***' : '(not set)',
             DATABASE_URL: env.DATABASE_URL ? '***SET***' : '(not set)',
-            CLOUDINARY_CLOUD_NAME: env.CLOUDINARY_CLOUD_NAME ? '***SET***' : '(not set)',
+            SUPABASE_URL: env.SUPABASE_URL ? '***SET***' : '(not set)',
+            SUPABASE_SERVICE_ROLE_KEY: env.SUPABASE_SERVICE_ROLE_KEY ? '***SET***' : '(not set)',
         },
         prismaTest: 'pending',
     };

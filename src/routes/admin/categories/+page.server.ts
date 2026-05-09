@@ -1,7 +1,7 @@
 import type { Actions, PageServerLoad } from './$types';
 import { prisma } from '$lib/server/db';
 import { fail } from '@sveltejs/kit';
-import getCloudinary from '$lib/server/cloudinary';
+import { uploadFile } from '$lib/server/storage';
 
 export const load: PageServerLoad = async () => {
     const categories = await prisma.category.findMany({
@@ -15,14 +15,7 @@ export const load: PageServerLoad = async () => {
 };
 
 async function uploadImage(file: File): Promise<string> {
-    const arrayBuffer = await file.arrayBuffer();
-    const base64 = Buffer.from(arrayBuffer).toString('base64');
-    const dataUri = `data:${file.type};base64,${base64}`;
-    const result = await getCloudinary().uploader.upload(dataUri, {
-        folder: 'bunbun_categories',
-        resource_type: 'image'
-    });
-    return result.secure_url;
+    return uploadFile(file, 'categories');
 }
 
 export const actions: Actions = {

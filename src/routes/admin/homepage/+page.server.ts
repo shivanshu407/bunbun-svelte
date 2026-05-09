@@ -1,7 +1,7 @@
 import type { Actions, PageServerLoad } from './$types';
 import { prisma } from '$lib/server/db';
 import { fail } from '@sveltejs/kit';
-import getCloudinary from '$lib/server/cloudinary';
+import { uploadFile } from '$lib/server/storage';
 
 const VALID_SECTIONS = [
     'trending_banner',
@@ -57,20 +57,10 @@ export const actions: Actions = {
 
         if (imageFile && imageFile.size > 0) {
             try {
-                const arrayBuffer = await imageFile.arrayBuffer();
-                const base64 = Buffer.from(arrayBuffer).toString('base64');
-                const dataUri = `data:${imageFile.type};base64,${base64}`;
-
-                // Use video resource_type for featured_card videos
-                const isVideo = imageFile.type.startsWith('video/');
-                const result = await getCloudinary().uploader.upload(dataUri, {
-                    folder: 'bunbun_homepage',
-                    resource_type: isVideo ? 'video' : 'image'
-                });
-                imageUrl = result.secure_url;
+                imageUrl = await uploadFile(imageFile, 'homepage');
             } catch (e) {
                 console.error('Homepage block upload error:', e);
-                return fail(500, { error: 'Failed to upload file. Check Cloudinary credentials.' });
+                return fail(500, { error: 'Failed to upload file.' });
             }
         } else {
             return fail(400, { error: 'Please upload an image or video' });
@@ -99,15 +89,7 @@ export const actions: Actions = {
         const imageFile = fd.get('imageFile') as File | null;
         if (imageFile && imageFile.size > 0) {
             try {
-                const arrayBuffer = await imageFile.arrayBuffer();
-                const base64 = Buffer.from(arrayBuffer).toString('base64');
-                const dataUri = `data:${imageFile.type};base64,${base64}`;
-                const isVideo = imageFile.type.startsWith('video/');
-                const result = await getCloudinary().uploader.upload(dataUri, {
-                    folder: 'bunbun_homepage',
-                    resource_type: isVideo ? 'video' : 'image'
-                });
-                data.imageUrl = result.secure_url;
+                data.imageUrl = await uploadFile(imageFile, 'homepage');
             } catch (e) {
                 console.error('Homepage block update upload error:', e);
                 return fail(500, { error: 'Failed to upload file.' });

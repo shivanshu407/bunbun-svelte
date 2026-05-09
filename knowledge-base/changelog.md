@@ -1,5 +1,21 @@
 # Changelog
 
+## 2026-05-09 — Database Migration: Hostinger MySQL → Supabase PostgreSQL
+**What**: Migrated entire database from Hostinger's internal MySQL/MariaDB to Supabase PostgreSQL
+**Why**: Persistent 503/504 errors caused by Hostinger MySQL connection pool exhaustion, cold start timeouts, and `hostinger.cjs` env var construction fragility
+**Impact**: Site is now LIVE at bunbunclothing.store. All DB connection issues resolved. db.ts went from 104 lines to 12 lines. No more MariaDB adapter, no warmup hacks, no hostinger.cjs dependency.
+**Files Changed**: `prisma/schema.prisma`, `src/lib/server/db.ts`, `src/lib/server/auth.ts`, `src/hooks.server.ts`, `package.json`, `package-lock.json`, `.env`
+**Commit**: `41c48cc`
+
+- Schema provider: `mysql` → `postgresql`, added `directUrl` for migrations
+- db.ts: Removed `PrismaMariaDb` adapter, `parseDatabaseUrl()`, lazy proxy → simple `new PrismaClient()`
+- auth.ts: Removed lazy Lucia proxy → direct `new Lucia(adapter)` init
+- hooks.server.ts: Removed `SELECT 1` DB warmup (Supabase has PgBouncer built-in)
+- package.json: Removed `@prisma/adapter-mariadb`, `mariadb`, `hostinger.cjs` from postinstall
+- All 18 tables created on Supabase via `prisma db push`
+- Env vars: `DATABASE_URL` (pooler port 6543) + `DIRECT_URL` (direct port 5432)
+
+
 ## 2026-05-08 — Mobile UI Redesign (Sudathi-Inspired)
 **What**: Complete mobile-first homepage overhaul with 15 sections, admin CMS for homepage images, dynamic categories
 **Why**: Mobile conversion optimization — app-like experience matching Sudathi.com design patterns

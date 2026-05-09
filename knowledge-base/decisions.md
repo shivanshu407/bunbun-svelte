@@ -1,5 +1,22 @@
 # Decisions
 
+## Decision: Supabase PostgreSQL over Hostinger MySQL
+**Date**: 2026-05-09
+**Status**: Accepted
+**Context**: Hostinger's internal MySQL caused persistent 503/504 errors due to connection pool exhaustion, cold start timeouts, and LVE container restrictions. Multiple workarounds (warmup queries, lazy proxies, acquireTimeout, hostinger.cjs env construction) failed to provide reliable stability.
+**Decision**: Migrate to Supabase PostgreSQL. Use Prisma's standard PostgreSQL driver (no adapter needed). Supabase provides PgBouncer connection pooling out of the box, eliminating all cold start and pool exhaustion issues.
+**Alternatives Considered**:
+- PlanetScale (MySQL) — would still need adapter; MySQL-specific
+- Railway PostgreSQL — no free tier
+- Keep Hostinger MySQL with more workarounds — proven unreliable after 3+ sessions of fixes
+**Consequences**: 
+- All MySQL-specific code removed (MariaDB adapter, hostinger.cjs, warmup queries)
+- db.ts reduced from 104 lines to 12 lines
+- Site immediately stable after migration
+- Supabase free tier: 500MB DB, 1GB storage, 50K monthly active users
+**Supersedes**: "Prisma JavaScript Adapter over Rust Engine" (no longer applicable)
+
+
 ## Decision: Prisma JavaScript Adapter over Rust Engine
 **Date**: 2026-04-06
 **Status**: Accepted

@@ -1,6 +1,6 @@
 import type { RequestHandler } from './$types';
 import { json } from '@sveltejs/kit';
-import getCloudinary from '$lib/server/cloudinary';
+import { uploadFile } from '$lib/server/storage';
 
 const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
 const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/avif'];
@@ -24,18 +24,6 @@ export const POST: RequestHandler = async ({ request, locals }) => {
         return json({ error: 'No files provided' }, { status: 400 });
     }
 
-    // Pre-check Cloudinary credentials before processing files
-    let cloudinary;
-    try {
-        cloudinary = getCloudinary();
-    } catch (err: any) {
-        console.error('Cloudinary config error:', err);
-        return json(
-            { error: 'Cloudinary configuration error. Please contact support.' },
-            { status: 500 }
-        );
-    }
-
     const uploadedUrls: string[] = [];
 
     for (const file of files) {
@@ -56,21 +44,10 @@ export const POST: RequestHandler = async ({ request, locals }) => {
         }
 
         try {
-            // Convert web File blob to base64 Data URI for secure Cloudinary transit
-            const arrayBuffer = await file.arrayBuffer();
-            const base64String = Buffer.from(arrayBuffer).toString('base64');
-            const dataUri = `data:${file.type};base64,${base64String}`;
-
-            // Upload directly to your safe Cloudinary bucket
-            const uploadResult = await cloudinary.uploader.upload(dataUri, {
-                folder: 'bunbun_products',
-                resource_type: 'image'
-            });
-
-            // Return the permanently hosted secure URL from Cloudinary
-            uploadedUrls.push(uploadResult.secure_url);
+            const url = await uploadFile(file, 'products');
+            uploadedUrls.push(url);
         } catch (error: any) {
-            console.error("Cloudinary Upload Error:", error);
+            console.error("Upload Error:", error);
             return json(
                 { error: 'Upload failed. Please try again.' },
                 { status: 500 }

@@ -1,7 +1,7 @@
 import type { Actions, PageServerLoad } from './$types';
 import { prisma } from '$lib/server/db';
 import { fail } from '@sveltejs/kit';
-import getCloudinary from '$lib/server/cloudinary';
+import { uploadFile } from '$lib/server/storage';
 
 export const load: PageServerLoad = async () => {
     try {
@@ -27,20 +27,12 @@ export const actions: Actions = {
 
         let imageUrl = '';
 
-        // Upload image to Cloudinary
         if (imageFile && imageFile.size > 0) {
             try {
-                const arrayBuffer = await imageFile.arrayBuffer();
-                const base64 = Buffer.from(arrayBuffer).toString('base64');
-                const dataUri = `data:${imageFile.type};base64,${base64}`;
-                const result = await getCloudinary().uploader.upload(dataUri, {
-                    folder: 'bunbun_banners',
-                    resource_type: 'image'
-                });
-                imageUrl = result.secure_url;
+                imageUrl = await uploadFile(imageFile, 'banners');
             } catch (e) {
-                console.error('Cloudinary banner upload error:', e);
-                return fail(500, { error: 'Failed to upload image. Check Cloudinary credentials.' });
+                console.error('Banner upload error:', e);
+                return fail(500, { error: 'Failed to upload image.' });
             }
         } else {
             return fail(400, { error: 'Please upload a banner image' });
